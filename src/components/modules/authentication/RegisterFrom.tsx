@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import React, { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
-// Icons
 const UserIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>;
 const CameraIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>;
 const MailIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>;
@@ -13,8 +14,13 @@ const EyeOffIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" heig
 const ArrowRightIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>;
 const ArrowLeftIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>;
 
-const RegisterFrom: React.FC = () => {
-    const router = useRouter();
+interface RegisterProps {
+    onRegister: (data: any) => Promise<{ success: boolean }>;
+    onVerify: (data: any) => Promise<{ success: boolean }>;
+}
+
+const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
+    const router = useRouter()
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [step, setStep] = useState<number>(1);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -41,13 +47,31 @@ const RegisterFrom: React.FC = () => {
     const handleNext = () => step < totalSteps && setStep(step + 1);
     const handleBack = () => step > 1 && setStep(step - 1);
 
-    const handleFinalSubmit = (e: React.FormEvent) => {
+    const handleRegisterClick = async () => {
+        setIsLoading(true);
+        const response = await onRegister({ fullName, email, password, image: imagePreview });
+        setIsLoading(false);
+
+        if (response.success) {
+            toast.success("OTP sent to your email!");
+            setStep(4);
+        } else {
+            toast.error("Registration Failed. Please try again.");
+        }
+    };
+
+    const handleFinalSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-            router.push('/');
-        }, 2000);
+        const response = await onVerify({ email, otp });
+        setIsLoading(false);
+
+        if (response.success) {
+            toast.success("Verification Successful!");
+            router.push('/login');
+        } else {
+            toast.error("Invalid OTP. Please try again.");
+        }
     };
 
     return (
@@ -78,7 +102,7 @@ const RegisterFrom: React.FC = () => {
                                 <div className="relative group">
                                     <div className="w-24 h-24 rounded-full border-2 border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center overflow-hidden bg-gray-50 dark:bg-gray-900">
                                         {imagePreview ? (
-                                            <Image src={imagePreview} height={20} width={30} alt="Preview" className="w-full h-full object-cover" />
+                                            <Image src={imagePreview} height={100} width={100} alt="Preview" className="w-full h-full object-cover" />
                                         ) : (
                                             <UserIcon />
                                         )}
@@ -176,7 +200,7 @@ const RegisterFrom: React.FC = () => {
                             <div className="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 p-5 rounded-2xl space-y-4">
                                 <div className="flex items-center gap-4 border-b border-gray-200 dark:border-gray-800 pb-4">
                                     <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
-                                        {imagePreview ? <Image src={imagePreview} width={30} height={20} className="w-full h-full object-cover" alt='someone' /> : <div className="p-3"><UserIcon /></div>}
+                                        {imagePreview ? <Image src={imagePreview} width={48} height={48} className="w-full h-full object-cover" alt='someone' /> : <div className="p-3"><UserIcon /></div>}
                                     </div>
                                     <div>
                                         <p className="text-xs text-gray-500 uppercase font-bold tracking-tighter">Full Name</p>
@@ -190,8 +214,9 @@ const RegisterFrom: React.FC = () => {
                             </div>
 
                             <button
-                                onClick={() => { setIsLoading(true); setTimeout(() => { setIsLoading(false); setStep(4); }, 1500); }}
-                                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold flex items-center justify-center transition-all"
+                                onClick={handleRegisterClick}
+                                disabled={isLoading}
+                                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold flex items-center justify-center transition-all disabled:opacity-70"
                             >
                                 {isLoading ? <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div> : "Create & Send Code"}
                             </button>
@@ -226,7 +251,7 @@ const RegisterFrom: React.FC = () => {
                     )}
 
                     {/* Universal Back Button */}
-                    {step > 1 && (
+                    {step > 1 && !isLoading && (
                         <button
                             onClick={handleBack}
                             className="mt-6 w-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-medium flex items-center justify-center gap-2 transition-colors"

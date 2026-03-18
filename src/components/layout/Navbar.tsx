@@ -93,10 +93,11 @@ const Navbar = ({
     if (!mounted) return null;
 
     const navLinks = [
-        { href: "#", label: "Features" },
-        { href: "#", label: "Pricing" },
-        { href: "#", label: "About" },
-        { href: "#", label: "Contact" },
+        { href: "/", label: "Home" },
+        { href: "/ideas", label: "Ideas" },
+        { href: "/dashboard", label: "Dashboard " },
+        { href: "/about-us", label: "About Us" },
+        { href: "blog", label: "Blog" },
     ];
 
 
