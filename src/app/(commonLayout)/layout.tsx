@@ -1,13 +1,12 @@
 import Navbar from "@/components/layout/Navbar"
+import { userSerive } from "@/service/user.service"
 
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode
-}) {
+export default async function RootLayout({ children, }: { children: React.ReactNode }) {
+    const sessionResponse = await userSerive.getSession();
+    const user = sessionResponse?.data?.user || undefined;
     return (
         <div>
-            <Navbar />
+            <Navbar user={user} />
             {children}
         </div>
     )

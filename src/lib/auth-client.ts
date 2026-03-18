@@ -1,7 +1,7 @@
 import { createAuthClient } from "better-auth/client";
 
 export const authClient = createAuthClient({
-    baseURL: typeof window !== "undefined" ? window.location.origin : "",
+    baseURL: "http://localhost:5000",
     fetchOptions: {
         credentials: "include",
     },
