@@ -6,7 +6,7 @@ const BACKEND_URL = env.BACKEND_URL;
 
 export default function Page() {
     const handleRegisterAndSendOTP = async (formData: any) => {
-        "use server"
+        "use server";
         try {
             const payload = {
                 name: formData.fullName,
@@ -28,7 +28,7 @@ export default function Page() {
     };
 
     const handleVerifyOTP = async (verifyData: any) => {
-        "use server"
+        "use server";
         try {
             const response = await fetch(`${BACKEND_URL}/api/v1/auth/verify-email`, {
                 method: 'POST',

@@ -1,4 +1,5 @@
 import Navbar from "@/components/layout/Navbar"
+import SideBar from "@/components/layout/SideBar";
 import { userSerive } from "@/service/user.service"
 
 export default async function RootLayout({ children, }: { children: React.ReactNode }) {
@@ -7,7 +8,10 @@ export default async function RootLayout({ children, }: { children: React.ReactN
     return (
         <div>
             <Navbar user={user} />
-            {children}
+            <div className="flex ">
+                <SideBar user={user} />
+                {children}
+            </div>
         </div>
     )
 }
