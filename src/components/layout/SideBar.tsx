@@ -2,10 +2,12 @@
 
 import { Home, Lightbulb, LayoutDashboard, Info, Newspaper, ChevronRight, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation'; // Added this hook
 import { useState } from 'react';
 
 const SideBar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const pathname = usePathname(); // Get current active path
 
     const navLinks = [
         { href: "/", label: "Home", icon: <Home size={22} /> },
@@ -30,28 +32,33 @@ const SideBar = () => {
 
                 {/* Navigation Links */}
                 <nav className="flex-1 px-3 space-y-2">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.label}
-                            href={link.href}
-                            title={isCollapsed ? link.label : ""}
-                            className={`flex items-center rounded-xl transition-all duration-200 group relative
-                                ${isCollapsed ? 'justify-center px-0 py-3' : 'px-4 py-3 gap-4'}
-                                ${link.label === "Home"
-                                    ? "bg-indigo-50 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-semibold"
-                                    : "text-gray-500 dark:text-gray-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-indigo-400"}
-                            `}
-                        >
-                            <div className="flex-shrink: 0">
-                                {link.icon}
-                            </div>
-                            {!isCollapsed && (
-                                <span className="text-sm font-medium whitespace-nowrap transition-opacity duration-300">
-                                    {link.label}
-                                </span>
-                            )}
-                        </Link>
-                    ))}
+                    {navLinks.map((link) => {
+                        // Check if the current route matches the link href
+                        const isActive = pathname === link.href;
+
+                        return (
+                            <Link
+                                key={link.label}
+                                href={link.href}
+                                title={isCollapsed ? link.label : ""}
+                                className={`flex items-center rounded-xl transition-all duration-200 group relative
+                                    ${isCollapsed ? 'justify-center px-0 py-3' : 'px-4 py-3 gap-4'}
+                                    ${isActive
+                                        ? "bg-indigo-50 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-semibold"
+                                        : "text-gray-500 dark:text-gray-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-indigo-400"}
+                                `}
+                            >
+                                <div className="flex-shrink: 0">
+                                    {link.icon}
+                                </div>
+                                {!isCollapsed && (
+                                    <span className="text-sm font-medium whitespace-nowrap transition-opacity duration-300">
+                                        {link.label}
+                                    </span>
+                                )}
+                            </Link>
+                        );
+                    })}
                 </nav>
             </div>
         </aside>

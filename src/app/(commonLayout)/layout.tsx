@@ -14,8 +14,8 @@ export default async function RootLayout({ children, }: { children: React.ReactN
                     <SideBar />
                 </aside>
 
-                <main className="xl:ml-70 xl:mr-80 pt-16 min-h-screen">
-                    <div className="max-w-185 mx-auto px-4 py-8">
+                <main className=" min-h-screen">
+                    <div className="max-w-6xl mx-auto px-4 py-8">
                         <div className="flex flex-col gap-4">
                             {children}
                         </div>
