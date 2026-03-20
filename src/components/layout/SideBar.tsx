@@ -1,18 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
+
 import { Home, Lightbulb, LayoutDashboard, Info, Newspaper, ChevronRight, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
-interface NavbarProps {
-    user?: any;
-    auth?: {
-        login: { title: string; url: string };
-        signup: { title: string; url: string };
-    };
-}
-
-const SideBar = ({ }: NavbarProps) => {
+const SideBar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const navLinks = [

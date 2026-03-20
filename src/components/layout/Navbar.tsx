@@ -3,7 +3,7 @@
 "use client"
 import React, { useEffect, useState, useId } from 'react';
 import { useTheme } from 'next-themes';
-import { LayoutDashboard, SearchIcon, User } from 'lucide-react';
+import { Home, Info, LayoutDashboard, Lightbulb, Newspaper, SearchIcon, User } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
@@ -93,11 +93,11 @@ const Navbar = ({
     if (!mounted) return null;
 
     const navLinks = [
-        { href: "/", label: "Home" },
-        { href: "/ideas", label: "Ideas" },
-        { href: "/dashboard", label: "Dashboard " },
-        { href: "/about-us", label: "About Us" },
-        { href: "blog", label: "Blog" },
+        { href: "/", label: "Home", icon: <Home size={22} /> },
+        { href: "/ideas", label: "Ideas", icon: <Lightbulb size={22} /> },
+        { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={22} /> },
+        { href: "/about-us", label: "About Us", icon: <Info size={22} /> },
+        { href: "/blog", label: "Blog", icon: <Newspaper size={22} /> },
     ];
 
 
@@ -138,35 +138,24 @@ const Navbar = ({
                 ) : (
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
-                        <div className="flex-shrink-0">
+                        <div className="flex-shrink: 0">
                             <Link href="/" className="flex items-center gap-2">
                                 <MountainIcon className="h-6 w-6 text-gray-900 dark:text-white" />
                                 <span className="text-lg font-semibold text-gray-900 dark:text-white">EcoSpark Hub</span>
                             </Link>
                         </div>
 
-                        {/* Desktop Nav Links */}
-                        <nav className="hidden md:flex items-center gap-6">
-                            {navLinks.map((link) => (
-                                <Link
-                                    key={link.label}
-                                    href={link.href}
-                                    className="text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-white transition-colors duration-300"
-                                >
-                                    {link.label}
-                                </Link>
-                            ))}
-                        </nav>
+                        {/* Search (Desktop & Mobile trigger) */}
+                        <SearchBar id={searchId + "-desktop"} />
+                        <button
+                            className="lg:hidden p-2 text-gray-600 dark:text-gray-300"
+                            onClick={() => setIsMobileSearchVisible(true)}
+                        >
+                            <SearchIcon size={20} />
+                        </button>
 
                         <div className="flex items-center gap-2 sm:gap-4">
-                            {/* Search (Desktop & Mobile trigger) */}
-                            <SearchBar id={searchId + "-desktop"} />
-                            <button
-                                className="lg:hidden p-2 text-gray-600 dark:text-gray-300"
-                                onClick={() => setIsMobileSearchVisible(true)}
-                            >
-                                <SearchIcon size={20} />
-                            </button>
+
 
                             {/* Auth Logic: Dropdown if User, else Login/Register */}
                             {user ? (
@@ -214,9 +203,10 @@ const Navbar = ({
                                 </DropdownMenu>
                             ) : (
                                 <div className="hidden sm:flex items-center gap-3">
-                                    <Button asChild className="rounded-lg h-10 px-4 py-2 font-medium text-sm bg-indigo-500/10 text-indigo-500 dark:bg-indigo-500/20 dark:text-indigo-100 hover:bg-indigo-500/20 transition-colors border-none">
+                                    <Button asChild className="rounded-lg h-10 px-4 py-2 font-medium text-sm bg-indigo-500/20 text-indigo-500 dark:bg-indigo-500/30 dark:text-indigo-300 hover:bg-indigo-500/20 transition-colors border-none">
                                         <Link href={auth.login.url}>{auth.login.title}</Link>
                                     </Button>
+
                                     <Button asChild className="rounded-lg h-10 px-4 py-2 font-medium text-sm bg-indigo-500 hover:bg-indigo-600 text-white shadow-md transition-all active:scale-95 border-none">
                                         <Link href={auth.signup.url}>{auth.signup.title}</Link>
                                     </Button>
@@ -261,7 +251,8 @@ const Navbar = ({
                         ))}
                         {!user && (
                             <div className="flex flex-col gap-2 p-3">
-                                <Link href={auth.login.url} className="w-full text-center py-2 rounded-md bg-indigo-500/10 text-indigo-500 font-medium">Login</Link>
+                                <Link href={auth.login.url} className="w-full text-center py-2 rounded-md bg-indigo-500/10 dark:bg-indigo-500/50 text-indigo-500 dark:text-indigo-500 font-medium">Login</Link>
+
                                 <Link href={auth.signup.url} className="w-full text-center py-2 rounded-md bg-indigo-500 text-white font-medium">Register</Link>
                             </div>
                         )}

@@ -9,7 +9,7 @@ export default async function DashboardLayout({
     admin: React.ReactNode;
     member: React.ReactNode;
 }) {
-    const userRole = "Admin"
+    const userRole = "ADMIN"
 
     return (
 
