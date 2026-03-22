@@ -13,8 +13,8 @@ const SideBar = () => {
         { href: "/", label: "Home", icon: <Home size={22} /> },
         { href: "/ideas", label: "Ideas", icon: <Lightbulb size={22} /> },
         { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={22} /> },
+        { href: "/insights", label: "Insights", icon: <Newspaper size={22} /> },
         { href: "/about-us", label: "About Us", icon: <Info size={22} /> },
-        { href: "/blog", label: "Blog", icon: <Newspaper size={22} /> },
     ];
 
     return (

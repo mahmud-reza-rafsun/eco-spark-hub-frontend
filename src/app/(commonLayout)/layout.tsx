@@ -1,14 +1,12 @@
 import Navbar from "@/components/layout/Navbar"
 import RightSideBar from "@/components/layout/RightSideBar";
 import SideBar from "@/components/layout/SideBar";
-import { userSerive } from "@/service/user.service"
 
-export default async function RootLayout({ children, }: { children: React.ReactNode }) {
-    const sessionResponse = await userSerive.getSession();
-    const user = sessionResponse?.data?.user || undefined;
+export default function RootLayout({ children, }: { children: React.ReactNode }) {
+
     return (
         <div>
-            <Navbar user={user} />
+            <Navbar />
             <div className="min-h-screen bg-white dark:bg-[#030303]">
                 <aside className="fixed left-0 top-16 w-105 h-[calc(100vh-64px)] overflow-y-auto hidden xl:block">
                     <SideBar />

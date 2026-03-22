@@ -2,16 +2,15 @@
 "use client"
 
 import {
-    Home,
-    Lightbulb,
     LayoutDashboard,
     Info,
-    Newspaper,
     ChevronRight,
     ChevronLeft,
     Users,
     CheckCircle,
-    UserCircle
+    UserCircle,
+    BugPlay,
+    BadgeJapaneseYen
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -27,14 +26,15 @@ const Sidebar = ({ userRole }: { userRole?: string; }) => {
     const navConfig = {
         admin: [
             { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={22} /> },
-            { href: "/total-users", label: "Total User", icon: <Users size={22} /> },
+            { href: "/users-management", label: "Users Management", icon: <Users size={22} /> },
+            { href: "/transaction-activity", label: "Transaction Activity", icon: <BadgeJapaneseYen size={22} /> },
             { href: "/approve-ideas", label: "Approve Ideas", icon: <CheckCircle size={22} /> },
             { href: "/profile", label: "Profile", icon: <UserCircle size={22} /> },
         ],
         member: [
             { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={22} /> },
-            { href: "/add-ideas", label: "Add Idea", icon: <Lightbulb size={22} /> },
             { href: "/pending-idea", label: "Pending Idea", icon: <Info size={22} /> },
+            { href: "/purches-ideas", label: "Purches Ideas", icon: <BugPlay size={22} /> },
             { href: "/profile", label: "Profile", icon: <UserCircle size={22} /> },
         ]
     };

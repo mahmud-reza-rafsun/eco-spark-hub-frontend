@@ -43,7 +43,7 @@ const About = () => {
             </section>
 
             {/* Stats Section */}
-            <section className="py-12 bg-indigo-50/50 dark:bg-indigo-500/5">
+            <section className="py-12 bg-indigo-50/50 dark:bg-indigo-500/5 rounded-lg">
                 <div className="container mx-auto px-6">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                         {stats.map((stat, index) => (
@@ -105,7 +105,7 @@ const About = () => {
             {/* CTA Section */}
             <section className="py-20">
                 <div className="container mx-auto px-6">
-                    <div className="bg-indigo-600 rounded-3xl p-12 text-center text-white relative overflow-hidden">
+                    <div className="bg-indigo-500/20 rounded-3xl p-12 text-center text-white relative overflow-hidden">
                         <div className="relative z-10">
                             <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to spark your next big idea?</h2>
                             <p className="text-indigo-100 mb-8 max-w-xl mx-auto">

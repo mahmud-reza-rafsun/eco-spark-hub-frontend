@@ -72,13 +72,14 @@ const MoonIcon = ({ className }: { className?: string }) => (
 );
 
 const Navbar = ({
-    user,
     auth = {
         login: { title: "Login", url: "/login" },
         signup: { title: "Register", url: "/register" },
     },
 }: NavbarProps) => {
     const router = useRouter();
+    const [user, setUser] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileSearchVisible, setIsMobileSearchVisible] = useState(false);
     const { theme, setTheme } = useTheme();
@@ -89,6 +90,26 @@ const Navbar = ({
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                const res = await fetch("http://localhost:3000/api/me", {
+                    cache: "no-store",
+                });
+                const data = await res.json();
+                setUser(data?.data?.user || null);
+            } catch (err) {
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getUser();
+    }, []);
+
+
 
     if (!mounted) return null;
 
@@ -156,6 +177,10 @@ const Navbar = ({
 
                         <div className="flex items-center gap-2 sm:gap-4">
 
+                            <Button className="group px-6 py-3.5 cursor-pointer bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg shadow-indigo-500/20 flex items-center gap-2">
+                                <Lightbulb size={18} className="group-hover:rotate-12 transition-transform" />
+                                Post Idea
+                            </Button>
 
                             {/* Auth Logic: Dropdown if User, else Login/Register */}
                             {user ? (

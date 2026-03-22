@@ -1,9 +1,9 @@
-import Banner from "@/components/main/Banner";
+import Insights from '@/components/main/Insights'
 
 export default function page() {
     return (
         <div>
-            <Banner />
+            <Insights />
         </div>
     )
 }
