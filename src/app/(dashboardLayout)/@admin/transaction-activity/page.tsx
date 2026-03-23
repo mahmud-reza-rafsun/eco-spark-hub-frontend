@@ -1,5 +1,5 @@
 import { adminService } from "@/service/admin.service";
-import TransactionRow from "../../_components/TransactionActivaty/TransactionRow/TransactionRow";
+import TransactionRow from "../../_components/TransactionActivaty/TransactionRow";
 import { IPayment } from "@/interface/transaction.interface";
 
 export default async function TransactionPage() {

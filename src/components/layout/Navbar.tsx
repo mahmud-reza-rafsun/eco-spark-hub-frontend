@@ -1,25 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-import React, { useEffect, useState, useId } from 'react';
-import { useTheme } from 'next-themes';
-import { Home, Info, LayoutDashboard, Lightbulb, Newspaper, SearchIcon, User } from 'lucide-react';
+import React, { useState, useId } from 'react';
+import { Home, Info, LayoutDashboard, Lightbulb, Newspaper, SearchIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { authClient } from '@/lib/auth-client';
-import { toast } from 'sonner';
-import { useRouter } from "next/navigation";
 import DarkMode from '../modules/DarkMode/DarkMode';
-
-interface NavbarProps {
-    user?: any;
-    auth?: {
-        login: { title: string; url: string };
-        signup: { title: string; url: string };
-    };
-}
+import { NavbarProps } from '@/interface/auth.interface';
+import UserSession from '@/utils/UserSession/UserSession';
 
 const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(({ className = '', ...props }, ref) => (
     <input
@@ -70,41 +58,10 @@ const Navbar = ({
         signup: { title: "Register", url: "/register" },
     },
 }: NavbarProps) => {
-    const router = useRouter();
     const [user, setUser] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileSearchVisible, setIsMobileSearchVisible] = useState(false);
-    const { theme, setTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
     const searchId = useId();
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    useEffect(() => {
-        const getUser = async () => {
-            try {
-                const res = await fetch("http://localhost:3000/api/me", {
-                    cache: "no-store",
-                });
-                const data = await res.json();
-                setUser(data?.data?.user || null);
-            } catch (err) {
-                setUser(null);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        getUser();
-    }, []);
-
-
-
-    if (!mounted) return null;
 
     const navLinks = [
         { href: "/", label: "Home", icon: <Home size={22} /> },
@@ -113,30 +70,6 @@ const Navbar = ({
         { href: "/about-us", label: "About Us", icon: <Info size={22} /> },
         { href: "/blog", label: "Blog", icon: <Newspaper size={22} /> },
     ];
-
-
-    const toggleTheme = () => {
-        setTheme(theme === 'dark' ? 'light' : 'dark');
-    };
-
-    const handleLogout = async () => {
-        setIsLoading(true);
-        try {
-            await authClient.signOut({
-                fetchOptions: {
-                    onSuccess: () => {
-                        toast.success("Logged out successfully");
-                        router.push("/");
-                        router.refresh();
-                    },
-                },
-            });
-        } catch (error) {
-            toast.error("Failed to logout");
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     return (
         <header className="bg-white/80 dark:bg-black/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700">
@@ -176,72 +109,9 @@ const Navbar = ({
                             </Button>
 
                             {/* Auth Logic: Dropdown if User, else Login/Register */}
-                            {user ? (
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="relative cursor-pointer h-10 w-10 rounded-full border-2 border-indigo-500/20 p-0 hover:bg-indigo-500/10 transition-transform active:scale-95 focus-visible:ring-0">
-                                            <Avatar className="h-9 w-9">
-                                                <AvatarImage src={user.image} alt={user.name} />
-                                                <AvatarFallback className="bg-indigo-500 text-white font-bold">
-                                                    {user.name?.charAt(0).toUpperCase() || "U"}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="w-60 mt-2" align="end" sideOffset={8}>
-                                        <DropdownMenuLabel className="p-3">
-                                            <div className="flex flex-col space-y-1">
-                                                <p className="text-sm font-semibold text-foreground">{user.name}</p>
-                                                <p className="text-xs text-muted-foreground truncate capitalize">{user.role}</p>
-                                                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
-                                            </div>
-                                        </DropdownMenuLabel>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem asChild className="cursor-pointer focus:bg-indigo-50 focus:text-indigo-600 dark:focus:bg-indigo-950/20">
-                                            <Link href="/dashboard" className="flex items-center w-full px-2 py-1.5">
-                                                <LayoutDashboard className="mr-3 h-4 w-4" />
-                                                <span>Dashboard</span>
-                                            </Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem asChild className="cursor-pointer focus:bg-indigo-50 focus:text-indigo-600 dark:focus:bg-indigo-950/20">
-                                            <Link href="/dashboard/profile" className="flex items-center w-full px-2 py-1.5">
-                                                <User className="mr-3 h-4 w-4" />
-                                                <span>Profile Settings</span>
-                                            </Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem
-                                            className="flex items-center w-full px-2 py-1.5 text-red-500 focus:bg-red-50 focus:text-red-600 dark:focus:bg-red-950/20 cursor-pointer"
-                                            disabled={isLoading}
-                                            onClick={handleLogout}
-                                        >
-                                            <span>{isLoading ? "Logging out..." : "Logout"}</span>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            ) : (
-                                <div className="hidden sm:flex items-center gap-3">
-                                    <Button asChild className="rounded-lg h-10 px-4 py-2 font-medium text-sm bg-indigo-500/20 text-indigo-500 dark:bg-indigo-500/30 dark:text-indigo-300 hover:bg-indigo-500/20 transition-colors border-none">
-                                        <Link href={auth.login.url}>{auth.login.title}</Link>
-                                    </Button>
-
-                                    <Button asChild className="rounded-lg h-10 px-4 py-2 font-medium text-sm bg-indigo-500 hover:bg-indigo-600 text-white shadow-md transition-all active:scale-95 border-none">
-                                        <Link href={auth.signup.url}>{auth.signup.title}</Link>
-                                    </Button>
-                                </div>
-                            )}
-
-                            {/* Theme Toggle - Positioned Last */}
-                            {/* <button
-                                onClick={toggleTheme}
-                                className="p-2 rounded-md text-gray-600 cursor-pointer dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-300"
-                                aria-label="Toggle theme"
-                            >
-                                {theme === 'dark' ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
-                            </button> */}
+                            <UserSession />
 
                             <DarkMode />
-
                             {/* Mobile Menu Trigger */}
                             <div className="md:hidden">
                                 <button

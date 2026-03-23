@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
@@ -41,30 +42,30 @@ export default function LoginForm() {
             toast.error("Please fill in all fields");
             return;
         }
-
         const toastId = toast.loading("Logging in...");
         setIsLoading(true);
-
         try {
-            const { error } = await authClient.signIn.email({
-                email,
-                password,
-                rememberMe: true,
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+                credentials: "include",
             });
-
-            if (error) {
-                toast.error(error.message || "Invalid credentials", { id: toastId });
+            const result = await response.json();
+            if (!response.ok) {
+                toast.error(result.message || "Invalid credentials", { id: toastId });
                 setIsLoading(false);
                 return;
             }
-
             toast.success("Logged in successfully", { id: toastId });
             window.location.href = "/";
         } catch (err) {
             toast.error("An unexpected error occurred", { id: toastId });
             setIsLoading(false);
         }
-    };
+    }
 
     return (
         <div className="w-full flex items-center justify-center p-4 mt-12">

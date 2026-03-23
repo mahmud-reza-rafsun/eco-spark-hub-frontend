@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { env } from "@/env";
 import { approveIdeas } from "@/interface/approveIdea.interface";
-import { createComment } from "@/interface/comment.interface";
 import { cookies } from "next/headers";
 
 const BACKEND_URL = env.BACKEND_URL
@@ -191,5 +190,28 @@ export const adminService = {
             console.error("API Error:", error);
             return { success: false, error: "Connection to server failed" };
         }
-    }
+    },
+    getAllCategory: async function () {
+        try {
+            const cookieStore = await cookies();
+            const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+            const accessToken = cookieStore.get("accessToken")?.value;
+
+            const res = await fetch(`${BACKEND_URL}/api/v1/category`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Cookie": `better-auth.session_token=${sessionToken}; accessToken=${accessToken}`,
+                },
+                cache: "no-store",
+            });
+
+            const result = await res.json();
+            if (!res.ok) return { data: [], error: result.message || "Failed to load all category" };
+
+            return { data: result.data, error: null };
+        } catch (error) {
+            return { data: [], error: "Something Went Wrong" };
+        }
+    },
 }

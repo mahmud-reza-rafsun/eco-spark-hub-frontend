@@ -1,6 +1,6 @@
 import { User } from "./user.interface";
 
-export interface Comment {
+export interface Category {
     id: string;
     content: string;
     user: User;
@@ -8,7 +8,7 @@ export interface Comment {
     createdAt: string;
 }
 
-export interface createComment {
+export interface createCategory {
     name: string,
     slug: string
 }

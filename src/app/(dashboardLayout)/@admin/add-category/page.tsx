@@ -1,4 +1,4 @@
-import CategoryPostForm from "../../_components/CommentPostFrom/categoryPostFrom";
+import CategoryPostForm from "../../_components/CategoryPostFrom/categoryPostFrom";
 
 export default async function page() {
     const displayIdeas = [];

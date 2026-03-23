@@ -3,13 +3,13 @@ import { cookies } from "next/headers";
 
 const AUTH_URL = env.AUTH_URL
 
-export const userSerive = {
+export const userService = {
     getSession: async function () {
         try {
             const cookieStore = await cookies();
             const allCookies = cookieStore.toString();
 
-            const res = await fetch(`${AUTH_URL}/get-session`, {
+            const res = await fetch(`${AUTH_URL}/api/v1/auth/me`, {
                 headers: {
                     "Content-Type": "application/json",
                     "Cookie": allCookies,

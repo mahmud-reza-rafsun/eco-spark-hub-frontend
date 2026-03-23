@@ -53,8 +53,7 @@ export default function CategoryPostForm() {
                             type="text"
                             placeholder="Category Name..."
                             required
-                            className="w-full bg-transparent text-sm text-gray-900 dark:text-white outline-none focus:ring-1 focus:ring-indigo-500/30 rounded-lg px-3 py-2"
-                        />
+                            className="w-full bg-transparent text-sm text-gray-900 dark:text-white outline-none ring-1 ring-indigo-500/30 rounded-lg px-3 py-2" />
                     </div>
 
                     {/* Slug Input */}
@@ -64,7 +63,7 @@ export default function CategoryPostForm() {
                             type="text"
                             placeholder="category-slug"
                             required
-                            className="w-full bg-transparent text-sm text-gray-700 dark:text-gray-300 outline-none focus:ring-1 focus:ring-indigo-500/30 rounded-lg px-3 py-2"
+                            className="w-full bg-transparent text-sm text-gray-700 dark:text-gray-300 outline-none ring-1 ring-indigo-500/30 rounded-lg px-3 py-2"
                         />
                     </div>
 

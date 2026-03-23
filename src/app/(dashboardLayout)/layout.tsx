@@ -1,9 +1,9 @@
 import Sidebar from "@/components/modules/Sidebar/sidebar";
 import { Roles } from "@/constants/Roles";
-import { userSerive } from "@/service/user.service";
 import Link from "next/link";
 import DarkMode from "../../components/modules/DarkMode/DarkMode";
 import { ThemeProvider } from "next-themes";
+import { userService } from "@/service/user.service";
 export const dynamic = "force-dynamic";
 
 const MountainIcon = ({ className }: { className?: string }) => (
@@ -17,8 +17,9 @@ export default async function DashboardLayout({
     admin: React.ReactNode;
     member: React.ReactNode;
 }) {
-    const session = await userSerive.getSession();
-    const userRole = session?.data?.user ? session.data.user.role : null;
+    const session = await userService.getSession();
+    const user = session?.data?.data || null;
+    const userRole = user ? user.role : null;
 
     return (
         <ThemeProvider attribute="class" defaultTheme="system"
