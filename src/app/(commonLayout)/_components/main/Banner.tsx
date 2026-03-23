@@ -3,7 +3,7 @@
 import React from 'react';
 import { Lightbulb, Rocket, ArrowRight, Sparkles, MousePointer2 } from 'lucide-react';
 import Link from 'next/link';
-import { Button } from '../ui/button';
+import { Button } from '../../../../components/ui/button';
 
 const Banner = () => {
     return (

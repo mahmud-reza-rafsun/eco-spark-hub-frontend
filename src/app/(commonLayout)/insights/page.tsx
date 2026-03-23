@@ -1,4 +1,4 @@
-import Insights from '@/components/main/Insights'
+import Insights from '@/app/(commonLayout)/_components/main/Insights'
 
 export default function page() {
     return (

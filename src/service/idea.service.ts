@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { env } from "@/env";
 import { cookies } from "next/headers";
 
 const BACKEND_URL = env.BACKEND_URL
-export const ideaSerive = {
-    getIdea: async function () {
+export const ideaService = {
+    getAllIdeas: async function (currentPage: any, limit: any) {
+        console.log(currentPage, limit)
         try {
             const cookieStore = await cookies();
             const allCookies = cookieStore.toString();
