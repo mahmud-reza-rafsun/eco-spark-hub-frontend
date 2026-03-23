@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { adminService } from "@/service/admin.service";
-import UserTableRow from "../../_components/UserTableRow/UserTableRow";
+import UserTableRow from "../../_components/UserTable/UserTableRow/UserTableRow";
 
 export const dynamic = 'force-dynamic';
 

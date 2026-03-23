@@ -43,13 +43,13 @@ export default function UserTableRow({ user }: { user: any; }) {
             <td className="px-6 py-4">
                 <div
                     className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2 
-            ${role?.toUpperCase() === "MEMBER" ? 'text-blue-500 bg-blue-100/60' : ''} 
-            ${user.role?.toUpperCase() === "ADMIN" ? 'text-green-500 bg-green-100/60' : ''}`}
+            ${role?.toUpperCase() === "MEMBER" ? 'text-blue-500 bg-blue-100/60 dark:bg-blue-900/30 dark:text-blue-400' : ''} 
+            ${role?.toUpperCase() === "ADMIN" ? 'text-green-500 bg-green-100/60 dark:bg-green-900/30 dark:text-green-400' : ''}`}
                 >
                     <span
                         className={`h-1.5 w-1.5 rounded-full 
-                ${role?.toUpperCase() === "MEMBER" ? 'bg-blue-500' : ''} 
-                ${role?.toUpperCase() === "ADMIN" ? 'bg-green-500' : ''}`}
+                ${role?.toUpperCase() === "MEMBER" ? 'bg-blue-500 dark:bg-blue-400' : ''} 
+                ${role?.toUpperCase() === "ADMIN" ? 'bg-green-500 dark:bg-green-400' : ''}`}
                     ></span>
                     <h2 className='text-xs font-normal'>{role}</h2>
                 </div>
@@ -57,17 +57,13 @@ export default function UserTableRow({ user }: { user: any; }) {
 
             {/* User Status Column */}
             <td className="px-6 py-4">
-                <div
-                    className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2 
-            ${status === UserStatus.ACTIVE ? 'text-green-500 bg-green-100/60' : ''} 
-            ${(status === UserStatus.BLOCKED || status === UserStatus.DELETED) ? 'text-red-500 bg-red-100/60' : ''}`}
-                >
-                    <span
-                        className={`h-1.5 w-1.5 rounded-full 
-                ${status === UserStatus.ACTIVE ? 'bg-green-500' : ''} 
-                ${(status === UserStatus.DELETED || status === UserStatus.BLOCKED) ? 'bg-red-500' : ''}`}
-                    ></span>
-                    <h2 className='text-xs font-normal'>{status}</h2>
+                <div className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2
+            ${status === UserStatus.ACTIVE ? 'text-green-500 bg-green-100/60 dark:bg-green-900/30 dark:text-green-400' : ''} 
+            ${(status === UserStatus.BLOCKED || status === UserStatus.DELETED) ? 'text-red-500 bg-red-100/60 dark:bg-red-900/30 dark:text-red-400' : ''}`}>
+                    <span className={`h-1.5 w-1.5 rounded-full
+                        ${status === UserStatus.ACTIVE ? 'bg-green-500 dark:bg-green-400' : ''} 
+                        ${(status === UserStatus.DELETED || status === UserStatus.BLOCKED) ? 'bg-red-500 dark:bg-red-400' : ''}`}>
+                    </span><h2 className='text-xs font-normal'>{status}</h2>
                 </div>
             </td>
 
@@ -81,9 +77,9 @@ export default function UserTableRow({ user }: { user: any; }) {
                     <button
                         onClick={handleToggleBlock}
                         disabled={isLoading || role === 'ADMIN' || status === UserStatus.DELETED}
-                        className={`p-2 rounded-lg transition-colors ${status === UserStatus.BLOCKED
-                            ? 'text-green-600 hover:bg-green-50'
-                            : 'text-orange-600 hover:bg-orange-50'
+                        className={`p-2 rounded-lg transition-colors cursor-pointer ${status === UserStatus.BLOCKED
+                            ? 'text-green-600 hover:bg-green-50 dark:hover:bg-gray-800/70'
+                            : 'text-orange-600 hover:bg-orange-50 dark:hover:bg-gray-800/70'
                             } disabled:opacity-30 disabled:cursor-not-allowed`}
                         title={status === UserStatus.BLOCKED ? "Unblock User" : "Block User"}
                     >
@@ -93,10 +89,9 @@ export default function UserTableRow({ user }: { user: any; }) {
                     {/* Delete Button */}
                     <button
                         onClick={() => deleteUser(id)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-gray-800/70 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                         disabled={isLoading || role === 'ADMIN' || status === UserStatus.DELETED}
-                        title="Delete User"
-                    >
+                        title="Delete User">
                         <Trash2 size={18} />
                     </button>
                 </div>
