@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { env } from "@/env";
 import { approveIdeas } from "@/interface/approveIdea.interface";
+import { createComment } from "@/interface/comment.interface";
 import { cookies } from "next/headers";
 
 const BACKEND_URL = env.BACKEND_URL
@@ -125,7 +127,7 @@ export const adminService = {
         }
     },
 
-    approveIdeas: async function (payload: { ideaId: string, status: string, adminFeedback: string | null }) {
+    approveIdeas: async function (payload: approveIdeas) {
         const { ideaId, status, adminFeedback } = payload;
         try {
             const cookieStore = await cookies();
@@ -140,7 +142,7 @@ export const adminService = {
                 },
                 body: JSON.stringify({
                     status,
-                    feedback: adminFeedback // এখানে 'feedback' কি ব্যবহার করুন কারণ ব্যাকএন্ডে 'payload.feedback' রিসিভ করছেন
+                    feedback: adminFeedback
                 }),
                 cache: "no-store",
             });
@@ -152,4 +154,42 @@ export const adminService = {
             return { success: false, error: "Something Went Wrong" };
         }
     },
+    createCategory: async function (payload: { name: string; slug: string }) {
+        try {
+            const cookieStore = await cookies();
+            const sessionToken = cookieStore.get("better-auth.session_token")?.value || "";
+            const accessToken = cookieStore.get("accessToken")?.value || "";
+
+            const res = await fetch(`${process.env.BACKEND_URL}/api/v1/category`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Cookie": `better-auth.session_token=${sessionToken}; accessToken=${accessToken}`,
+                },
+                body: JSON.stringify(payload),
+                cache: "no-store",
+            });
+
+            const text = await res.text();
+            let result = {};
+
+            try {
+                result = text ? JSON.parse(text) : {};
+            } catch (e) {
+                result = {};
+            }
+
+            if (!res.ok) {
+                return {
+                    success: false,
+                    error: (result as any)?.message || "Failed to create category"
+                };
+            }
+
+            return { success: true, data: result };
+        } catch (error) {
+            console.error("API Error:", error);
+            return { success: false, error: "Connection to server failed" };
+        }
+    }
 }

@@ -7,3 +7,8 @@ export interface Comment {
     replies?: Comment[];
     createdAt: string;
 }
+
+export interface createComment {
+    name: string,
+    slug: string
+}

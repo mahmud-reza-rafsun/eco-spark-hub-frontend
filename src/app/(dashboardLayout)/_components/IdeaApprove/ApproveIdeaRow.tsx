@@ -75,7 +75,7 @@ export default function ApproveIdeaRow({ idea }: { idea: any }) {
             ${idea.status === "PENDING" ? 'bg-yellow-500' : 'bg-red-500'}`}>
                     </span>
 
-                    <h2 className='text-xs font-bold uppercase'>
+                    <h2 className='text-xs font-medium uppercase'>
                         {idea.status}
                     </h2>
                 </div>

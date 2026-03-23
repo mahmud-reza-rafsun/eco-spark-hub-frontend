@@ -10,7 +10,9 @@ import {
     CheckCircle,
     UserCircle,
     BugPlay,
-    BadgeJapaneseYen
+    BadgeJapaneseYen,
+    AlignHorizontalJustifyStart,
+    Projector
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -29,6 +31,8 @@ const Sidebar = ({ userRole }: { userRole?: string; }) => {
             { href: "/users-management", label: "Users Management", icon: <Users size={22} /> },
             { href: "/transaction-activity", label: "Transaction Activity", icon: <BadgeJapaneseYen size={22} /> },
             { href: "/approve-ideas", label: "Approve Ideas", icon: <CheckCircle size={22} /> },
+            { href: "/add-category", label: "Add Category", icon: <AlignHorizontalJustifyStart size={22} /> },
+            { href: "/all-category", label: "All Category", icon: <Projector size={22} /> },
             { href: "/profile", label: "Profile", icon: <UserCircle size={22} /> },
         ],
         member: [
@@ -70,7 +74,7 @@ const Sidebar = ({ userRole }: { userRole?: string; }) => {
                                         : "text-gray-500 dark:text-gray-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/20 hover:text-indigo-600 dark:hover:text-indigo-400"}
                                 `}
                             >
-                                <div className="flex-shrink-0">
+                                <div className="flex-shrink: 0">
                                     {link.icon}
                                 </div>
                                 {!isCollapsed && (
