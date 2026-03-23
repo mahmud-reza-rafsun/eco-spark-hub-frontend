@@ -34,6 +34,12 @@ export default function TransactionRow({ trans }: { trans: IPayment }) {
 
             {/* Idea Title */}
             <td className="px-6 py-4">
+                {/* <Image
+                    src={idea?.image ? "" : ""}
+                    alt={idea.title}
+                    fill
+                    className="rounded-full object-cover"
+                /> */}
                 <p className="text-sm text-gray-700 dark:text-gray-300 truncate max-w-200px" title={idea.title}>
                     {idea.title}
                 </p>

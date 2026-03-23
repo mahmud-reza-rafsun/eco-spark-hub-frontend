@@ -3,10 +3,8 @@ import TransactionRow from "../../_components/TransactionActivaty/TransactionRow
 import { IPayment } from "@/interface/transaction.interface";
 
 export default async function TransactionPage() {
-    // API থেকে ডেটা ফেচ করা
     const response = await adminService.transactionActivity();
 
-    // আপনার ডেটা স্ট্রাকচার অনুযায়ী: response.data.purchases
     const purchases: IPayment[] = response?.data?.purchases || [];
     const totalRevenue = response?.data?.totalRevenue || 0;
 
