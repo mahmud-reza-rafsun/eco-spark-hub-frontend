@@ -15,7 +15,7 @@ export default function UserProfile({ user }: { user: any }) {
             <div className="relative bg-white dark:bg-[#161617] rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
                 {/* Indigo Banner */}
                 <div className="h-44 bg-indigo-600 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-linear-to-br from-indigo-500 to-indigo-700"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-indigo-700"></div>
                     <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
                         <svg width="100%" height="100%"><pattern id="pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white" /></pattern><rect width="100%" height="100%" fill="url(#pattern)" /></svg>
                     </div>
@@ -50,17 +50,15 @@ export default function UserProfile({ user }: { user: any }) {
 
                         {/* Modern Status & Role Badges Section */}
                         <div className="flex gap-3 mb-2">
-                            {/* ROLE BADGE: ADMIN (Blue) / MEMBER (Yellow) */}
                             <div className={`inline-flex items-center px-4 py-1.5 rounded-xl gap-x-2 border shadow-sm
                                 ${user?.role === "ADMIN"
                                     ? 'text-blue-600 bg-blue-100 border-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800/50'
-                                    : 'text-amber-600 bg-amber-100 border-amber-100 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800/50'
+                                    : 'text-amber-600 bg-amber-100 border-amber-100 dark:bg-yellow-500/30 dark:text-amber-400 dark:border-amber-800/50'
                                 }`}>
                                 <span className={`h-1.5 w-1.5 rounded-full ${user?.role === "ADMIN" ? 'bg-blue-500' : 'bg-amber-500'}`}></span>
                                 <h2 className='text-[11px] font-black uppercase tracking-wider'>{user?.role}</h2>
                             </div>
 
-                            {/* STATUS BADGE: ACTIVE (Green-500) */}
                             <div className={`inline-flex items-center px-4 py-1.5 rounded-xl gap-x-2 border shadow-sm
                                 ${user?.status === "ACTIVE"
                                     ? 'text-emerald-600 bg-emerald-100 border-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800/50'

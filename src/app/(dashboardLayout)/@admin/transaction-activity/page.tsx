@@ -1,6 +1,6 @@
 import { adminService } from "@/service/admin.service";
-import TransactionRow from "../../_components/TransactionActivaty/TransactionRow";
 import { IPayment } from "@/interface/transaction.interface";
+import TransactionRow from "../../_components/AdminComponents/TransactionActivaty/TransactionRow";
 
 export default async function TransactionPage() {
     const response = await adminService.transactionActivity();

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { adminService } from "@/service/admin.service";
-import ApproveIdeaRow from "../../_components/IdeaApprove/ApproveIdeaRow";
 import { ApproveStatus } from "@/constants/ApproveStatus";
+import ApproveIdeaRow from "../../_components/AdminComponents/IdeaApprove/ApproveIdeaRow";
 
 export default async function ApproveIdeaPage() {
     const response = await adminService.getPendingIdeas();

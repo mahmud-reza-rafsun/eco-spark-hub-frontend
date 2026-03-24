@@ -9,10 +9,10 @@ import {
     Users,
     CheckCircle,
     UserCircle,
-    BugPlay,
     BadgeJapaneseYen,
     AlignHorizontalJustifyStart,
-    Projector
+    Projector,
+    Flame
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -38,7 +38,7 @@ const Sidebar = ({ userRole }: { userRole?: string; }) => {
         member: [
             { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={22} /> },
             { href: "/pending-ideas", label: "Pending Idea", icon: <Info size={22} /> },
-            { href: "/purches-ideas", label: "Purches Ideas", icon: <BugPlay size={22} /> },
+            { href: "/purchase-ideas", label: "Purchase Ideas", icon: <Flame size={22} /> },
             { href: "/profile", label: "Profile", icon: <UserCircle size={22} /> },
         ]
     };
