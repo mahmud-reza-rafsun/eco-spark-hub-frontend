@@ -37,7 +37,7 @@ const Sidebar = ({ userRole }: { userRole?: string; }) => {
         ],
         member: [
             { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={22} /> },
-            { href: "/pending-idea", label: "Pending Idea", icon: <Info size={22} /> },
+            { href: "/pending-ideas", label: "Pending Idea", icon: <Info size={22} /> },
             { href: "/purches-ideas", label: "Purches Ideas", icon: <BugPlay size={22} /> },
             { href: "/profile", label: "Profile", icon: <UserCircle size={22} /> },
         ]

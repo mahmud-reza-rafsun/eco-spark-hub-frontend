@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { adminService } from "@/service/admin.service";
-import AllCategory from "../../_components/AllCategory/AllCategory";
+import AllCategory from "../../_components/AdminComponents/AllCategory/AllCategory";
 
 export default async function CategoryPage() {
     const response = await adminService.getAllCategory();
@@ -39,11 +39,14 @@ export default async function CategoryPage() {
                                 <AllCategory key={category.id || category.id} category={category} />
                             ))
                         ) : (
-                            <tr>
-                                <td colSpan={2} className="text-center py-10 text-gray-500">
-                                    No Category found.
-                                </td>
-                            </tr>
+                            <div className="text-center py-16 border-t border-gray-100 dark:border-gray-800">
+                                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/20 text-green-600 mb-4">
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <p className="text-gray-500 dark:text-gray-400 font-medium">All caught up! pending ideas not found.</p>
+                            </div>
                         )}
                     </tbody>
                 </table>

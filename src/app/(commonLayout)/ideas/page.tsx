@@ -26,7 +26,7 @@ export default async function IdeasPage({
             </div>
 
             {/* Pagination UI */}
-            <div className="mt-12">
+            <div className="">
                 <Pagination
                     totalPages={meta?.totalPage || 1}
                     currentPage={currentPage}
