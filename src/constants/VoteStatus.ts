@@ -1,4 +1,4 @@
-export const PaymentStatus = {
+export const VoteStatus = {
     UPVOTE: "UPVOTE",
     DOWNVOTE: "DOWNVOTE",
 };

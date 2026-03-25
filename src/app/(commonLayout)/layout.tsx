@@ -7,20 +7,20 @@ export default function RootLayout({ children, }: { children: React.ReactNode })
     return (
         <div>
             <Navbar />
-            <div className="min-h-screen bg-white dark:bg-[#030303]">
-                <aside className="fixed left-0 top-16 w-105 h-[calc(100vh-64px)] overflow-y-auto hidden xl:block">
+            <div className="min-h-screen bg-white dark:bg-[#030303] flex">
+
+                <aside className="fixed left-0 top-16 w-260px h-[calc(100vh-64px)] overflow-y-auto hidden xl:block z-40">
                     <SideBar />
                 </aside>
 
-                <main className=" min-h-screen">
+                <main className="flex-1 min-h-screen">
                     <div className="max-w-7xl mx-auto px-4 py-8">
                         <div className="flex flex-col gap-4">
                             {children}
                         </div>
                     </div>
                 </main>
-
-                <aside className="fixed right-0 top-16 w-105 h-[calc(100vh-64px)] overflow-y-auto hidden lg:block">
+                <aside className="fixed right-0 top-16 w-260px h-[calc(100vh-64px)] overflow-y-auto hidden lg:block z-40">
                     <div className="p-4">
                         <RightSideBar />
                     </div>

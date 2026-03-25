@@ -12,21 +12,28 @@ export const voteService = {
             const accessToken = cookieStore.get("accessToken")?.value;
 
             const res = await fetch(`${BACKEND_URL}/api/v1/vote/toggle-vote`, {
-                method: "PATCH",
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Cookie": `better-auth.session_token=${sessionToken}; accessToken=${accessToken}`,
                 },
                 body: JSON.stringify({
-                    ideaId, voteType
+                    ideaId: ideaId,
+                    type: voteType
                 }),
                 cache: "no-store",
             });
+            console.log("SENDING REQUEST TO:", `${BACKEND_URL}/api/v1/vote/toggle-vote`);
+
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}));
+                return { success: false, error: errorData.message || "Server error occurred" };
+            }
 
             const result = await res.json();
-            if (!res.ok) return { success: false, error: result.message || "Failed" };
             return { success: true, data: result.data, error: null };
         } catch (error) {
+            console.error("Vote Error:", error);
             return { success: false, error: "Something Went Wrong" };
         }
     },
