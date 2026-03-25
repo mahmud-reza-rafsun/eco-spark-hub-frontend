@@ -17,7 +17,7 @@ export default async function IdeasPage({
     const meta = res?.data?.meta;
 
     return (
-        <div className="container mx-auto py-10">
+        <div className="">
             <div className="">
                 <IdeaSearchFilters />
             </div>
