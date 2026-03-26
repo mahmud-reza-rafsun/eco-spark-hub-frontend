@@ -214,4 +214,27 @@ export const adminService = {
             return { data: [], error: "Something Went Wrong" };
         }
     },
+    getAdminStats: async function () {
+        try {
+            const cookieStore = await cookies();
+            const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+            const accessToken = cookieStore.get("accessToken")?.value;
+
+            const res = await fetch(`${BACKEND_URL}/api/v1/admin/get-admin-stat`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Cookie": `better-auth.session_token=${sessionToken}; accessToken=${accessToken}`,
+                },
+                cache: "no-store",
+            });
+
+            const result = await res.json();
+            if (!res.ok) return { data: [], error: result.message || "Failed to load all category" };
+
+            return { data: result.data, error: null };
+        } catch (error) {
+            return { data: [], error: "Something Went Wrong" };
+        }
+    },
 }

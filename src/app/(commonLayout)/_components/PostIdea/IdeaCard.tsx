@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useTransition, useState, useEffect } from "react";
@@ -6,6 +8,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toggleVoteAction } from "./toggleVoteAction";
+import Link from "next/link";
 
 type VoteStatus = 'UPVOTE' | 'DOWNVOTE' | null;
 
@@ -64,14 +67,24 @@ export default function IdeaCard({ idea }: { idea: any }) {
         <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-5 shadow-sm flex flex-col h-full">
             {/* Image Section with Category Overlay */}
             <div className="h-48 w-full mb-4 overflow-hidden rounded-2xl bg-blue-100 dark:bg-blue-950 relative group border dark:border-blue-900">
+                {/* Image Section */}
                 <Image
                     src={idea.images}
                     alt={idea.title}
-                    className="w-full h-full object-cover brightness-[0.98]"
+                    className="w-full h-full object-cover"
                     width={400}
                     height={400}
                 />
-                <span className="absolute top-3 right-3 text-[10px] font-bold tracking-wider uppercase bg-blue-500 text-white px-3 py-1.5 rounded-lg shadow-md z-10 border border-blue-600">
+
+                {/* Category Overlay - Glassmorphism Style */}
+                <span className="absolute top-3 right-3 text-[10px] font-bold tracking-wider uppercase 
+        /* Glass effect classes */
+        backdrop-blur-md bg-white/60 dark:bg-black/40 
+        /* Text colors */
+        text-gray-900 dark:text-white 
+        /* Border & Shadow */  dark:border-gray-700/50 shadow-lg 
+        /* Padding & Radius */
+        px-3 py-1.5 rounded-lg z-10">
                     {idea.category?.name || "Uncategorized"}
                 </span>
             </div>
@@ -95,7 +108,7 @@ export default function IdeaCard({ idea }: { idea: any }) {
                             <ArrowBigUpDash size={20} fill={currentVote === 'UPVOTE' ? "currentColor" : "none"} />
                         </button>
 
-                        <span className="font-bold text-xs px-1 min-w-[24px] text-center">
+                        <span className="font-bold text-xs px-1 min-w-24px text-center">
                             {score}
                         </span>
 
@@ -109,10 +122,13 @@ export default function IdeaCard({ idea }: { idea: any }) {
                     </div>
 
                     {/* Comment Button */}
-                    <div className="bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700">
-                        <button className="p-1.5 rounded-lg transition-all text-indigo-500 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
+                    <div className="bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700 flex items-center justify-center">
+                        <Link
+                            href={`/ideas/${idea.id}`}
+                            className="p-1.5 flex items-center justify-center rounded-lg transition-all text-indigo-500 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+                        >
                             <MessageCircleDashed size={20} />
-                        </button>
+                        </Link>
                     </div>
                 </div>
 

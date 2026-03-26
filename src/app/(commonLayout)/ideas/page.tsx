@@ -1,7 +1,8 @@
+export const dynamic = 'force-dynamic';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ideaService } from "@/service/idea.service";
 import IdeaCard from "../_components/PostIdea/IdeaCard";
-import Pagination from "../_components/PostIdea/IdeaPagination";
 import IdeaSearchFilters from "../_components/PostIdea/IdeaSearchFilters";
 
 export default async function IdeasPage({
