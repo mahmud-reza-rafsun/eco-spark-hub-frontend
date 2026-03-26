@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { env } from "@/env";
 import { cookies } from "next/headers";
 
@@ -29,5 +30,5 @@ export const userService = {
             console.log("Connection Error:", error);
             return { data: null, error: "Something Went Wrong" };
         }
-    }
+    },
 }
