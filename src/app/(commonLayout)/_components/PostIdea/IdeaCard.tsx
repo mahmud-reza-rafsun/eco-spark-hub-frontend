@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -8,20 +9,18 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toggleVoteAction } from "./toggleVoteAction";
 import Link from "next/link";
+import { handlePaymentAction } from "./Payment/payment.action";
 
 export type VoteStatus = 'UPVOTE' | 'DOWNVOTE' | null;
 
 export default function IdeaCard({ idea }: { idea: any }) {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
-
-    // ১. লোকাল স্টেট সরাসরি প্রপস থেকে নিচ্ছে
+    const [isPaymentPending, setIsPaymentPending] = useState(false)
     const [localVote, setLocalVote] = useState<VoteStatus>(idea.userVote || null);
     const [localScore, setLocalScore] = useState<number>((idea.upvotes || 0) - (idea.downvotes || 0));
 
-    // ২. রিফ্রেশ বা ডাটা আপডেট হলে স্টেট সিঙ্ক হবে
     useEffect(() => {
-        // শুধুমাত্র যখন ট্রানজিশন শেষ হবে তখনই সার্ভার ডাটা দিয়ে আপডেট করবে
         if (!isPending) {
             setLocalVote(idea.userVote || null);
             setLocalScore((idea.upvotes || 0) - (idea.downvotes || 0));
@@ -37,7 +36,6 @@ export default function IdeaCard({ idea }: { idea: any }) {
         let nextScore = localScore;
         let nextVote: VoteStatus = type;
 
-        // ম্যাথমেটিক্যাল লজিক
         if (localVote === type) {
             nextVote = null;
             nextScore = type === 'UPVOTE' ? localScore - 1 : localScore + 1;
@@ -47,7 +45,6 @@ export default function IdeaCard({ idea }: { idea: any }) {
             nextScore = type === 'UPVOTE' ? localScore + 2 : localScore - 2;
         }
 
-        // ৩. সাথে সাথে UI আপডেট (Optimistic Update)
         setLocalVote(nextVote);
         setLocalScore(nextScore);
 
@@ -60,12 +57,36 @@ export default function IdeaCard({ idea }: { idea: any }) {
                     throw new Error();
                 }
             } catch (err) {
-                // ফেল করলে আগের অবস্থায় ফেরত যাবে
                 setLocalVote(prevVote);
                 setLocalScore(prevScore);
                 toast.error("Failed to update vote");
             }
         });
+    };
+
+    const onBuyClick = async () => {
+        setIsPaymentPending(true);
+        try {
+            const res = await handlePaymentAction(idea.id);
+            if (res?.error) {
+                toast.error(res.error);
+                setIsPaymentPending(false);
+                return;
+            }
+            const actualUrl = (typeof res?.url === 'string') ? res.url : res?.url?.url;
+
+            if (actualUrl && typeof actualUrl === 'string') {
+                toast.success("Redirecting to Stripe...");
+                window.location.href = actualUrl;
+            } else {
+                toast.error("Invalid payment URL format");
+            }
+        } catch (err) {
+            console.error("Payment Error:", err);
+            toast.error("Something went wrong");
+        } finally {
+            setIsPaymentPending(false);
+        }
     };
 
     return (
@@ -94,8 +115,8 @@ export default function IdeaCard({ idea }: { idea: any }) {
                             disabled={isPending}
                             onClick={() => handleVote('UPVOTE')}
                             className={`p-1.5 rounded-lg transition-all cursor-pointer ${localVote === 'UPVOTE'
-                                    ? 'bg-green-500 text-white shadow-md'
-                                    : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-400'
+                                ? 'bg-green-500 text-white shadow-md'
+                                : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-400'
                                 }`}
                         >
                             <ArrowBigUpDash size={22} fill={localVote === 'UPVOTE' ? "currentColor" : "none"} />
@@ -111,8 +132,8 @@ export default function IdeaCard({ idea }: { idea: any }) {
                             disabled={isPending}
                             onClick={() => handleVote('DOWNVOTE')}
                             className={`p-1.5 rounded-lg transition-all cursor-pointer ${localVote === 'DOWNVOTE'
-                                    ? 'bg-red-500 text-white shadow-md'
-                                    : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-400'
+                                ? 'bg-red-500 text-white shadow-md'
+                                : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-400'
                                 }`}
                         >
                             <ArrowBigDownDash size={22} fill={localVote === 'DOWNVOTE' ? "currentColor" : "none"} />
@@ -130,7 +151,10 @@ export default function IdeaCard({ idea }: { idea: any }) {
                 </div>
 
                 <div className="bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700">
-                    <button className="p-1.5 rounded-lg transition-all flex text-sm gap-x-2 justify-center items-center text-white bg-indigo-500 hover:bg-indigo-600 dark:hover:bg-gray-700 cursor-pointer">
+                    <button
+                        onClick={onBuyClick}
+                        disabled={isPending}
+                        className="p-1.5 rounded-lg transition-all flex text-sm gap-x-2 justify-center items-center text-white bg-indigo-500 hover:bg-indigo-600 dark:hover:bg-gray-700 cursor-pointer">
                         <Banknote size={20} /> Buy Now
                     </button>
                 </div>
