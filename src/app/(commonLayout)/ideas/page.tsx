@@ -1,41 +1,32 @@
-export const dynamic = 'force-dynamic';
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// page.tsx
+
 import { ideaService } from "@/service/idea.service";
-import IdeaCard from "../_components/PostIdea/IdeaCard";
 import IdeaSearchFilters from "../_components/PostIdea/IdeaSearchFilters";
+import IdeaCard from "../_components/PostIdea/IdeaCard";
 
 export default async function IdeasPage({
     searchParams,
 }: {
-    searchParams: { page?: string; limit?: string };
+    searchParams: Promise<{ searchTerm?: string; sortBy?: string; categoryId?: string }>;
 }) {
-    const currentPage = Number(searchParams.page) || 1;
-    const limit = Number(searchParams.limit) || 10;
+    const params = await searchParams;
+    const res = await ideaService.getAllIdeas({
+        searchTerm: params.searchTerm,
+        sortBy: params.sortBy,
+        categoryId: params.categoryId
+    });
 
-    const res = await ideaService.getAllIdeas(currentPage, limit);
     const ideas = res?.data?.data || [];
-    const meta = res?.data?.meta;
 
     return (
-        <div className="">
-            <div className="">
-                <IdeaSearchFilters />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 mt-20">
+        <div className="container mx-auto py-8">
+            <IdeaSearchFilters />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
                 {ideas.map((idea: any) => (
                     <IdeaCard key={idea.id} idea={idea} />
                 ))}
             </div>
-
-            {/* Pagination UI */}
-            {/* <div className="">
-                <Pagination
-                    totalPages={meta?.totalPage || 1}
-                    currentPage={currentPage}
-                />
-            </div> */}
         </div>
     );
 }

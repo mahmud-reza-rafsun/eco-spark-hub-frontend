@@ -40,13 +40,23 @@ export const ideaService = {
             return { data: null, error: "Network error occurred" };
         }
     },
-    getAllIdeas: async function (currentPage: any, limit: any) {
-        console.log(currentPage, limit)
+    getAllIdeas: async function (params: { searchTerm?: string; sortBy?: string; categoryId?: string }) {
+        const { searchTerm, sortBy, categoryId } = params;
+        const queryParams = new URLSearchParams();
+        if (searchTerm) queryParams.append('searchTerm', searchTerm);
+        if (sortBy) queryParams.append('sortBy', sortBy);
+        if (categoryId) queryParams.append('categoryId', categoryId);
+
+        const queryString = queryParams.toString();
+        const url = `${BACKEND_URL}/api/v1/idea/get-all-idea${queryString ? `?${queryString}` : ''}`;
+
+        console.log("Fetching ideas from:", url);
+
         try {
             const cookieStore = await cookies();
             const allCookies = cookieStore.toString();
 
-            const res = await fetch(`${BACKEND_URL}/api/v1/idea/get-all-idea`, {
+            const res = await fetch(url, {
                 headers: {
                     "Content-Type": "application/json",
                     "Cookie": allCookies,
@@ -57,11 +67,11 @@ export const ideaService = {
             if (!res.ok) {
                 const errorText = await res.text();
                 console.log("Backend Response Error:", errorText);
-                return { data: null, error: "Failed to fetch session" };
+                return { data: null, error: "Failed to fetch ideas" };
             }
 
-            const session = await res.json();
-            return { data: session, error: null };
+            const data = await res.json();
+            return { data: data, error: null };
         } catch (error) {
             console.log("Connection Error:", error);
             return { data: null, error: "Something Went Wrong" };
