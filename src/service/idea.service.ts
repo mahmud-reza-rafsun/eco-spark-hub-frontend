@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { env } from "@/env";
+import { getAllIdeasParams } from "@/interface/pagination.interface";
 import { cookies } from "next/headers";
 
 const BACKEND_URL = env.BACKEND_URL
@@ -40,17 +41,18 @@ export const ideaService = {
             return { data: null, error: "Network error occurred" };
         }
     },
-    getAllIdeas: async function (params: { searchTerm?: string; sortBy?: string; categoryId?: string }) {
-        const { searchTerm, sortBy, categoryId } = params;
+    getAllIdeas: async function (params: getAllIdeasParams) {
+        const { searchTerm, sortBy, categoryId, page, limit } = params;
+
         const queryParams = new URLSearchParams();
         if (searchTerm) queryParams.append('searchTerm', searchTerm);
         if (sortBy) queryParams.append('sortBy', sortBy);
         if (categoryId) queryParams.append('categoryId', categoryId);
+        if (page) queryParams.append('page', page);
+        if (limit) queryParams.append('limit', limit);
 
         const queryString = queryParams.toString();
         const url = `${BACKEND_URL}/api/v1/idea/get-all-idea${queryString ? `?${queryString}` : ''}`;
-
-        console.log("Fetching ideas from:", url);
 
         try {
             const cookieStore = await cookies();
@@ -65,15 +67,13 @@ export const ideaService = {
             });
 
             if (!res.ok) {
-                const errorText = await res.text();
-                console.log("Backend Response Error:", errorText);
                 return { data: null, error: "Failed to fetch ideas" };
             }
 
             const data = await res.json();
             return { data: data, error: null };
         } catch (error) {
-            console.log("Connection Error:", error);
+            console.error("Connection Error:", error);
             return { data: null, error: "Something Went Wrong" };
         }
     },

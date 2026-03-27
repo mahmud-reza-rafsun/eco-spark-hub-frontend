@@ -1,4 +1,7 @@
-export interface PaginationProps {
-    totalPages: number;
-    currentPage: number;
+export interface getAllIdeasParams {
+    searchTerm?: string;
+    sortBy?: string;
+    categoryId?: string;
+    page?: string;
+    limit?: string;
 }
