@@ -8,36 +8,7 @@ import Link from 'next/link';
 import DarkMode from '../modules/DarkMode/DarkMode';
 import { NavbarProps } from '@/interface/auth.interface';
 import UserSession from '@/utils/UserSession/UserSession';
-
-// const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(({ className = '', ...props }, ref) => (
-//     <input className={`flex h-10 w-full rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-sm placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
-//         ref={ref}
-//         {...props}
-//     />
-// ));
-// Input.displayName = 'Input';
-
-// const SearchBar = ({ id, isMobile = false, onCancel }: { id: string; isMobile?: boolean; onCancel?: () => void }) => (
-//     <div className={`relative ${isMobile ? 'flex flex-1 items-center gap-2' : 'hidden lg:block'}`}>
-//         <div className="relative flex-1">
-//             <Input
-//                 id={id}
-//                 className="peer h-9 ps-9 pe-2 w-full max-w-200px lg:max-w-500px"
-//                 placeholder="Search..."
-//                 type="search"
-//                 autoFocus={isMobile}
-//             />
-//             <div className="text-gray-400 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3">
-//                 <SearchIcon size={16} />
-//             </div>
-//         </div>
-//         {isMobile && onCancel && (
-//             <button onClick={onCancel} className="text-sm font-medium text-gray-500">
-//                 Cancel
-//             </button>
-//         )}
-//     </div>
-// );
+import IdeaPostForm from '@/app/(commonLayout)/_components/PostIdea/createPost/IdeaPostForm';
 
 const MenuIcon = ({ className }: { className?: string }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>
@@ -69,6 +40,8 @@ const Navbar = ({
         { href: "/blog", label: "Blog" },
     ];
 
+    const [isIdeaModalOpen, setIsIdeaModalOpen] = useState(false);
+
     return (
         <header className="bg-white/80 dark:bg-black/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -90,19 +63,17 @@ const Navbar = ({
                             </Link>
                         </div>
 
-                        {/* Search (Desktop) */}
-                        {/* <SearchBar id={searchId + "-desktop"} /> */}
 
                         <div className="flex items-center gap-2 sm:gap-4">
                             {/* Mobile Search Icon */}
                             <button
                                 className="lg:hidden p-2 text-gray-600 dark:text-gray-300"
-                                onClick={() => setIsMobileSearchVisible(true)}
-                            >
+                                onClick={() => setIsMobileSearchVisible(true)}>
                                 <SearchIcon size={20} />
                             </button>
 
-                            <Button className="group px-3 md:px-6 py-2 cursor-pointer bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/20 flex items-center gap-2">
+                            <Button onClick={() => setIsIdeaModalOpen(true)}
+                                className="bg-indigo-500 cursor-pointer hover:bg-indigo-600 dark:text-white duration-200 px-3 py-4 rounded-2xl">
                                 <Lightbulb size={18} className="group-hover:rotate-12 transition-transform" />
                                 <span className="hidden md:block">Post Idea</span>
                             </Button>
@@ -146,6 +117,10 @@ const Navbar = ({
                     </div>
                 </div>
             )}
+            <IdeaPostForm
+                isOpen={isIdeaModalOpen}
+                onClose={() => setIsIdeaModalOpen(false)}
+            />
         </header>
     );
 };

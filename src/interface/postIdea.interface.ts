@@ -1,9 +1,8 @@
-export interface postIdeaInterfafe {
-    title: string
-    problem: string
-    solution: string
-    description: string
-    price: number
-    image: string
-    categoryId: string
+export interface IdeaPostInterface {
+    category: string;
+    price: number;
+    problem: string;
+    solution: string;
+    description: string;
+    imageFile: string;
 }
