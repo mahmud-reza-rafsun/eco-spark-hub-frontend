@@ -37,7 +37,7 @@ export const adminService = {
             const sessionToken = cookieStore.get("better-auth.session_token")?.value;
             const accessToken = cookieStore.get("accessToken")?.value;
 
-            const res = await fetch(`${BACKEND_URL}api/v1/admin/delete-user/${userId}`, {
+            const res = await fetch(`${BACKEND_URL}/api/v1/admin/delete-user/${userId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

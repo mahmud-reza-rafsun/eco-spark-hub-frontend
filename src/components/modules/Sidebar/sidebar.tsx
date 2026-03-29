@@ -12,7 +12,8 @@ import {
     BadgeJapaneseYen,
     AlignHorizontalJustifyStart,
     Projector,
-    Flame
+    Flame,
+    Lightbulb
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -28,6 +29,7 @@ const Sidebar = ({ userRole }: { userRole?: string; }) => {
     const navConfig = {
         admin: [
             { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={22} /> },
+            { href: "/manage-idea", label: "Manage Idea", icon: <Lightbulb size={22} /> },
             { href: "/users-management", label: "Users Management", icon: <Users size={22} /> },
             { href: "/transaction-activity", label: "Transaction Activity", icon: <BadgeJapaneseYen size={22} /> },
             { href: "/approve-ideas", label: "Approve Ideas", icon: <CheckCircle size={22} /> },
