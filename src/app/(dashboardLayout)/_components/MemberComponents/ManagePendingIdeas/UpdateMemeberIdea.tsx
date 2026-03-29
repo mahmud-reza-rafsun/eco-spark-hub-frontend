@@ -8,10 +8,10 @@ import { toast } from "sonner";
 import Modal from '@/components/ui/modal';
 import { Upload, X, Lightbulb, DollarSign } from "lucide-react";
 import Image from 'next/image';
-import { updateIdeaAction } from './ManageIdeaAction';
 import { getAllCategoriesAction } from '@/app/(commonLayout)/_components/PostIdea/createPost/IdeaFormAction';
+import { updateIdeaAction } from './ManageMemberIdeaAction';
 
-export default function UpdateIdea({
+export default function UpdateMemberIdea({
     isOpen,
     onClose,
     idea
@@ -23,7 +23,6 @@ export default function UpdateIdea({
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
     const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
-    // const [loadingCategories, setLoadingCategories] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     console.log(idea);
@@ -43,6 +42,8 @@ export default function UpdateIdea({
             reader.readAsDataURL(file);
         }
     };
+
+    console.log(idea);
 
     const removeImage = () => {
         setPreview(null);

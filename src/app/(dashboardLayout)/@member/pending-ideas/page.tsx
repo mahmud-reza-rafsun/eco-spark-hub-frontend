@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { memberService } from "@/service/member.service";
-import PendingIdeaRow from "../../_components/MemberComponents/PendingIdeas/PendingIdeaRow";
+import MemberPendingIdeaRow from "../../_components/MemberComponents/ManagePendingIdeas/MemberPendingIdeaRow";
 
 export default async function PendingIdeasPage() {
     const response = await memberService.getMyPendingIdeas();
@@ -28,11 +28,12 @@ export default async function PendingIdeasPage() {
                             <th className="px-6 py-4">Price</th>
                             <th className="px-6 py-4">Status</th>
                             <th className="px-6 py-4">Feedback</th>
+                            <th className="px-6 py-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                         {pendingIdeas.map((idea: any) => (
-                            <PendingIdeaRow key={idea.id} idea={idea} />
+                            <MemberPendingIdeaRow key={idea.id} idea={idea} />
                         ))}
                     </tbody>
                 </table>

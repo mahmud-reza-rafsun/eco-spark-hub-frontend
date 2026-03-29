@@ -22,10 +22,10 @@ export async function updateIdeaAction(payload: any, id: string) {
 
 export async function deleteIdeaAction(ideaId: string) {
     try {
-        const res = await ideaService.deleteIdea(ideaId); // সার্ভিস কল করুন
+        const res = await ideaService.deleteIdea(ideaId);
 
         if (!res.error) {
-            revalidatePath("/admin/ideas"); // ডাটা রিফ্রেশ করবে
+            revalidatePath("/admin/ideas");
             return { success: true };
         }
         return { success: false, error: res.error };

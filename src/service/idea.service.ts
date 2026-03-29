@@ -104,6 +104,33 @@ export const ideaService = {
             return { data: null, error: "Something Went Wrong" };
         }
     },
+    getMyIdea: async function (id: string) {
+        try {
+            const cookieStore = await cookies();
+            const allCookies = cookieStore.toString();
+
+            const res = await fetch(`${process.env.BACKEND_URL}/api/v1/idea/get-single-idea/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Cookie": allCookies,
+                },
+                cache: "no-store",
+            });
+
+            const result = await res.json();
+
+            if (!res.ok) {
+                console.log("Backend Response Error:", result.message);
+                return { data: null, error: result.message || "Failed to fetch" };
+            }
+
+            return { data: result.data, error: null };
+        } catch (error) {
+            console.log("Connection Error:", error);
+            return { data: null, error: "Something Went Wrong" };
+        }
+    },
     updateIdea: async function (payload: any, ideaId: string) {
         try {
             const cookieStore = await cookies();
@@ -129,27 +156,31 @@ export const ideaService = {
             return { success: false, error: "Something Went Wrong" };
         }
     },
-    deleteIdea: async function (userId: string) {
+    deleteIdea: async function (ideaId: string) {
         try {
             const cookieStore = await cookies();
             const sessionToken = cookieStore.get("better-auth.session_token")?.value;
             const accessToken = cookieStore.get("accessToken")?.value;
+            if (!accessToken) {
+                return { success: false, error: "No access token found in cookies" };
+            }
 
-            const res = await fetch(`${BACKEND_URL}/api/v1/idea/delete-idea/${userId}`, {
+            const res = await fetch(`${BACKEND_URL}/api/v1/idea/delete-idea/${ideaId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                     "Cookie": `better-auth.session_token=${sessionToken}; accessToken=${accessToken}`,
+                    "Authorization": `Bearer ${accessToken}`
                 },
                 cache: "no-store",
             });
 
             const result = await res.json();
-            if (!res.ok) return { data: null, error: result.message || "Failed to delete user" };
+            if (!res.ok) return { success: false, error: result.message || "Unauthorized" };
 
-            return { deletedUser: result.data, error: null };
+            return { success: true, error: null };
         } catch (error) {
-            return { data: null, error: "Something Went Wrong" };
+            return { success: false, error: "Something Went Wrong" };
         }
     },
 }
