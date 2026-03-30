@@ -1,136 +1,139 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Trash2, Edit2, Send } from "lucide-react";
-import { deleteCommentAction, createCommentAction, updateCommentAction } from "./commentActions";
+import { Send, Loader2, ChevronDown, ChevronUp } from "lucide-react";
+import { createCommentAction } from "./commentActions";
 import { toast } from "sonner";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-export default function CommentCard({ comment, ideaId, isReply = false, currentUserId }: any) {
+export default function CommentCard({
+    comment,
+    ideaId,
+    isReply = false,
+    currentUserId,
+}: any) {
+    const hasReplies = comment.replies && comment.replies.length > 0;
+    const [showReplies, setShowReplies] = useState(true);
     const [isReplying, setIsReplying] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
-    const [editValue, setEditValue] = useState(comment.content);
     const [replyValue, setReplyValue] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-
-    // ওনারশিপ চেক: আপনার ব্যাকএন্ড ডাটা অনুযায়ী userId বা authorId চেক করুন
-    const isOwner = currentUserId === comment.userId;
 
     const handleReply = async () => {
         if (!replyValue.trim()) return;
         setIsLoading(true);
-        const res = await createCommentAction(ideaId, replyValue, comment.id);
-        if (res?.success) {
-            setReplyValue("");
-            setIsReplying(false);
-            toast.success("Reply added");
+        try {
+            const res = await createCommentAction(ideaId, replyValue, comment.id);
+            if (res?.success) {
+                setReplyValue("");
+                setIsReplying(false);
+                setShowReplies(true);
+                toast.success("Reply added");
+            }
+        } catch (error) {
+            toast.error("Something went wrong");
+        } finally {
+            setIsLoading(false);
         }
-        setIsLoading(false);
-    };
-
-    const handleUpdate = async () => {
-        setIsLoading(true);
-        const res = await updateCommentAction(comment.id, ideaId, editValue);
-        if (res.success) {
-            setIsEditing(false);
-            toast.success("Updated");
-        }
-        setIsLoading(false);
     };
 
     return (
-        <div className={`flex gap-3 py-4 ${isReply ? "ml-8 border-l pl-4 border-primary/10" : "border-b last:border-0"}`}>
-            <Avatar className="h-8 w-8 shrink-0 border">
-                <AvatarImage src={comment.user?.image} />
-                <AvatarFallback>{comment.user?.name?.[0]}</AvatarFallback>
-            </Avatar>
+        <div className="relative flex flex-col w-full">
 
-            <div className="flex-1 space-y-1">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <span className="text-[13px] font-bold">{comment.user?.name}</span>
-                        <span className="text-[10px] text-muted-foreground">
-                            {new Date(comment.createdAt).toLocaleDateString()}
-                        </span>
-                    </div>
+            {isReply && (
+                <div
+                    className="absolute -left-13 -top-1 w-14 h-[20px] border-l-[1px] border-b-[1px] border-slate-200 dark:border-slate-800 rounded-bl-[16px] z-0"
+                />
+            )}
 
-                    {isOwner && (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-6 w-6">
-                                    <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => setIsEditing(true)}>
-                                    <Edit2 className="mr-2 h-3 w-3" /> Edit
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => deleteCommentAction(comment.id, ideaId)}
-                                    className="text-destructive"
-                                >
-                                    <Trash2 className="mr-2 h-3 w-3" /> Delete
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+            <div className="flex gap-2.5 relative group">
+
+                <div className="flex flex-col items-center relative shrink-0">
+                    <Avatar className={`${isReply ? "h-7 w-7" : "h-9 w-9"} border-2 border-background z-10 bg-muted shadow-sm`}>
+                        <AvatarImage src={comment.user?.image} />
+                        <AvatarFallback className="text-[10px] font-bold uppercase bg-slate-200 dark:bg-slate-800">
+                            {comment.user?.name?.slice(0, 2)}
+                        </AvatarFallback>
+                    </Avatar>
+
+                    {hasReplies && showReplies && (
+                        <div className="absolute top-5 bottom-0 left-4.5 w-px bg-slate-200 dark:bg-slate-800 z-0" />
                     )}
                 </div>
 
-                {isEditing ? (
-                    <div className="space-y-2 mt-2">
-                        <textarea
-                            value={editValue}
-                            onChange={(e) => setEditValue(e.target.value)}
-                            className="w-full bg-muted/50 border rounded-md p-2 text-sm outline-none"
-                        />
-                        <div className="flex justify-end gap-2">
-                            <Button size="sm" variant="ghost" onClick={() => setIsEditing(false)}>Cancel</Button>
-                            <Button size="sm" onClick={handleUpdate} disabled={isLoading}>Save</Button>
+                {/* ৪. RIGHT SIDE: Content Area */}
+                <div className="flex-1 pb-3 min-w-0">
+                    <div className="inline-block max-w-full bg-slate-100/80 dark:bg-slate-900/80 p-2.5 px-4 rounded-[18px] shadow-sm border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all">
+                        <div className="flex items-center gap-2 mb-0.5">
+                            <h4 className="text-[13px] font-bold text-foreground/90 truncate">
+                                {comment.user?.name}
+                            </h4>
+                            <span className="text-[10px] text-muted-foreground font-medium opacity-60">
+                                {new Date(comment.createdAt).toLocaleDateString()}
+                            </span>
                         </div>
+                        <p className="text-[14px] leading-snug text-foreground/90 wrap-break-word">
+                            {comment.content}
+                        </p>
                     </div>
-                ) : (
-                    <p className="text-sm text-foreground/90 leading-snug">{comment.content}</p>
-                )}
 
-                <div className="mt-1">
-                    <button
-                        onClick={() => setIsReplying(!isReplying)}
-                        className="text-[11px] font-bold text-primary/80 hover:text-primary"
-                    >
-                        {isReplying ? "Cancel" : "Reply"}
-                    </button>
-                </div>
+                    <div className="flex items-center gap-4 mt-1 ml-2">
+                        <button
+                            onClick={() => setIsReplying(!isReplying)}
+                            className="text-[11px] font-bold text-muted-foreground hover:text-primary transition-colors"
+                        >
+                            Reply
+                        </button>
 
-                {isReplying && (
-                    <div className="mt-3 flex gap-2">
-                        <input
-                            value={replyValue}
-                            onChange={(e) => setReplyValue(e.target.value)}
-                            placeholder="Write a reply..."
-                            className="flex-1 bg-transparent border-b text-sm outline-none focus:border-primary py-1"
-                        />
-                        <Button size="icon" variant="ghost" onClick={handleReply} disabled={isLoading} className="h-8 w-8 text-primary">
-                            <Send className="h-4 w-4" />
-                        </Button>
+                        {hasReplies && (
+                            <button
+                                onClick={() => setShowReplies(!showReplies)}
+                                className="flex items-center gap-1 text-[11px] font-bold text-muted-foreground hover:text-primary"
+                            >
+                                {showReplies ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                                {showReplies ? "Hide" : `${comment.replies.length} replies`}
+                            </button>
+                        )}
                     </div>
-                )}
 
-                {/* রিপ্লাই ম্যাপিং ফিক্স: নিজেকেই কল করা হয়েছে */}
-                {comment.replies?.length > 0 && (
-                    <div className="mt-2 space-y-2">
-                        {comment.replies.map((reply: any) => (
-                            <CommentCard
-                                key={reply.id}
-                                comment={reply}
-                                ideaId={ideaId}
-                                isReply={true}
-                                currentUserId={currentUserId}
+                    {isReplying && (
+                        <div className="mt-2 flex gap-2 items-center bg-background border border-slate-200 dark:border-slate-800 p-1 pl-4 rounded-full w-full max-w-[300px] shadow-sm">
+                            <input
+                                value={replyValue}
+                                onChange={(e) => setReplyValue(e.target.value)}
+                                placeholder="Write a reply..."
+                                className="flex-1 bg-transparent text-xs outline-none py-1.5"
+                                autoFocus
                             />
-                        ))}
-                    </div>
-                )}
+                            <Button
+                                size="icon"
+                                variant="ghost"
+                                onClick={handleReply}
+                                disabled={isLoading || !replyValue.trim()}
+                                className="h-7 w-7 rounded-full text-primary hover:bg-primary/10"
+                            >
+                                {isLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
+                            </Button>
+                        </div>
+                    )}
+
+                    {showReplies && hasReplies && (
+                        <div className="mt-3 space-y-3 relative">
+                            {comment.replies.map((reply: any) => (
+                                <div key={reply.id} className="pl-[24px]">
+                                    <CommentCard
+                                        comment={reply}
+                                        ideaId={ideaId}
+                                        isReply={true}
+                                        currentUserId={currentUserId}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -10,9 +10,6 @@ interface CommentIdeaCardProps {
 }
 
 export default function CommentIdeaCard({ idea }: CommentIdeaCardProps) {
-    const score = (idea.upvotes || 0) - (idea.downvotes || 0);
-    const commentCount = idea.comments?.length || 0;
-
     return (
         <div className="bg-white dark:bg-[#09090b] border border-gray-100 dark:border-gray-800/60 rounded-2xl overflow-hidden shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)]">
 
@@ -75,7 +72,7 @@ export default function CommentIdeaCard({ idea }: CommentIdeaCardProps) {
                             <ArrowBigUp size={20} strokeWidth={1.2} />
                         </button>
                         <span className="px-2 font-bold text-[12px] tabular-nums text-gray-700 dark:text-gray-300">
-                            {score}
+                            0
                         </span>
                         <button className="p-1.5 hover:bg-white dark:hover:bg-gray-800 rounded-md transition-all text-gray-400 hover:text-indigo-500">
                             <ArrowBigDown size={20} strokeWidth={1.2} />
@@ -84,7 +81,7 @@ export default function CommentIdeaCard({ idea }: CommentIdeaCardProps) {
 
                     <div className="flex items-center gap-1.5 px-3 py-2 text-gray-400 font-medium text-[12px]">
                         <MessageCircle size={16} strokeWidth={1.2} />
-                        <span>{commentCount}</span>
+                        <span>0</span>
                     </div>
                 </div>
 
