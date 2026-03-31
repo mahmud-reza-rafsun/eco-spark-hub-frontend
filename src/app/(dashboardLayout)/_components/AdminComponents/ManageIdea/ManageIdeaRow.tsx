@@ -69,8 +69,8 @@ export default function ManageIdeaRow({ idea }: { idea: any }) {
             <td className="px-6 py-4">
                 <div className="w-16 h-10 relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700">
                     <Image
-                        src={idea.images || "/placeholder.png"}
-                        alt={idea.title}
+                        src={idea?.images || "/placeholder.png"}
+                        alt={idea?.title}
                         fill
                         className="object-cover"
                     />
@@ -80,34 +80,34 @@ export default function ManageIdeaRow({ idea }: { idea: any }) {
             {/* Title */}
             <td className="px-6 py-4">
                 <p className="text-sm text-gray-700 dark:text-gray-300 truncate max-w-200px" title={idea.title}>
-                    {idea.title}
+                    {idea?.title}
                 </p>
             </td>
 
             <td className="px-6 py-4">
                 <p className="text-sm text-gray-700 dark:text-gray-300 truncate max-w-200px" title={idea.category.name}>
-                    {idea.category.name}
+                    {idea?.category.name}
                 </p>
             </td>
 
             {/* Price */}
             <td className="px-6 py-4 text-sm font-bold text-gray-900 dark:text-white">
-                ${idea.price}
+                ${idea?.price}
             </td>
 
             {/* Status */}
             <td className="px-6 py-4">
                 <div className={`inline-flex items-center px-3 py-1 rounded-full gap-x-2 
-                    ${idea.status === "PENDING"
+                    ${idea?.status === "PENDING"
                         ? 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-400'
                         : idea.status === "APPROVED"
                             ? 'text-green-600 bg-green-100 dark:bg-green-900/30 dark:text-green-400'
                             : 'text-red-600 bg-red-100 dark:bg-red-900/30 dark:text-red-400'
                     }`}>
                     <span className={`h-1.5 w-1.5 rounded-full 
-                        ${idea.status === "PENDING" ? 'bg-yellow-500' : idea.status === "APPROVED" ? 'bg-green-500' : 'bg-red-500'}`}>
+                        ${idea.status === "PENDING" ? 'bg-yellow-500' : idea?.status === "APPROVED" ? 'bg-green-500' : 'bg-red-500'}`}>
                     </span>
-                    <h2 className='text-xs font-medium uppercase'>{idea.status}</h2>
+                    <h2 className='text-xs font-medium uppercase'>{idea?.status}</h2>
                 </div>
             </td>
 

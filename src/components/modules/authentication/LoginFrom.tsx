@@ -3,7 +3,6 @@
 "use client";
 
 import React, { useState } from "react";
-// import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
@@ -24,16 +23,18 @@ export default function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
+
     const handleGoogleLogin = async () => {
         try {
             await authClient.signIn.social({
                 provider: "google",
-                callbackURL: "http://localhost:3000",
+                callbackURL: `${process.env.BACKEND_URL}`,
             });
         } catch (err) {
             toast.error("Google login failed");
         }
     };
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,7 +46,7 @@ export default function LoginForm() {
         const toastId = toast.loading("Logging in...");
         setIsLoading(true);
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`, {
+            const response = await fetch(`/api/v1/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

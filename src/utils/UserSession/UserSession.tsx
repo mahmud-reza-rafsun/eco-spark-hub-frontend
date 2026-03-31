@@ -52,7 +52,7 @@ export default function UserSession({
         const toastId = toast.loading("Logging out...");
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/logout`, {
+            const response = await fetch(`/api/v1/auth/logout`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
@@ -78,7 +78,7 @@ export default function UserSession({
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="relative h-10 w-10 cursor-pointer rounded-full border-2 border-indigo-500/20 p-0 hover:bg-indigo-500/10 transition-all active:scale-95">
-                            <Avatar className="h-9 w-9">
+                            <Avatar className="h-9 w-9 object-cover">
                                 <AvatarImage src={user.image} alt={user.name} />
                                 <AvatarFallback className="bg-indigo-600 text-white">
                                     {user.name?.charAt(0).toUpperCase()}
@@ -105,7 +105,7 @@ export default function UserSession({
                         </DropdownMenuItem>
 
                         <DropdownMenuItem asChild>
-                            <Link href="/dashboard/profile" className="cursor-pointer w-full flex items-center">
+                            <Link href="/profile" className="cursor-pointer w-full flex items-center">
                                 <User className="mr-2 h-4 w-4" />
                                 <span>Profile Settings</span>
                             </Link>

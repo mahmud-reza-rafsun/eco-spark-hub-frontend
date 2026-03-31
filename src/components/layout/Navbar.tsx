@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-import React, { useState, useId } from 'react';
+import React, { useState, useId, useEffect } from 'react';
 import { Lightbulb, SearchIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
@@ -32,6 +32,28 @@ const Navbar = ({
     const [isMobileSearchVisible, setIsMobileSearchVisible] = useState(false);
     const searchId = useId();
 
+    const [user, setUser] = useState<any>(null);
+    const [isFetching, setIsFetching] = useState(true);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        const getUser = async () => {
+            try {
+                const res = await fetch("/api/me");
+                const result = await res.json();
+                if (result.success && result.user) {
+                    setUser(result.user);
+                }
+            } catch (err) {
+                console.error("Auth Error:", err);
+            } finally {
+                setIsFetching(false);
+            }
+        };
+        getUser();
+    }, []);
+
     const navLinks = [
         { href: "/", label: "Home" },
         { href: "/ideas", label: "Ideas" },
@@ -47,11 +69,7 @@ const Navbar = ({
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 {isMobileSearchVisible ? (
                     <div className="flex h-16 items-center px-0">
-                        {/* <SearchBar
-                            id={searchId + "-mobile"}
-                            isMobile={true}
-                            onCancel={() => setIsMobileSearchVisible(false)}
-                        /> */}
+
                     </div>
                 ) : (
                     <div className="flex items-center justify-between h-16">
@@ -72,11 +90,13 @@ const Navbar = ({
                                 <SearchIcon size={20} />
                             </button>
 
-                            <Button onClick={() => setIsIdeaModalOpen(true)}
-                                className="bg-indigo-500 cursor-pointer hover:bg-indigo-600 dark:text-white duration-200 px-3 py-4 rounded-2xl">
-                                <Lightbulb size={18} className="group-hover:rotate-12 transition-transform" />
-                                <span className="hidden md:block">Post Idea</span>
-                            </Button>
+                            {
+                                user ? <Button onClick={() => setIsIdeaModalOpen(true)}
+                                    className="bg-indigo-500 cursor-pointer hover:bg-indigo-600 dark:text-white duration-200 px-3 py-4 rounded-2xl">
+                                    <Lightbulb size={18} className="group-hover:rotate-12 transition-transform" />
+                                    <span className="hidden md:block">Post Idea</span>
+                                </Button> : ""
+                            }
 
                             <div className="hidden md:block">
                                 <UserSession auth={auth} />

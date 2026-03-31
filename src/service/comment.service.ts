@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { cookies } from "next/headers";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL;
+const BACKEND_URL = process.env.BACKEND_URL;
 
 export const CommentService = {
     createComment: async function (ideaId: string, payload: { content: string, parentId?: string }) {

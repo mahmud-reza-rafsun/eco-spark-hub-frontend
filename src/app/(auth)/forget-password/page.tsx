@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { forgetPasswordAction, resetPasswordAction } from './ForgetPasswordAction';
 
-type Step = 'EMAIL' | 'OTP' | 'RESET';
+type Step = 'EMAIL' | 'OTP';
 
 export default function ForgetPasswordPage() {
     const router = useRouter();
@@ -23,8 +23,9 @@ export default function ForgetPasswordPage() {
         e.preventDefault();
         setIsLoading(true);
         const res = await forgetPasswordAction(email);
+
         if (res?.data?.success) {
-            toast.success("OTP sent to your email!");
+            toast.success("OTP request successful! Use 123456 to reset.");
             setStep('OTP');
         } else {
             toast.error(res?.error || "User not found or something went wrong");
@@ -32,13 +33,25 @@ export default function ForgetPasswordPage() {
         setIsLoading(false);
     };
 
-    // Step 2 & 3: Handle OTP & Password Reset
+    // Step 2: Handle OTP & Password Reset
     const handleResetSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Frontend Validation for Static OTP
+        if (otp.trim() !== "123456") {
+            toast.error("Invalid OTP! Please use 123456");
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            toast.error("Password must be at least 6 characters");
+            return;
+        }
+
         setIsLoading(true);
 
         const payload = {
-            email: email.trim(),
+            email: email.trim().toLowerCase(),
             otp: otp.trim(),
             password: newPassword
         };
@@ -67,7 +80,7 @@ export default function ForgetPasswordPage() {
                         {step === 'EMAIL' ? "Forgot Password?" : "Reset Security"}
                     </h2>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 font-medium px-4">
-                        {step === 'EMAIL' ? "Enter your email to receive a security OTP." : `Verify the code sent to ${email}`}
+                        {step === 'EMAIL' ? "Enter your email to receive a security OTP." : `Enter the 6-digit code sent to ${email}`}
                     </p>
                 </div>
 
@@ -98,12 +111,13 @@ export default function ForgetPasswordPage() {
                 )}
 
                 {/* Step 2: OTP & Password Form */}
-                {step !== 'EMAIL' && (
+                {step === 'OTP' && (
                     <form onSubmit={handleResetSubmit} className="mt-8 space-y-5">
                         <div className="space-y-2">
                             <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-2">Verification Code</label>
                             <input
                                 type="text"
+                                required
                                 maxLength={6}
                                 value={otp}
                                 onChange={(e) => setOtp(e.target.value)}
@@ -120,6 +134,7 @@ export default function ForgetPasswordPage() {
                                 </div>
                                 <input
                                     type={showPassword ? "text" : "password"}
+                                    required
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
                                     placeholder="••••••••"

@@ -52,15 +52,15 @@ export default function AdminDashboard({ stats }: { stats: any }) {
 
       {/* 8 Metric Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-4 md:gap-6">
-        <StatCard title="Total Admins" value={stats.summary.totalAdmin} icon={UserCog} color="text-indigo-600" />
-        <StatCard title="Total Users" value={stats.summary.totalUser} icon={Users} color="text-indigo-600" />
-        <StatCard title="Total Ideas" value={stats.summary.totalIdea} icon={Lightbulb} color="text-indigo-600" />
-        <StatCard title="Categories" value={stats.summary.totalCategory} icon={Grid3X3} color="text-indigo-600" />
+        <StatCard title="Total Admins" value={stats?.summary?.totalAdmin} icon={UserCog} color="text-indigo-600" />
+        <StatCard title="Total Users" value={stats?.summary?.totalUser} icon={Users} color="text-indigo-600" />
+        <StatCard title="Total Ideas" value={stats?.summary?.totalIdea} icon={Lightbulb} color="text-indigo-600" />
+        <StatCard title="Categories" value={stats?.summary?.totalCategory} icon={Grid3X3} color="text-indigo-600" />
 
-        <StatCard title="Revenue" value={stats.summary.totalRevenue} icon={DollarSign} color="text-emerald-500" prefix="$" />
-        <StatCard title="Comments" value={stats.summary.totalComments} icon={MessageSquare} color="text-indigo-600" />
-        <StatCard title="Upvotes" value={stats.summary.totalUpvotes} icon={ThumbsUp} color="text-indigo-600" />
-        <StatCard title="Downvotes" value={stats.summary.totalDownvotes} icon={ThumbsDown} color="text-rose-500" />
+        <StatCard title="Revenue" value={stats?.summary?.totalRevenue} icon={DollarSign} color="text-emerald-500" prefix="$" />
+        <StatCard title="Comments" value={stats?.summary?.totalComments} icon={MessageSquare} color="text-indigo-600" />
+        <StatCard title="Upvotes" value={stats?.summary?.totalUpvotes} icon={ThumbsUp} color="text-indigo-600" />
+        <StatCard title="Downvotes" value={stats?.summary?.totalDownvotes} icon={ThumbsDown} color="text-rose-500" />
       </div>
 
       {/* Advanced Chart Section */}

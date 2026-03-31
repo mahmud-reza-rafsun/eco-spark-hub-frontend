@@ -14,7 +14,14 @@ export const forgetPasswordAction = async (email: string) => {
 
 export const resetPasswordAction = async (payload: any) => {
     try {
-        const result = await authService.resetPassword(payload);
+        // Payload clean up
+        const formattedPayload = {
+            email: payload.email,
+            otp: payload.otp,
+            password: payload.password
+        };
+
+        const result = await authService.resetPassword(formattedPayload);
         return result;
     } catch (error: any) {
         return { data: null, error: error.message || "Failed to reset password" };

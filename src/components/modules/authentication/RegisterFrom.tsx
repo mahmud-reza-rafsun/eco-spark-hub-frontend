@@ -15,8 +15,8 @@ const ArrowRightIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" 
 const ArrowLeftIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>;
 
 interface RegisterProps {
-    onRegister: (data: any) => Promise<{ success: boolean }>;
-    onVerify: (data: any) => Promise<{ success: boolean }>;
+    onRegister: (data: any) => Promise<{ success: boolean; message: string }>;
+    onVerify: (data: any) => Promise<{ success: boolean; message: string }>;
 }
 
 const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
@@ -53,10 +53,10 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
         setIsLoading(false);
 
         if (response.success) {
-            toast.success("OTP sent to your email!");
+            toast.success(response.message); // Displays the custom success message with the static OTP info
             setStep(4);
         } else {
-            toast.error("Registration Failed. Please try again.");
+            toast.error(response.message || "Registration Failed. Please try again.");
         }
     };
 
@@ -70,7 +70,7 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
             toast.success("Verification Successful!");
             router.push('/login');
         } else {
-            toast.error("Invalid OTP. Please try again.");
+            toast.error(response.message || "Invalid OTP. Please try again.");
         }
     };
 
@@ -108,6 +108,7 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
                                         )}
                                     </div>
                                     <button
+                                        type="button"
                                         onClick={() => fileInputRef.current?.click()}
                                         className="absolute bottom-0 right-0 bg-indigo-600 text-white p-2 rounded-full shadow-lg hover:bg-indigo-700 transition-all"
                                     >
@@ -130,6 +131,7 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
                             </div>
 
                             <button
+                                type="button"
                                 onClick={handleNext}
                                 disabled={!fullName}
                                 className="w-full bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 py-3 rounded-xl font-semibold disabled:opacity-50 flex items-center justify-center gap-2 hover:opacity-90 transition-all"
@@ -172,7 +174,7 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
                                             placeholder="••••••••"
                                             className="w-full pl-10 pr-12 py-2.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
                                         />
-                                        <button onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                        <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
                                             {showPassword ? <EyeOffIcon /> : <EyeIcon />}
                                         </button>
                                     </div>
@@ -180,6 +182,7 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
                             </div>
 
                             <button
+                                type="button"
                                 onClick={handleNext}
                                 disabled={!email || !password}
                                 className="w-full bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 py-3 rounded-xl font-semibold disabled:opacity-50 flex items-center justify-center gap-2 transition-all"
@@ -214,6 +217,7 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
                             </div>
 
                             <button
+                                type="button"
                                 onClick={handleRegisterClick}
                                 disabled={isLoading}
                                 className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold flex items-center justify-center transition-all disabled:opacity-70"
@@ -228,7 +232,7 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
                         <form onSubmit={handleFinalSubmit} className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
                             <div className="text-center">
                                 <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Verify Email</h2>
-                                <p className="text-sm text-gray-500 mt-1">Enter the 6-digit code sent to your inbox</p>
+                                <p className="text-sm text-gray-500 mt-1">Enter the 6-digit code (use 123456)</p>
                             </div>
 
                             <input
@@ -251,8 +255,9 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
                     )}
 
                     {/* Universal Back Button */}
-                    {step > 1 && !isLoading && (
+                    {step > 1 && step < 4 && !isLoading && (
                         <button
+                            type="button"
                             onClick={handleBack}
                             className="mt-6 w-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-medium flex items-center justify-center gap-2 transition-colors"
                         >
