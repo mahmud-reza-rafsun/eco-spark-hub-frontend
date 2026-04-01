@@ -94,13 +94,11 @@ export const ideaService = {
             const result = await res.json();
 
             if (!res.ok) {
-                console.log("Backend Response Error:", result.message);
                 return { data: null, error: result.message || "Failed to fetch" };
             }
 
             return { data: result.data, error: null };
         } catch (error) {
-            console.log("Connection Error:", error);
             return { data: null, error: "Something Went Wrong" };
         }
     },
@@ -121,13 +119,11 @@ export const ideaService = {
             const result = await res.json();
 
             if (!res.ok) {
-                console.log("Backend Response Error:", result.message);
                 return { data: null, error: result.message || "Failed to fetch" };
             }
 
             return { data: result.data, error: null };
         } catch (error) {
-            console.log("Connection Error:", error);
             return { data: null, error: "Something Went Wrong" };
         }
     },

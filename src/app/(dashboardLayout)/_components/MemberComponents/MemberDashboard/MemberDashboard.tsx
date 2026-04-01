@@ -44,9 +44,6 @@ export default function MemberDashboard({ stats }: { stats: any }) {
             No activity data found.
         </div>
     );
-
-    console.log(stats.summary.purchasedIdeas)
-    // Using memberChartData from API
     const chartDisplayData = stats?.memberChartData || [];
 
     return (

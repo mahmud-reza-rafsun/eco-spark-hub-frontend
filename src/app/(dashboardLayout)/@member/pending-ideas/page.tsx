@@ -5,7 +5,6 @@ import MemberPendingIdeaRow from "../../_components/MemberComponents/ManagePendi
 export default async function PendingIdeasPage() {
     const response = await memberService.getMyPendingIdeas();
     const pendingIdeas = Array.isArray(response?.data) ? response.data : [];
-
     return (
         <div className="bg-white dark:bg-[#161617] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
             <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
@@ -24,6 +23,7 @@ export default async function PendingIdeasPage() {
                 <table className="w-full text-left">
                     <thead className="bg-gray-50 dark:bg-[#1c1c1d] text-[11px] uppercase text-gray-500 dark:text-gray-400 font-bold tracking-wider">
                         <tr>
+                            <th className="px-6 py-4">Author</th>
                             <th className="px-6 py-4">Idea Title</th>
                             <th className="px-6 py-4">Price</th>
                             <th className="px-6 py-4">Status</th>

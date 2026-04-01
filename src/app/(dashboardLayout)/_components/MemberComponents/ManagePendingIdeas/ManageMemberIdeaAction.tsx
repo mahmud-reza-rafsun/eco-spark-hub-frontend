@@ -3,6 +3,7 @@
 "use server";
 
 import { ideaService } from "@/service/idea.service";
+import { memberService } from "@/service/member.service";
 import { revalidatePath } from "next/cache";
 
 export async function updateIdeaAction(payload: any, id: string) {
@@ -22,10 +23,10 @@ export async function updateIdeaAction(payload: any, id: string) {
 
 export async function deleteIdeaAction(ideaId: string) {
     try {
-        const res = await ideaService.deleteIdea(ideaId);
+        const res = await memberService.deleteMyPendingIdea(ideaId);
 
         if (!res.error) {
-            revalidatePath("/admin/ideas");
+            revalidatePath("/pending-ideas");
             return { success: true };
         }
         return { success: false, error: res.error };

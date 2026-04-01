@@ -1,32 +1,38 @@
-import Navbar from "@/components/layout/Navbar"
+"use client"
+import Navbar from "@/components/layout/Navbar";
 import RightSideBar from "@/components/layout/RightSideBar";
 import SideBar from "@/components/layout/SideBar";
+import { useState } from "react";
 
-export default function RootLayout({ children, }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
     return (
-        <div>
+        <div className="min-h-screen bg-white dark:bg-[#030303]">
             <Navbar />
-            <div className="min-h-screen bg-white dark:bg-[#030303] flex">
+            <div className="flex pt-16">
+                {/* Left Sidebar Container */}
+                <div className={`hidden xl:block transition-all duration-300 ease-in-out ${isSidebarCollapsed ? 'w-20' : 'w-64'}`}>
+                    <SideBar
+                        isSidebarCollapsed={isSidebarCollapsed}
+                        setIsSidebarCollapsed={setIsSidebarCollapsed}
+                    />
+                </div>
 
-                <aside className="fixed left-0 top-16 w-260px h-[calc(100vh-64px)] overflow-y-auto hidden xl:block z-40">
-                    <SideBar />
-                </aside>
-
-                <main className="flex-1 min-h-screen">
-                    <div className="max-w-7xl mx-auto px-4 py-8">
+                {/* Main Content */}
+                <main className={`flex-1 transition-all duration-300 ${isSidebarCollapsed ? 'ml-20' : 'ml-0'} ease-in-out`}>
+                    <div className="max-w-7xl mx-auto px-4">
                         <div className="flex flex-col gap-4">
                             {children}
                         </div>
                     </div>
                 </main>
-                <aside className="fixed right-0 top-16 w-260px h-[calc(100vh-64px)] overflow-y-auto hidden lg:block z-40">
-                    <div className="p-4">
-                        <RightSideBar />
-                    </div>
-                </aside>
 
+                {/* Right Sidebar Container */}
+                <div className="hidden lg:block w-[320px]">
+                    <RightSideBar />
+                </div>
             </div>
         </div>
-    )
+    );
 }

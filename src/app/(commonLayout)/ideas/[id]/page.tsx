@@ -9,7 +9,6 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
     const { id } = await params;
-    console.log(id)
 
     const res = await ideaService.getSingleIdea(id);
     const idea = res.data

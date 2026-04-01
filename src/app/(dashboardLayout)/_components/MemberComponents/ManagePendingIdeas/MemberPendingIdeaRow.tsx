@@ -45,6 +45,28 @@ export default function MemberPendingIdeaRow({ idea }: { idea: any }) {
 
     return (
         <tr className="hover:bg-gray-50 dark:hover:bg-[#1c1c1d] transition-colors border-b border-gray-100 dark:border-gray-800">
+            {/* Author Info */}
+            <td className="px-6 py-4">
+                <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-900/20 flex items-center justify-center text-indigo-600 font-bold uppercase text-xs overflow-hidden">
+                        {idea.author?.image ? (
+                            <Image
+                                src={idea.author.image}
+                                alt={idea.author.name}
+                                width={40}
+                                height={40}
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            idea.author?.name?.charAt(0) || "U"
+                        )}
+                    </div>
+                    <div>
+                        <p className="text-sm font-semibold text-gray-900 dark:text-white">{idea.author?.name}</p>
+                        <p className="text-xs text-gray-500">{idea.author?.email}</p>
+                    </div>
+                </div>
+            </td>
             {/* Idea Detail */}
             <td className="px-6 py-4">
                 <div className="flex items-center gap-3">
@@ -119,8 +141,7 @@ export default function MemberPendingIdeaRow({ idea }: { idea: any }) {
                                         <AlertDialogCancel>No, Cancel</AlertDialogCancel>
                                         <AlertDialogAction
                                             onClick={handleDelete}
-                                            className="bg-red-600 hover:bg-red-700 text-white"
-                                        >
+                                            className="bg-red-600 hover:bg-red-700 text-white">
                                             Yes Delete
                                         </AlertDialogAction>
                                     </AlertDialogFooter>

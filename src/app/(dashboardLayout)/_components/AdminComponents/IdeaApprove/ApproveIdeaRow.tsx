@@ -18,7 +18,6 @@ export default function ApproveIdeaRow({ idea }: { idea: any }) {
 
         setIsLoading(true);
         try {
-            console.log("Sending ID:", idea.id);
             const res = await approveRejectIdeas({
                 ideaId: idea.id,
                 status: status,

@@ -30,12 +30,12 @@ export default async function IdeasPage({
     const meta = res?.data?.data.meta || [];
 
     return (
-        <div className="container mx-auto py-8 px-4">
-            <div className="mb-8">
+        <div className="container mx-auto -my-[72px] py-8 px-4">
+            <div className="mb-10">
                 <IdeaSearchFilters />
             </div>
             {ideas.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {ideas.map((idea: any) => (
                         <IdeaCard key={idea.id} idea={idea} />
                     ))}

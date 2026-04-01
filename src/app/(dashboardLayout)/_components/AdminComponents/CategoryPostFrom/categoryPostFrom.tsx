@@ -11,13 +11,9 @@ export default function CategoryPostForm() {
         e.preventDefault();
 
         try {
-            console.log("Form Submit Triggered");
-
             const formData = new FormData(e.currentTarget);
-
             const name = formData.get("name");
             const slug = formData.get("slug");
-            console.log("Form Data:", { name, slug });
 
             if (!name || !slug) {
                 toast.error("Please fill up all fields!");
@@ -25,11 +21,8 @@ export default function CategoryPostForm() {
             }
             const result = await categoryPostAction(formData);
 
-            console.log("Server Response:", result);
-
             if (result?.success) {
                 toast.success("Category added successfully!");
-                // e.currentTarget.reset();
             } else {
                 toast.error(result?.error || "Failed to add category");
             }

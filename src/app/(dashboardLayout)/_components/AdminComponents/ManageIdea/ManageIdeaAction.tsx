@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
+import { adminService } from "@/service/admin.service";
 import { ideaService } from "@/service/idea.service";
 import { revalidatePath } from "next/cache";
 
@@ -22,10 +23,10 @@ export async function updateIdeaAction(payload: any, id: string) {
 
 export async function deleteIdeaAction(ideaId: string) {
     try {
-        const res = await ideaService.deleteIdea(ideaId); // সার্ভিস কল করুন
+        const res = await adminService.deleteIdea(ideaId);
 
         if (!res.error) {
-            revalidatePath("/admin/ideas"); // ডাটা রিফ্রেশ করবে
+            revalidatePath("/manage-idea");
             return { success: true };
         }
         return { success: false, error: res.error };

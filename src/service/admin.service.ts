@@ -125,7 +125,6 @@ export const adminService = {
             return { data: [], error: "Something Went Wrong" };
         }
     },
-
     approveIdeas: async function (payload: approveIdeas) {
         const { ideaId, status, adminFeedback } = payload;
         try {
@@ -235,6 +234,33 @@ export const adminService = {
             return { data: result.data, error: null };
         } catch (error) {
             return { data: [], error: "Something Went Wrong" };
+        }
+    },
+    deleteIdea: async function (ideaId: string) {
+        try {
+            const cookieStore = await cookies();
+            const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+            const accessToken = cookieStore.get("accessToken")?.value;
+            if (!accessToken) {
+                return { success: false, error: "No access token found in cookies" };
+            }
+
+            const res = await fetch(`${BACKEND_URL}/api/v1/admin/delete-idea/${ideaId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Cookie": `better-auth.session_token=${sessionToken}; accessToken=${accessToken}`,
+                    "Authorization": `Bearer ${accessToken}`
+                },
+                cache: "no-store",
+            });
+
+            const result = await res.json();
+            if (!res.ok) return { success: false, error: result.message || "Unauthorized" };
+
+            return { success: true, error: null };
+        } catch (error) {
+            return { success: false, error: "Something Went Wrong" };
         }
     },
 }

@@ -5,7 +5,6 @@ export default async function Page() {
     // Fetching data on the server side
     const response = await memberService.getMemberStats();
     const stats = response?.data || null;
-    console.log(stats)
 
     return (
         <div className="min-h-screen bg-[#f8fafc] dark:bg-[#121212] p-4 md:p-8 rounded-lg">

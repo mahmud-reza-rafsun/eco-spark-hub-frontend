@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { env } from "@/env";
 import { cookies } from "next/headers";
@@ -20,14 +21,12 @@ export const userService = {
 
             if (!res.ok) {
                 const errorText = await res.text();
-                console.log("Backend Response Error:", errorText);
                 return { data: null, error: "Failed to fetch session" };
             }
 
             const session = await res.json();
             return { data: session, error: null };
         } catch (error) {
-            console.log("Connection Error:", error);
             return { data: null, error: "Something Went Wrong" };
         }
     },

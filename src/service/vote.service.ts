@@ -23,7 +23,6 @@ export const voteService = {
                 }),
                 cache: "no-store",
             });
-            console.log("SENDING REQUEST TO:", `${BACKEND_URL}/api/v1/vote/toggle-vote`);
 
             if (!res.ok) {
                 const errorData = await res.json().catch(() => ({}));

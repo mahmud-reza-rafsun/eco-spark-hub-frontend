@@ -26,7 +26,6 @@ export default function UpdateIdea({
     // const [loadingCategories, setLoadingCategories] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
-    console.log(idea);
     useEffect(() => {
         if (isOpen && idea?.images) {
             setPreview(idea.images);
@@ -48,7 +47,6 @@ export default function UpdateIdea({
         setPreview(null);
         if (fileInputRef.current) fileInputRef.current.value = "";
     };
-    console.log(idea.id)
     const handleIdeaSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setUploading(true);

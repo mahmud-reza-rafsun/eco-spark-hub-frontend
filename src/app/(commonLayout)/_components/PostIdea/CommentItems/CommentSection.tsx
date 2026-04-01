@@ -12,8 +12,6 @@ import { createCommentAction } from "./commentActions";
 export default function CommentSection({ ideaId, initialComments, authorId }: any) {
     const [text, setText] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    console.log(initialComments)
-    console.log(authorId)
 
     const handlePost = async () => {
         if (!text.trim()) return;
