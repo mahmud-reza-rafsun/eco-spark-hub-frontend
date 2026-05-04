@@ -23,15 +23,22 @@ export default function LoginForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
+    const handleDemoLogin = (type: "admin" | "member") => {
+        if (type === "admin") {
+            setEmail("admin@ecospark.com");
+            setPassword("12345678");
+        } else {
+            setEmail("member@ecospark.com");
+            setPassword("12345678");
+        }
+    };
 
     const handleGoogleLogin = async () => {
         try {
-            await authClient.signIn.social({
-                provider: "google",
-                callbackURL: `${process.env.BACKEND_URL}`,
-            });
+            window.location.href = "http://localhost:5000/api/v1/auth/google";
         } catch (err) {
-            toast.error("Google login failed");
+            console.error(err);
+            toast.error("Google login failed. Please try again.");
         }
     };
 
@@ -85,7 +92,7 @@ export default function LoginForm() {
                 <button
                     type="button"
                     onClick={handleGoogleLogin}
-                    className="w-full flex items-center justify-center gap-3 h-12 rounded-xl border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 transition-all font-semibold text-sm"
+                    className="w-full flex items-center justify-center gap-3 h-12 rounded-xl border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 transition-all font-semibold text-sm cursor-pointer"
                 >
                     <GoogleIcon /> Continue with Google
                 </button>
@@ -93,6 +100,24 @@ export default function LoginForm() {
                 <div className="relative flex items-center justify-center">
                     <div className="absolute w-full border-t border-gray-100 dark:border-gray-800" />
                     <span className="relative bg-white dark:bg-black px-4 text-xs text-gray-400 uppercase font-bold tracking-widest">Or Email</span>
+                </div>
+
+                {/* Demo Credentials Buttons */}
+                <div className="grid grid-cols-2 gap-3">
+                    <button
+                        type="button"
+                        onClick={() => handleDemoLogin("admin")}
+                        className="h-10 text-xs font-bold rounded-lg border border-indigo-100 dark:border-indigo-900/30 bg-indigo-50/50 dark:bg-indigo-900/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/20 transition-colors cursor-pointer"
+                    >
+                        Demo Admin
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => handleDemoLogin("member")}
+                        className="h-10 text-xs font-bold rounded-lg border border-emerald-100 dark:border-emerald-900/30 bg-emerald-50/50 dark:bg-emerald-900/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/20 transition-colors cursor-pointer"
+                    >
+                        Demo Member
+                    </button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">

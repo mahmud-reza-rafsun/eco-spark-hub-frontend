@@ -13,7 +13,9 @@ import {
     AlignHorizontalJustifyStart,
     Projector,
     Flame,
-    Lightbulb
+    Lightbulb,
+    NewspaperIcon,
+    BookA
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -33,6 +35,8 @@ const Sidebar = ({ userRole }: { userRole?: string; }) => {
             { href: "/users-management", label: "Users Management", icon: <Users size={22} /> },
             { href: "/transaction-activity", label: "Transaction Activity", icon: <BadgeJapaneseYen size={22} /> },
             { href: "/approve-ideas", label: "Approve Ideas", icon: <CheckCircle size={22} /> },
+            { href: "/post-insights", label: "Post Insights", icon: <NewspaperIcon size={22} /> },
+            { href: "/insights-category", label: "Insights Category", icon: <BookA size={22} /> },
             { href: "/add-category", label: "Add Category", icon: <AlignHorizontalJustifyStart size={22} /> },
             { href: "/all-category", label: "All Category", icon: <Projector size={22} /> },
             { href: "/profile", label: "Profile", icon: <UserCircle size={22} /> },

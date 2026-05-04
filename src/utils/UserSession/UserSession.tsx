@@ -28,7 +28,6 @@ export default function UserSession({
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const [isFetching, setIsFetching] = useState(true);
     const [mounted, setMounted] = useState(false);
-
     useEffect(() => {
         setMounted(true);
         const getUser = async () => {

@@ -53,7 +53,7 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
         setIsLoading(false);
 
         if (response.success) {
-            toast.success(response.message); // Displays the custom success message with the static OTP info
+            toast.success(response.message);
             setStep(4);
         } else {
             toast.error(response.message || "Registration Failed. Please try again.");

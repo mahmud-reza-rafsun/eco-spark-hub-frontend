@@ -2,13 +2,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import React, { useState, useId, useEffect } from 'react';
-import { Lightbulb, SearchIcon } from 'lucide-react';
+import { Bell, Lightbulb, SearchIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import DarkMode from '../modules/DarkMode/DarkMode';
 import { NavbarProps } from '@/interface/auth.interface';
 import UserSession from '@/utils/UserSession/UserSession';
 import IdeaPostForm from '@/app/(commonLayout)/_components/PostIdea/createPost/IdeaPostForm';
+import Notifications from '@/app/(commonLayout)/_components/Notifications/Notifications';
 
 const MenuIcon = ({ className }: { className?: string }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>
@@ -30,7 +31,6 @@ const Navbar = ({
 }: NavbarProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileSearchVisible, setIsMobileSearchVisible] = useState(false);
-    const searchId = useId();
 
     const [user, setUser] = useState<any>(null);
     const [isFetching, setIsFetching] = useState(true);
@@ -63,6 +63,7 @@ const Navbar = ({
     ];
 
     const [isIdeaModalOpen, setIsIdeaModalOpen] = useState(false);
+    const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
 
     return (
         <header className="bg-white/80 dark:bg-black/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700">
@@ -83,13 +84,13 @@ const Navbar = ({
 
 
                         <div className="flex items-center gap-2 sm:gap-4">
-                            {/* Mobile Search Icon */}
-                            <button
-                                className="lg:hidden p-2 text-gray-600 dark:text-gray-300"
-                                onClick={() => setIsMobileSearchVisible(true)}>
-                                <SearchIcon size={20} />
-                            </button>
+                            {/* notifaction */}
+                            <div className="hidden md:block">
+                                <button onClick={() => setIsNotificationModalOpen(true)}>
 
+                                    <Bell className='text-indigo-500 cursor-pointer' />
+                                </button>
+                            </div>
                             {
                                 user ? <Button onClick={() => setIsIdeaModalOpen(true)}
                                     className="bg-indigo-500 cursor-pointer hover:bg-indigo-600 dark:text-white duration-200 px-3 py-4 rounded-2xl">
@@ -97,6 +98,7 @@ const Navbar = ({
                                     <span className="hidden md:block">Post Idea</span>
                                 </Button> : ""
                             }
+
 
                             <div className="hidden md:block">
                                 <UserSession auth={auth} />
@@ -141,6 +143,8 @@ const Navbar = ({
                 isOpen={isIdeaModalOpen}
                 onClose={() => setIsIdeaModalOpen(false)}
             />
+
+            <Notifications isOpen={isNotificationModalOpen} onClose={() => setIsNotificationModalOpen(false)} />
         </header>
     );
 };
