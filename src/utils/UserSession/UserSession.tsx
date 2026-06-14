@@ -77,8 +77,8 @@ export default function UserSession({
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="relative h-10 w-10 cursor-pointer rounded-full border-2 border-indigo-500/20 p-0 hover:bg-indigo-500/10 transition-all active:scale-95">
-                            <Avatar className="h-9 w-9 object-cover">
-                                <AvatarImage src={user.image} alt={user.name} />
+                            <Avatar className="h-9 w-9">
+                                <AvatarImage className='object-cover' src={user.image} alt={user.name} />
                                 <AvatarFallback className="bg-indigo-600 text-white">
                                     {user.name?.charAt(0).toUpperCase()}
                                 </AvatarFallback>

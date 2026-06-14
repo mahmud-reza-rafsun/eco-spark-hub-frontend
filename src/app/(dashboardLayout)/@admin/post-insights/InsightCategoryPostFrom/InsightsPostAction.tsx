@@ -11,7 +11,7 @@ export const insightPostAction = async (payload: any) => {
 
         // check if result exists and error is null
         if (result && !result.error) {
-            revalidatePath("/dashboard/post-insight");
+            revalidatePath("/dashboard/post-insights");
             return { success: true, data: result.data };
         }
 

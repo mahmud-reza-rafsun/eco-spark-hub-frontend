@@ -1,18 +1,27 @@
 'use client';
 
-import { Search, ArrowUpDown, ChevronDown } from 'lucide-react';
+import { Search, ArrowUpDown, Filter } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
 const IdeaSearchFilters = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
+
     const handleSearch = useDebouncedCallback((term: string) => {
         const params = new URLSearchParams(searchParams);
         if (term) params.set('searchTerm', term);
         else params.delete('searchTerm');
         router.push(`?${params.toString()}`);
     }, 500);
+
     const handleSortChange = (value: string) => {
         const params = new URLSearchParams(searchParams);
         if (value) params.set('sortBy', value);
@@ -37,29 +46,35 @@ const IdeaSearchFilters = () => {
                 />
             </div>
 
-            {/* Sort Dropdown */}
-            <div className="relative w-full md:w-auto flex items-center gap-2">
+            {/* Sort Dropdown — shadcn Select */}
+            <div className="w-full md:w-auto flex items-center gap-2">
                 <label className="hidden sm:block text-sm font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">
                     Sort by:
                 </label>
-                <div className="relative w-full md:w-48">
-                    <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                        <ArrowUpDown className="h-4 w-4 text-gray-400" />
-                    </div>
-                    <select
-                        value={searchParams.get('sortBy') || 'newest'}
-                        onChange={(e) => handleSortChange(e.target.value)}
-                        className="appearance-none block w-full pl-10 pr-10 py-2.5 bg-gray-50 dark:bg-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 text-sm rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none cursor-pointer hover:border-indigo-400 transition-all"
+
+                <Select
+                    onValueChange={handleSortChange}
+                    defaultValue={searchParams.get("category")?.toString() || "all"}
+                >
+                    <SelectTrigger className="h-15 py-5 bg-white dark:bg-zinc-900 border-indigo-500 dark:border-indigo-500 rounded-xl focus:ring-1 focus:ring-indigo-500 shadow-sm data-[state=open]:border-2 data-[state=open]:border-indigo-600 data-[state=open]:dark:border-indigo-400 transition-all">
+                        <div className="flex items-center gap-2">
+                            <ArrowUpDown className="w-3.5 h-3.5 text-zinc-400" />
+                            <SelectValue placeholder="Category" />
+                        </div>
+                    </SelectTrigger>
+                    <SelectContent
+                        position="popper"
+                        side="bottom"
+                        sideOffset={8}
+                        className="rounded-xl p-2  border-zinc-200 dark:border-indigo-500"
                     >
-                        <option value="newest">Newest First</option>
-                        <option value="oldest">Oldest First</option>
-                        <option value="popular">Most Popular (Votes)</option>
-                        <option value="alphabetical">Alphabetical (A-Z)</option>
-                    </select>
-                    <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                        <ChevronDown className="h-4 w-4 text-gray-400" />
-                    </div>
-                </div>
+                        <SelectItem value="all">All Categories</SelectItem>
+                        <SelectItem value="newest">Newest First</SelectItem>
+                        <SelectItem value="oldest">Oldest First</SelectItem>
+                        <SelectItem value="popular">Most Popular (Votes)</SelectItem>
+                        <SelectItem value="alphabetical">Alphabetical (A–Z)</SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
         </div>
     );

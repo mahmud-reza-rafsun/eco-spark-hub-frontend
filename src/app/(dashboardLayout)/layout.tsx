@@ -5,6 +5,7 @@ import DarkMode from "../../components/modules/DarkMode/DarkMode";
 import { ThemeProvider } from "next-themes";
 import { userService } from "@/service/user.service";
 import UserSession from "@/utils/UserSession/UserSession";
+import NotificationDropdown from "@/components/modules/Notification/Notification";
 export const dynamic = "force-dynamic";
 
 const MountainIcon = ({ className }: { className?: string }) => (
@@ -39,6 +40,7 @@ export default async function DashboardLayout({
                         </nav>
 
                         <div className="flex items-center gap-4">
+                            <NotificationDropdown />
                             <UserSession />
                             <DarkMode />
                         </div>

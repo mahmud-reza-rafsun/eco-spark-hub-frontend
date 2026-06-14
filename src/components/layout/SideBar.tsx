@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, Lightbulb, LayoutDashboard, Info, Newspaper, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Home, Lightbulb, LayoutDashboard, Info, Newspaper, ChevronRight, ChevronLeft, Brain } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
@@ -18,6 +18,7 @@ const SideBar = ({ isSidebarCollapsed, setIsSidebarCollapsed }: SideBarProps) =>
         { href: "/ideas", label: "Ideas", icon: <Lightbulb size={22} /> },
         { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={22} /> },
         { href: "/insights", label: "Insights", icon: <Newspaper size={22} /> },
+        { href: "/ask-with-ai", label: "Ask With AI", icon: <Brain size={22} /> },
         { href: "/about-us", label: "About Us", icon: <Info size={22} /> },
     ];
 

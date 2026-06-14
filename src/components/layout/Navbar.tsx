@@ -63,7 +63,6 @@ const Navbar = ({
     ];
 
     const [isIdeaModalOpen, setIsIdeaModalOpen] = useState(false);
-    const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
 
     return (
         <header className="bg-white/80 dark:bg-black/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700">
@@ -84,13 +83,6 @@ const Navbar = ({
 
 
                         <div className="flex items-center gap-2 sm:gap-4">
-                            {/* notifaction */}
-                            <div className="hidden md:block">
-                                <button onClick={() => setIsNotificationModalOpen(true)}>
-
-                                    <Bell className='text-indigo-500 cursor-pointer' />
-                                </button>
-                            </div>
                             {
                                 user ? <Button onClick={() => setIsIdeaModalOpen(true)}
                                     className="bg-indigo-500 cursor-pointer hover:bg-indigo-600 dark:text-white duration-200 px-3 py-4 rounded-2xl">
@@ -143,8 +135,6 @@ const Navbar = ({
                 isOpen={isIdeaModalOpen}
                 onClose={() => setIsIdeaModalOpen(false)}
             />
-
-            <Notifications isOpen={isNotificationModalOpen} onClose={() => setIsNotificationModalOpen(false)} />
         </header>
     );
 };

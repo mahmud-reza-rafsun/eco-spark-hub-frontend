@@ -7,14 +7,19 @@ import { cookies } from "next/headers";
 const BACKEND_URL = env.BACKEND_URL;
 
 export const insightsService = {
-    createInsight: async function (payload: any) { // Type match correctly here
+    createInsight: async function (payload: any) {
         try {
             const cookieStore = await cookies();
-            const res = await fetch(`${BACKEND_URL}/api/v1/insights/create-insight`, {
+            const cookieHeader = cookieStore
+                .getAll()
+                .map((c) => `${c.name}=${c.value}`)
+                .join("; ");
+
+            const res = await fetch(`${BACKEND_URL}/api/v1/insights/create-insights`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Cookie": cookieStore.toString(),
+                    "Cookie": cookieHeader,
                 },
                 body: JSON.stringify(payload),
             });
@@ -28,16 +33,15 @@ export const insightsService = {
                 };
             }
 
-            // Return the full result directly to make it predictable
             return { data: result, error: null };
-        } catch (error: any) {
+        } catch (error) {
             return { data: null, error: "Network error, please try again" };
         }
     },
     getAllInsights: async function () {
         try {
             const cookieStore = await cookies();
-            const res = await fetch(`${BACKEND_URL}/api/v1/insights/get-all-insight`, {
+            const res = await fetch(`${BACKEND_URL}/api/v1/insights/get-all-insights`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -85,60 +89,6 @@ export const insightsService = {
             return { data: result.data || result, error: null };
         } catch (error) {
             console.error("Single insight Fetch Error:", error);
-            return { data: [], error: "Connection Error" };
-        }
-    },
-    createInsightCategory: async function (payload: createInshightCategory) {
-        try {
-            const cookieStore = await cookies();
-            const res = await fetch(`${BACKEND_URL}/api/v1/insights-category/create-insights-category`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Cookie": cookieStore.toString(),
-                },
-                body: JSON.stringify(payload),
-            });
-
-            const result = await res.json();
-
-            if (!res.ok) {
-                return {
-                    data: null,
-                    error: result.message || "Failed to create insight"
-                };
-            }
-
-            return { data: result.data || result, error: null };
-        } catch (error) {
-            console.error("Insights create Error:", error);
-            return { data: null, error: "Network error, please try again" };
-        }
-    },
-    getAllInsightsCategory: async function () {
-        try {
-            const cookieStore = await cookies();
-            const res = await fetch(`${BACKEND_URL}/api/v1/insights-category/get-all-insights-category`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Cookie": cookieStore.toString(),
-                },
-                cache: "no-store",
-            });
-
-            const result = await res.json();
-
-            if (!res.ok) {
-                return {
-                    data: [],
-                    error: result.message || "Failed to fetch Insights category"
-                };
-            }
-
-            return { data: result.data || result, error: null };
-        } catch (error) {
-            console.error("Insight Fetch Error:", error);
             return { data: [], error: "Connection Error" };
         }
     },
