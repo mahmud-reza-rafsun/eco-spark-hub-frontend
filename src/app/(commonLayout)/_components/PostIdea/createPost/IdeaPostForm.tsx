@@ -9,14 +9,9 @@ import Modal from '@/components/ui/modal';
 import { Upload, X, Lightbulb, DollarSign } from "lucide-react";
 import Image from 'next/image';
 import { getAllCategoriesAction, IdeaFormAction } from './IdeaFormAction';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-export default function IdeaPostForm({
-    isOpen,
-    onClose
-}: {
-    isOpen: boolean;
-    onClose: () => void;
-}) {
+export default function IdeaPostForm({ isOpen, onClose }: { isOpen: boolean; onClose: () => void; }) {
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
     const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
@@ -155,16 +150,18 @@ export default function IdeaPostForm({
                     <div className="">
                         <label className="text-[13px] font-semibold text-foreground/70 ml-1">Category</label>
                         <div className="relative group">
-                            <select
-                                name="categoryId"
-                                required
-                                className="w-full h-12 px-4 bg-muted/30 border border-muted-foreground/10 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm appearance-none cursor-pointer">
-                                {!loadingCategories && categories.map((category) => (
-                                    <option key={category.id} value={category.id} className="bg-background">
-                                        {category.name}
-                                    </option>
-                                ))}
-                            </select>
+                            <Select name="categoryId" required>
+                                <SelectTrigger className="w-full h-12 px-4 bg-muted/30 border border-muted-foreground/10 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm cursor-pointer text-left">
+                                    <SelectValue placeholder="Select a category" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-xl border-muted-foreground/10 bg-background">
+                                    {!loadingCategories && categories.map((category) => (
+                                        <SelectItem key={category.id} value={category.id}>
+                                            {category.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
 

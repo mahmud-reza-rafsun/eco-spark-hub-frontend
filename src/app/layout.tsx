@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
+// @ts-ignore: allow side-effect CSS import in app layout
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -35,6 +37,22 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange>
+          <NextTopLoader
+            color="#6366f1"
+            initialPosition={0.08}
+            crawlSpeed={200}
+            height={3}
+            crawl={true}
+            showSpinner={false}
+            easing="ease"
+            speed={200}
+            shadow="0 0 10px #6366f1,0 0 5px #6366f1"
+            template='<div class="bar" role="bar"><div class="peg"></div></div> 
+  <div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
+            zIndex={1600}
+            showAtBottom={false}
+          />
+
           {children}
           <Toaster />
         </ThemeProvider>

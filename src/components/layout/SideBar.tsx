@@ -1,14 +1,10 @@
 "use client"
 
+import { SideBarProps } from '@/interface/sidebar.interface';
 import { Home, Lightbulb, LayoutDashboard, Info, Newspaper, ChevronRight, ChevronLeft, Brain } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Dispatch, SetStateAction } from 'react';
 
-interface SideBarProps {
-    isSidebarCollapsed: boolean;
-    setIsSidebarCollapsed: Dispatch<SetStateAction<boolean>>;
-}
 
 const SideBar = ({ isSidebarCollapsed, setIsSidebarCollapsed }: SideBarProps) => {
     const pathname = usePathname();
@@ -18,7 +14,6 @@ const SideBar = ({ isSidebarCollapsed, setIsSidebarCollapsed }: SideBarProps) =>
         { href: "/ideas", label: "Ideas", icon: <Lightbulb size={22} /> },
         { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={22} /> },
         { href: "/insights", label: "Insights", icon: <Newspaper size={22} /> },
-        { href: "/ask-with-ai", label: "Ask With AI", icon: <Brain size={22} /> },
         { href: "/about-us", label: "About Us", icon: <Info size={22} /> },
     ];
 

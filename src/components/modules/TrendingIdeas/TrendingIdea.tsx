@@ -33,7 +33,7 @@ const TrendingIdeas = () => {
     }, [loadData]);
 
     return (
-        <div className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm">
+        <div className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-md p-5">
             <div className="flex items-center gap-2 mb-6">
                 <div className="p-2 bg-indigo-50 dark:bg-indigo-500/30 rounded-lg">
                     <Flame className="w-5 h-5 text-indigo-600" />

@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
     return (
-        <div className="min-h-screen bg-white dark:bg-[#030303]">
+        <div className="min-h-screen bg-white dark:bg-[#030303] ">
             <Navbar />
             <div className="flex pt-16">
                 {/* Left Sidebar Container */}

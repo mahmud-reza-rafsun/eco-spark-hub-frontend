@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // --- Icons ---
 const LogInIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><polyline points="10 17 15 12 10 7" /><line x1="15" x2="3" y1="12" y2="12" /></svg>;
@@ -35,7 +36,10 @@ export default function LoginForm() {
 
     const handleGoogleLogin = async () => {
         try {
-            window.location.href = "http://localhost:5000/api/v1/auth/google";
+            await authClient.signIn.social({
+                provider: "google",
+                callbackURL: window.location.origin,
+            });
         } catch (err) {
             console.error(err);
             toast.error("Google login failed. Please try again.");
@@ -76,9 +80,9 @@ export default function LoginForm() {
     }
 
     return (
-        <div className="w-full flex items-center justify-center p-4 mt-12">
-            <div className="w-full max-w-md bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm p-8 space-y-8">
-
+        <div className="w-full flex items-center justify-center border border-gray-200 dark:border-gray-800 rounded-2xl">
+            <Image src="/login-page-image.jpg" width={500} height={400} alt="Login Image" className="rounded-tl-2xl rounded-bl-2xl " />
+            <div className="w-full  bg-white dark:bg-black p-8 space-y-8 ">
                 {/* Header */}
                 <div className="text-center space-y-2">
                     <div className="inline-flex p-3 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl">

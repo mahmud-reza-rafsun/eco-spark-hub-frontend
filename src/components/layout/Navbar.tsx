@@ -2,14 +2,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import React, { useState, useId, useEffect } from 'react';
-import { Bell, Lightbulb, SearchIcon } from 'lucide-react';
+import { Bell, Brain, Lightbulb, SearchIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import DarkMode from '../modules/DarkMode/DarkMode';
 import { NavbarProps } from '@/interface/auth.interface';
 import UserSession from '@/utils/UserSession/UserSession';
 import IdeaPostForm from '@/app/(commonLayout)/_components/PostIdea/createPost/IdeaPostForm';
-import Notifications from '@/app/(commonLayout)/_components/Notifications/Notifications';
+import { EcoSparkChat } from '@/app/ask-with-ai/_components/ChatUI';
+
+
 
 const MenuIcon = ({ className }: { className?: string }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>
@@ -23,6 +25,28 @@ const MountainIcon = ({ className }: { className?: string }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m8 3 4 8 5-5 5 15H2L8 3z" /></svg>
 );
 
+const customCss = `
+    /* This is the key to the seamless animation.
+      The @property rule tells the browser that '--angle' is a custom property
+      of type <angle>. This allows the browser to smoothly interpolate it
+      during animations, preventing the "jump" at the end of the loop.
+    */
+    @property --angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    /* The keyframe animation simply transitions the --angle property
+      from its start (0deg) to its end (360deg).
+    */
+    @keyframes shimmer-spin {
+      to {
+        --angle: 360deg;
+      }
+    }
+  `;
+
 const Navbar = ({
     auth = {
         login: { title: "Login", url: "/login" },
@@ -31,10 +55,11 @@ const Navbar = ({
 }: NavbarProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileSearchVisible, setIsMobileSearchVisible] = useState(false);
-
+    const [isOpen, setIsOpen] = useState(false);
     const [user, setUser] = useState<any>(null);
     const [isFetching, setIsFetching] = useState(true);
     const [mounted, setMounted] = useState(false);
+    const [isOpenAi, setIsOpenAi] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -84,13 +109,40 @@ const Navbar = ({
 
                         <div className="flex items-center gap-2 sm:gap-4">
                             {
-                                user ? <Button onClick={() => setIsIdeaModalOpen(true)}
-                                    className="bg-indigo-500 cursor-pointer hover:bg-indigo-600 dark:text-white duration-200 px-3 py-4 rounded-2xl">
-                                    <Lightbulb size={18} className="group-hover:rotate-12 transition-transform" />
-                                    <span className="hidden md:block">Post Idea</span>
-                                </Button> : ""
+                                user ? (
+                                    <div>
+                                        <style>{customCss}</style>
+                                        <button onClick={() => setIsIdeaModalOpen(true)} className="relative cursor-pointer inline-flex items-center justify-center p-[1px] bg-gray-300 dark:bg-black rounded-full overflow-hidden group">
+                                            <div
+                                                className="absolute inset-0"
+                                                style={{
+                                                    background: 'conic-gradient(from var(--angle), transparent 25%, #6366f1, transparent 50%)',
+                                                    animation: 'shimmer-spin 2.5s linear infinite',
+                                                }}
+                                            />
+                                            <span className="relative z-10 inline-flex items-center justify-center w-full h-full px-2 py-2 text-gray-900 dark:text-white bg-white dark:bg-gray-900 rounded-full group-hover:bg-gray-100 dark:group-hover:bg-gray-800 transition-colors duration-300">
+                                                <Lightbulb className='text-indigo-500 dark:text-white' />
+                                            </span>
+                                        </button>
+                                    </div>
+                                ) : ""
                             }
-
+                            {/* Lightbulb */}
+                            <div>
+                                <style>{customCss}</style>
+                                <button onClick={() => setIsOpenAi(true)} className="relative cursor-pointer inline-flex items-center justify-center p-[1px] bg-gray-300 dark:bg-black rounded-full overflow-hidden group">
+                                    <div
+                                        className="absolute inset-0"
+                                        style={{
+                                            background: 'conic-gradient(from var(--angle), transparent 25%, #6366f1, transparent 50%)',
+                                            animation: 'shimmer-spin 2.5s linear infinite',
+                                        }}
+                                    />
+                                    <span className="relative z-10 inline-flex items-center justify-center w-full h-full px-2 py-2 text-gray-900 dark:text-white bg-white dark:bg-gray-900 rounded-full group-hover:bg-gray-100 dark:group-hover:bg-gray-800 transition-colors duration-300">
+                                        <Brain className='text-indigo-500 dark:text-white' />
+                                    </span>
+                                </button>
+                            </div>
 
                             <div className="hidden md:block">
                                 <UserSession auth={auth} />
@@ -135,6 +187,7 @@ const Navbar = ({
                 isOpen={isIdeaModalOpen}
                 onClose={() => setIsIdeaModalOpen(false)}
             />
+            <EcoSparkChat />
         </header>
     );
 };

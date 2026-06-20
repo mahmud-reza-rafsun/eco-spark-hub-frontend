@@ -1,3 +1,4 @@
+import { Roles } from "@/constants/Roles";
 import { userService } from "@/service/user.service";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -18,11 +19,11 @@ export async function proxy(request: NextRequest) {
     }
 
     if (pathname.startsWith("/dashboard/")) {
-        if (pathname.includes("/admin") && role !== "ADMIN") {
+        if (pathname.includes("/ADMIN") && role !== Roles.admin) {
             return NextResponse.redirect(new URL("/dashboard", request.url));
         }
     }
-    if (pathname.startsWith("/dashboard/member") && role !== "MEMBER") {
+    if (pathname.startsWith("/dashboard/member") && role !== Roles.member) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
     }
     return NextResponse.next();

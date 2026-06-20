@@ -16,6 +16,7 @@ export const userService = {
                     "Content-Type": "application/json",
                     "Cookie": allCookies,
                 },
+                credentials: "include",
                 cache: "no-store",
             });
 
