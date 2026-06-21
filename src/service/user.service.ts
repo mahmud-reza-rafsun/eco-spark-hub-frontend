@@ -19,6 +19,7 @@ export const userService = {
                 credentials: "include",
                 cache: "no-store",
             });
+            console.log(res)
 
             if (!res.ok) {
                 const errorText = await res.text();

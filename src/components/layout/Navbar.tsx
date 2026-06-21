@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
-import React, { useState, useId, useEffect } from 'react';
-import { Bell, Brain, Lightbulb, SearchIcon } from 'lucide-react';
-import { Button } from '../ui/button';
+import React, { useState, useEffect } from 'react';
+import { Brain, Lightbulb, } from 'lucide-react';
 import Link from 'next/link';
 import DarkMode from '../modules/DarkMode/DarkMode';
 import { NavbarProps } from '@/interface/auth.interface';
 import UserSession from '@/utils/UserSession/UserSession';
 import IdeaPostForm from '@/app/(commonLayout)/_components/PostIdea/createPost/IdeaPostForm';
-import { EcoSparkChat } from '@/app/ask-with-ai/_components/ChatUI';
-
+import EcoSparkAI from '@/app/LLM_Model_AI/EcoSparkAI';
 
 
 const MenuIcon = ({ className }: { className?: string }) => (
@@ -55,11 +53,11 @@ const Navbar = ({
 }: NavbarProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileSearchVisible, setIsMobileSearchVisible] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
     const [user, setUser] = useState<any>(null);
     const [isFetching, setIsFetching] = useState(true);
     const [mounted, setMounted] = useState(false);
-    const [isOpenAi, setIsOpenAi] = useState(false);
+    const [isIdeaModalOpen, setIsIdeaModalOpen] = useState(false);
+    const [isAiOpen, setIsAiOpen] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -87,7 +85,6 @@ const Navbar = ({
         { href: "/blog", label: "Blog" },
     ];
 
-    const [isIdeaModalOpen, setIsIdeaModalOpen] = useState(false);
 
     return (
         <header className="bg-white/80 dark:bg-black/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700">
@@ -127,10 +124,10 @@ const Navbar = ({
                                     </div>
                                 ) : ""
                             }
-                            {/* Lightbulb */}
+
                             <div>
                                 <style>{customCss}</style>
-                                <button onClick={() => setIsOpenAi(true)} className="relative cursor-pointer inline-flex items-center justify-center p-[1px] bg-gray-300 dark:bg-black rounded-full overflow-hidden group">
+                                <button onClick={() => setIsAiOpen(true)} className="relative cursor-pointer inline-flex items-center justify-center p-[1px] bg-gray-300 dark:bg-black rounded-full overflow-hidden group">
                                     <div
                                         className="absolute inset-0"
                                         style={{
@@ -187,7 +184,8 @@ const Navbar = ({
                 isOpen={isIdeaModalOpen}
                 onClose={() => setIsIdeaModalOpen(false)}
             />
-            <EcoSparkChat />
+
+            <EcoSparkAI isOpen={isAiOpen} onClose={() => setIsAiOpen(false)} />
         </header>
     );
 };

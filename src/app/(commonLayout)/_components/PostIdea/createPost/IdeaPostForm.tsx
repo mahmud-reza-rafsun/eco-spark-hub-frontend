@@ -6,10 +6,18 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Modal from '@/components/ui/modal';
-import { Upload, X, Lightbulb, DollarSign } from "lucide-react";
+import { Upload, X, Lightbulb, DollarSign, Filter } from "lucide-react";
 import Image from 'next/image';
 import { getAllCategoriesAction, IdeaFormAction } from './IdeaFormAction';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown, File, Edit, Trash } from "lucide-react";
 
 export default function IdeaPostForm({ isOpen, onClose }: { isOpen: boolean; onClose: () => void; }) {
     const [uploading, setUploading] = useState(false);
@@ -149,19 +157,45 @@ export default function IdeaPostForm({ isOpen, onClose }: { isOpen: boolean; onC
                     {/* Category Selection */}
                     <div className="">
                         <label className="text-[13px] font-semibold text-foreground/70 ml-1">Category</label>
-                        <div className="relative group">
-                            <Select name="categoryId" required>
-                                <SelectTrigger className="w-full h-12 px-4 bg-muted/30 border border-muted-foreground/10 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm cursor-pointer text-left">
-                                    <SelectValue placeholder="Select a category" />
-                                </SelectTrigger>
-                                <SelectContent className="rounded-xl border-muted-foreground/10 bg-background">
-                                    {!loadingCategories && categories.map((category) => (
-                                        <SelectItem key={category.id} value={category.id}>
+                        <div className="relative w-full">
+                            <select
+                                name="categoryId"
+                                required
+                                defaultValue=""
+                                className="w-full h-12 pl-4 pr-10 bg-slate-50/50 dark:bg-zinc-900/40 backdrop-blur-md border border-slate-200/60 dark:border-zinc-800/60 rounded-xl hover:bg-slate-100/70 dark:hover:bg-zinc-800/50 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all duration-300 text-sm font-medium text-slate-700 dark:text-zinc-300 cursor-pointer shadow-sm appearance-none"
+                            >
+                                <option value="" disabled hidden>
+                                    {loadingCategories ? "Loading categories..." : "Select a category"}
+                                </option>
+
+                                {!loadingCategories &&
+                                    categories.map((category) => (
+                                        <option
+                                            key={category.id}
+                                            value={category.id}
+                                            className="bg-white dark:bg-zinc-950 text-slate-700 dark:text-zinc-300 font-medium py-2"
+                                        >
                                             {category.name}
-                                        </SelectItem>
+                                        </option>
                                     ))}
-                                </SelectContent>
-                            </Select>
+                            </select>
+
+                            {/* Custom Chevron Down Arrow */}
+                            <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400 dark:text-zinc-500">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="m6 9 6 6 6-6" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
 

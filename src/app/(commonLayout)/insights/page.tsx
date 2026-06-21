@@ -1,6 +1,5 @@
-import { getAllInshight } from '@/interface/insights.interface';
 import { insightsService } from '@/service/insight.service';
-import InsightsCard from './InsightsCard';
+import InsightsList from './InsightsList';
 
 export default async function InsightsPage() {
     const response = await insightsService.getAllInsights();
@@ -8,7 +7,6 @@ export default async function InsightsPage() {
 
     return (
         <div className="bg-white dark:bg-[#09090b] text-gray-900 dark:text-gray-100 min-h-screen">
-            {/* Header Section */}
             <header className="py-10 -mt-20 border-b border-gray-100 dark:border-gray-800">
                 <div className="container mx-auto px-6">
                     <div className="max-w-3xl">
@@ -22,16 +20,9 @@ export default async function InsightsPage() {
                 </div>
             </header>
 
-            {/* Featured Post (Optional Layout) */}
             <main className="container mx-auto px-6 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {categories.map((blog: getAllInshight) => (
-                        <InsightsCard key={blog.id} blog={blog} />
-
-                    ))}
-                </div>
+                <InsightsList blogs={categories} />
             </main>
-
         </div>
     );
-};
+}

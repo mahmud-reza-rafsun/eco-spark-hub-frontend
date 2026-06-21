@@ -8,7 +8,7 @@ export default function RightSideBar() {
     const [isPrivacyPolicyModalOpen, setIsPrivacyPolicyModalOpen] = useState(false);
     return (
         <aside
-            className="fixed right-0 top-16 h-[calc(100vh-64px)] w-[320px] border-l border-gray-200 dark:border-gray-800 bg-white dark:bg-[#09090b] z-40"
+            className="fixed right-0 top-16 h-[calc(100vh-64px)] w-[320px] border-l border-gray-200 dark:border-gray-800 bg-white dark:bg-[#09090b] z-20"
         >
             <div className="flex flex-col h-full py-6 px-4 overflow-x-hidden justify-between">
                 <div>

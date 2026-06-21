@@ -42,14 +42,12 @@ export const ideaService = {
         }
     },
     getAllIdeas: async function (params: getAllIdeasParams) {
-        const { searchTerm, sortBy, categoryId, page, limit } = params;
+        const { searchTerm, sortBy, categoryId } = params;
 
         const queryParams = new URLSearchParams();
         if (searchTerm) queryParams.append('searchTerm', searchTerm);
         if (sortBy) queryParams.append('sortBy', sortBy);
         if (categoryId) queryParams.append('categoryId', categoryId);
-        if (page) queryParams.append('page', page);
-        if (limit) queryParams.append('limit', limit);
 
         const queryString = queryParams.toString();
         const url = `${BACKEND_URL}/api/v1/idea/get-all-idea${queryString ? `?${queryString}` : ''}`;
