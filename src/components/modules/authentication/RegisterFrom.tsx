@@ -40,33 +40,6 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
     const handleNext = () => step < totalSteps && setStep(step + 1);
     const handleBack = () => step > 1 && setStep(step - 1);
 
-    // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const file = e.target.files?.[0];
-
-    //     if (file) {
-    //         setSelectedFile(file); // ✅ actual file save
-
-    //         setImagePreview(URL.createObjectURL(file)); // শুধু UI preview
-    //     }
-    // };
-
-
-
-    // const handleRegisterClick = async () => {
-    //     setIsLoading(true);
-    //     const response = await onRegister({ fullName, email, password, image: selectedFile });
-    //     console.log("register data", response)
-    //     setIsLoading(false);
-
-    //     if (response.success) {
-    //         toast.success(response.message);
-    //         setStep(4);
-    //     } else {
-    //         toast.error(response.message || "Registration Failed. Please try again.");
-    //     }
-    // };
-
-
     const handleImageChange = (
         e: React.ChangeEvent<HTMLInputElement>
     ) => {

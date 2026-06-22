@@ -7,18 +7,36 @@ import {
     CheckCircle2, BadgeCheck, Star, Edit3, Fingerprint
 } from "lucide-react";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UpdateUserProfile from "./UpdateUserProfile";
+import { Roles } from "@/constants/Roles";
+import { UserStatus } from "@/constants/UserStatus";
 
 export default function UserProfile({ user, onEdit }: { user: any; onEdit?: () => void }) {
     const [isEditOpen, setIsEditOpen] = useState(false);
+    const [userData, setUserData] = useState(user);
+
+
+    useEffect(() => {
+        const res = fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/auth/me`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+        });
+        res.then((response) => response.json()).then((data) => {
+            setUserData(data.user);
+        });
+    }, [user]);
+    // console.log(userData)
+
     const joinDate = user?.createdAt
         ? format(new Date(user.createdAt), "MMMM dd, yyyy")
         : "N/A";
 
-    const defaultCover = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop";
+    const defaultCover = userData?.coverPhoto
     const coverImage = user?.coverImage || defaultCover;
-    const userHandle = user?.username ? `@${user.username}` : `@${user?.name?.toLowerCase().replace(/\s+/g, "") || "user"}`;
+    const userHandle = userData?.username ? `@${user.username}` : `@${user?.name?.toLowerCase().replace(/\s+/g, "") || "user"}`;
+
 
     return (
         <div className="max-w-5xl mx-auto space-y-8 p-1 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -50,7 +68,7 @@ export default function UserProfile({ user, onEdit }: { user: any; onEdit?: () =
                             <div className="relative -mt-24 md:-mt-32 z-20">
                                 <div className="w-36 h-36 md:w-44 md:h-44 rounded-full border-[6px] border-white dark:border-gray-900 bg-gray-50 dark:bg-gray-800 overflow-hidden shadow-2xl flex items-center justify-center ring-1 ring-black/5">
                                     {user?.image ? (
-                                        <Image src={user.image} alt={user.name} fill className="object-cover" />
+                                        <Image src={userData.image} alt={user.name} fill className="object-cover rounded-full" />
                                     ) : (
                                         <div className="text-indigo-400/70 dark:text-indigo-500/70"><UserIcon size={72} /></div>
                                     )}
@@ -63,9 +81,9 @@ export default function UserProfile({ user, onEdit }: { user: any; onEdit?: () =
                             <div className="space-y-1 md:pb-2">
                                 <div className="flex items-center justify-center md:justify-start gap-2 flex-wrap">
                                     <h1 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
-                                        {user?.name}
+                                        {userData?.name}
                                     </h1>
-                                    {user?.role === "ADMIN" && (
+                                    {user?.role === Roles.admin && (
                                         <BadgeCheck className="text-indigo-500 dark:text-indigo-400 fill-indigo-500/10" size={24} />
                                     )}
                                 </div>
@@ -74,24 +92,24 @@ export default function UserProfile({ user, onEdit }: { user: any; onEdit?: () =
                                     {userHandle}
                                 </p>
 
-                                <p className="text-gray-400 dark:text-gray-500 font-medium text-sm">{user?.email}</p>
+                                <p className="text-gray-400 dark:text-gray-500 font-medium text-sm">{userData?.shortBio}</p>
 
                                 {/* Status Badges */}
                                 <div className="flex gap-2 pt-2 justify-center md:justify-start">
                                     <div className={`inline-flex items-center px-2.5 py-0.5 rounded-lg gap-x-1.5 border text-[10px] font-black uppercase tracking-wider ${user?.role === "ADMIN"
-                                        ? 'text-blue-600 bg-blue-50/50 border-blue-100 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-900/40'
-                                        : 'text-amber-600 bg-amber-50/50 border-amber-100 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-900/40'
+                                        ? 'text-sky-500 bg-blue-50/50 border-blue-100 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-900/40'
+                                        : 'text-yellow-600 bg-yellow-50/50 border-yellow-100 dark:bg-yellow-950/40 dark:text-yellow-400 dark:border-yellow-900/40'
                                         }`}>
-                                        <span className={`h-1 w-1 rounded-full ${user?.role === "ADMIN" ? 'bg-blue-500' : 'bg-amber-500'}`} />
-                                        {user?.role}
+                                        <span className={`h-1 w-1 rounded-full ${user?.role === Roles.admin ? 'bg-blue-500' : 'bg-green-500'}`} />
+                                        {userData?.role}
                                     </div>
 
-                                    <div className={`inline-flex items-center px-2.5 py-0.5 rounded-lg gap-x-1.5 border text-[10px] font-black uppercase tracking-wider ${user?.status === "ACTIVE"
+                                    <div className={`inline-flex items-center px-2.5 py-0.5 rounded-lg gap-x-1.5 border text-[10px] font-black uppercase tracking-wider ${user?.status === UserStatus.ACTIVE
                                         ? 'text-emerald-600 bg-emerald-50/50 border-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800/40'
                                         : 'text-red-600 bg-red-50/50 border-red-100 dark:bg-red-950/40 dark:text-red-400 dark:border-red-900/40'
                                         }`}>
-                                        <span className={`h-1 w-1 rounded-full ${user?.status === "ACTIVE" ? 'bg-emerald-500' : 'bg-red-500'}`} />
-                                        {user?.status}
+                                        <span className={`h-1 w-1 rounded-full ${user?.status === UserStatus.ACTIVE ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                                        {userData?.status}
                                     </div>
                                 </div>
                             </div>
@@ -156,7 +174,7 @@ export default function UserProfile({ user, onEdit }: { user: any; onEdit?: () =
                 </div>
 
             </div>
-            <UpdateUserProfile isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} />
+            <UpdateUserProfile userData={userData} isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} />
         </div>
     );
 }
