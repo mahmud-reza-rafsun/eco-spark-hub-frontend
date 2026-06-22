@@ -76,7 +76,7 @@ export default function UserSession({
             {user ? (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button className="relative h-11 w-11 cursor-pointer rounded-full border-2 border-indigo-500/20 transition-all active:scale-95">
+                        <Button variant="outline" className="relative h-11 w-11 cursor-pointer rounded-full border-2 border-indigo-300 dark:border-indigo-400/50  transition-all active:scale-95">
                             <Avatar className="h-9 w-9">
                                 <AvatarImage className='object-cover' src={user.image} alt={user.name} />
                                 <AvatarFallback className="bg-indigo-600 text-white">
@@ -99,7 +99,7 @@ export default function UserSession({
                         <DropdownMenuItem asChild>
                             <Link href="/dashboard" className="cursor-pointer w-full flex items-center">
                                 <LayoutDashboard className="mr-2 h-4 w-4" />
-                                <span>Dashboard</span>
+                                <span className=''>Dashboard</span>
                             </Link>
                         </DropdownMenuItem>
 

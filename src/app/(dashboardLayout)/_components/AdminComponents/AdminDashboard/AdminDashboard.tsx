@@ -7,11 +7,10 @@ import {
   ArrowUpRight
 } from 'lucide-react';
 import {
-  BarChart, Bar, XAxis, YAxis,
-  Tooltip, ResponsiveContainer, LabelList, Cell
+  BarChart, Bar, LineChart, Line, XAxis, YAxis,
+  Tooltip, ResponsiveContainer, LabelList, Cell, CartesianGrid
 } from 'recharts';
 
-// Fixed StatCard Props interface
 interface StatCardProps {
   title: string;
   value: number;
@@ -21,15 +20,14 @@ interface StatCardProps {
 }
 
 const StatCard = ({ title, value, icon: Icon, color, prefix = "" }: StatCardProps) => (
-  <div className="group relative bg-white/40 dark:bg-[#1c1c1d]/40 backdrop-blur-md p-6 rounded-[2rem] border border-white/60 dark:border-gray-800/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.04)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] transition-all duration-300 hover:shadow-[0_8px_32px_0_rgba(99,102,241,0.15)] hover:border-indigo-500/40 hover:-translate-y-1.5 overflow-hidden">
-    {/* Background Decorative Glow */}
-    <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500" />
+  <div className="group relative bg-white dark:bg-gray-900 p-6 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_30px_-4px_rgba(0,0,0,0.5)] transition-all duration-300 hover:shadow-[0_12px_40px_-8px_rgba(99,102,241,0.12)] hover:border-indigo-500/40 hover:-translate-y-1.5 overflow-hidden">
+    <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-indigo-500/5 dark:bg-indigo-500/5 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500" />
 
     <div className="flex justify-between items-start mb-4 relative z-10">
-      <div className={`p-3 rounded-2xl bg-white/80 dark:bg-[#252526]/80 shadow-sm border border-gray-100/50 dark:border-gray-700/30 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/40 transition-colors duration-300 ${color}`}>
+      <div className={`p-3 rounded-2xl bg-gray-50 dark:bg-gray-800/80 shadow-sm border border-gray-100/50 dark:border-gray-700/50 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-950/30 transition-colors duration-300 ${color}`}>
         <Icon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
       </div>
-      <div className="p-1.5 rounded-full bg-gray-50 dark:bg-gray-800/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className="p-1.5 rounded-full bg-gray-50 dark:bg-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <ArrowUpRight className="w-3.5 h-3.5 text-indigo-500" />
       </div>
     </div>
@@ -44,16 +42,15 @@ const StatCard = ({ title, value, icon: Icon, color, prefix = "" }: StatCardProp
 
 export default function AdminDashboard({ stats }: { stats: any }) {
   if (!stats) return (
-    <div className="flex items-center justify-center h-64 text-gray-400 dark:text-gray-500 font-medium border-2 border-dashed border-gray-200 dark:border-gray-800 bg-white/20 dark:bg-[#1c1c1d]/25 backdrop-blur-sm rounded-[2rem] animate-in fade-in duration-500">
+    <div className="flex items-center justify-center h-64 text-gray-400 dark:text-gray-500 font-medium border-2 border-dashed border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 rounded-[2rem] animate-in fade-in duration-500">
       No analytics data available at the moment.
     </div>
   );
 
-  // Ensuring chartData exists and filtering
   const chartDisplayData = stats?.chartData?.filter((item: any) => item.name !== "Revenue") || [];
 
   return (
-    <div className="space-y-8 p-1 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="space-y-8 bg-gray-50/50 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-gray-100 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
       {/* 8 Metric Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-5">
@@ -68,79 +65,94 @@ export default function AdminDashboard({ stats }: { stats: any }) {
         <StatCard title="Downvotes" value={stats?.summary?.totalDownvotes} icon={ThumbsDown} color="text-rose-500 dark:text-rose-400" />
       </div>
 
-      {/* Advanced Chart Section */}
-      <div className="bg-white/40 dark:bg-[#1c1c1d]/40 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/60 dark:border-gray-800/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.04)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
-          <div>
-            <h2 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Eco Spark Performance</h2>
-            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1 font-medium">Metric distribution across all interactive modules</p>
-          </div>
-          <div className="flex items-center gap-3 bg-white/60 dark:bg-gray-800/40 px-4 py-2 rounded-2xl border border-gray-100/80 dark:border-gray-700/30 shadow-sm self-start sm:self-center">
-            <div className="flex gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-indigo-600 dark:bg-indigo-500 animate-pulse"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-indigo-300 dark:bg-indigo-400/40"></div>
+      {/* Analytics Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        {/* Bar Chart */}
+        <div className="bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] dark:shadow-[0_4px_30px_-4px_rgba(0,0,0,0.4)]">
+          <div className="flex items-center justify-between mb-10">
+            <div>
+              <h2 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Eco Spark Performance</h2>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mt-1 font-medium">Metric distribution across interactive modules</p>
             </div>
-            <span className="text-xs font-bold text-gray-500 dark:text-gray-400 tracking-wide uppercase">Live Metrics</span>
+            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-gray-700">
+              <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Bar View</span>
+            </div>
+          </div>
+
+          <div className="h-[320px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartDisplayData} margin={{ top: 25, right: 10, left: -20, bottom: 5 }}>
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} dy={12} />
+                <YAxis hide />
+                <Tooltip
+                  cursor={{ fill: 'rgba(99, 102, 241, 0.02)', radius: 16 }}
+                  contentStyle={{
+                    backgroundColor: 'rgba(var(--background), 1)',
+                    borderRadius: '24px',
+                    border: '1px solid currentColor',
+                    padding: '14px 18px'
+                  }}
+                  itemStyle={{ color: '#4f46e5', fontWeight: 700 }}
+                  labelStyle={{ color: 'currentColor', fontWeight: 800 }}
+                />
+                <Bar dataKey="total" radius={[16, 16, 16, 16]} barSize={40}>
+                  {chartDisplayData.map((_: any, index: number) => (
+                    <Cell key={`cell-${index}`} fill={index % 2 === 0 ? 'url(#indigoGrad)' : 'url(#indigoLightGrad)'} />
+                  ))}
+                  <LabelList dataKey="total" position="top" style={{ fill: '#6366f1', fontSize: 13, fontWeight: '900' }} offset={14} />
+                </Bar>
+                <defs>
+                  <linearGradient id="indigoGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#4f46e5" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#6366f1" stopOpacity={0.7} />
+                  </linearGradient>
+                  <linearGradient id="indigoLightGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#818cf8" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#93c5fd" stopOpacity={0.6} />
+                  </linearGradient>
+                </defs>
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="h-[360px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartDisplayData} margin={{ top: 25, right: 10, left: -20, bottom: 5 }}>
-              <XAxis
-                dataKey="name"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 600 }}
-                dy={12}
-              />
-              <YAxis hide />
-              <Tooltip
-                cursor={{ fill: 'rgba(99, 102, 241, 0.04)', radius: 16 }}
-                contentStyle={{
-                  background: 'rgba(255, 255, 255, 0.8)',
-                  backdropFilter: 'blur(12px)',
-                  borderRadius: '24px',
-                  border: '1px solid rgba(255, 255, 255, 0.6)',
-                  boxShadow: '0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.04)',
-                  padding: '14px 18px',
-                }}
-                itemStyle={{ color: '#4f46e5', fontWeight: 700 }}
-                labelStyle={{ color: '#1e293b', fontWeight: 800, marginBottom: '4px' }}
-              />
-              <Bar
-                dataKey="total"
-                radius={[16, 16, 16, 16]}
-                barSize={44}
-              >
-                {chartDisplayData.map((entry: any, index: number) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={index % 2 === 0 ? 'url(#indigoGrad)' : 'url(#indigoLightGrad)'}
-                  />
-                ))}
-                <LabelList
-                  dataKey="total"
-                  position="top"
-                  style={{ fill: '#6366f1', fontSize: 13, fontWeight: '900', letterSpacing: '-0.02em' }}
-                  offset={14}
-                />
-              </Bar>
+        {/* Line Chart */}
+        <div className="bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.02)] dark:shadow-[0_4px_30px_-4px_rgba(0,0,0,0.4)]">
+          <div className="flex items-center justify-between mb-10">
+            <div>
+              <h2 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Growth Trend Analysis</h2>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mt-1 font-medium">Linear visualization of engagement momentum</p>
+            </div>
+            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-gray-700">
+              <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Trend View</span>
+            </div>
+          </div>
 
-              {/* Gradient Definitions for Chart Bars */}
-              <defs>
-                <linearGradient id="indigoGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#4f46e5" stopOpacity={1} />
-                  <stop offset="100%" stopColor="#6366f1" stopOpacity={0.7} />
-                </linearGradient>
-                <linearGradient id="indigoLightGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#818cf8" stopOpacity={1} />
-                  <stop offset="100%" stopColor="#93c5fd" stopOpacity={0.6} />
-                </linearGradient>
-              </defs>
-            </BarChart>
-          </ResponsiveContainer>
+          <div className="h-[320px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={chartDisplayData} margin={{ top: 25, right: 20, left: -20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" className="dark:stroke-gray-800/60" vertical={false} />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} dy={12} />
+                <YAxis hide />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'rgba(var(--background), 1)',
+                    borderRadius: '24px',
+                    border: '1px solid currentColor',
+                    padding: '14px 18px'
+                  }}
+                  itemStyle={{ color: '#10b981', fontWeight: 700 }}
+                  labelStyle={{ color: 'currentColor', fontWeight: 800 }}
+                />
+                <Line type="monotone" dataKey="total" stroke="#10b981" strokeWidth={4} dot={{ fill: '#10b981', r: 6, strokeWidth: 3 }} activeDot={{ r: 8, strokeWidth: 0 }}>
+                  <LabelList dataKey="total" position="top" style={{ fill: '#10b981', fontSize: 12, fontWeight: '800' }} offset={14} />
+                </Line>
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
+
       </div>
     </div>
   );
