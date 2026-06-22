@@ -10,17 +10,13 @@ export default function Page() {
     const handleRegisterAndSendOTP = async (formData: any) => {
         "use server";
         try {
-            // Ensure BACKEND_URL exists before fetching
-            if (!BACKEND_URL) {
-                throw new Error("BACKEND_URL is not defined in environment variables");
-            }
-
             const payload = {
                 name: formData.fullName,
-                email: formData.email,
                 password: formData.password,
+                email: formData.email,
                 image: formData.image
             };
+            console.log(payload)
 
             const response = await fetch(`${BACKEND_URL}/api/v1/auth/register`, {
                 method: 'POST',

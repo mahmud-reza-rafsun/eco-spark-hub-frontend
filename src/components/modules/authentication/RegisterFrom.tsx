@@ -4,6 +4,7 @@ import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { uploadToCloudinary } from '@/utils/uploadToCloudinary/uploadToCloudinary';
 
 const UserIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>;
 const CameraIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>;
@@ -22,6 +23,7 @@ interface RegisterProps {
 const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
     const router = useRouter()
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [step, setStep] = useState<number>(1);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -35,35 +37,84 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
 
     const totalSteps = 4;
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => setImagePreview(reader.result as string);
-            reader.readAsDataURL(file);
-        }
-    };
-
     const handleNext = () => step < totalSteps && setStep(step + 1);
     const handleBack = () => step > 1 && setStep(step - 1);
 
-    const handleRegisterClick = async () => {
-        setIsLoading(true);
-        const response = await onRegister({ fullName, email, password, image: imagePreview });
-        setIsLoading(false);
+    // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const file = e.target.files?.[0];
 
-        if (response.success) {
-            toast.success(response.message);
-            setStep(4);
-        } else {
-            toast.error(response.message || "Registration Failed. Please try again.");
+    //     if (file) {
+    //         setSelectedFile(file); // ✅ actual file save
+
+    //         setImagePreview(URL.createObjectURL(file)); // শুধু UI preview
+    //     }
+    // };
+
+
+
+    // const handleRegisterClick = async () => {
+    //     setIsLoading(true);
+    //     const response = await onRegister({ fullName, email, password, image: selectedFile });
+    //     console.log("register data", response)
+    //     setIsLoading(false);
+
+    //     if (response.success) {
+    //         toast.success(response.message);
+    //         setStep(4);
+    //     } else {
+    //         toast.error(response.message || "Registration Failed. Please try again.");
+    //     }
+    // };
+
+
+    const handleImageChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const file = e.target.files?.[0];
+
+        if (file) {
+            setSelectedFile(file);
+            setImagePreview(URL.createObjectURL(file));
         }
     };
+
+    const handleRegisterClick = async () => {
+        try {
+            setIsLoading(true);
+
+            let imageUrl = "";
+
+            if (selectedFile) {
+                imageUrl = await uploadToCloudinary(selectedFile);
+            }
+
+            const response = await onRegister({
+                fullName,
+                email,
+                password,
+                image: imageUrl,
+            });
+
+            if (response.success) {
+                toast.success(response.message);
+                setStep(4);
+            } else {
+                toast.error(response.message);
+            }
+        } catch (error) {
+            toast.error("Failed to upload image");
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
 
     const handleFinalSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         const response = await onVerify({ email, otp });
+        console.log("on verify", onVerify)
         setIsLoading(false);
 
         if (response.success) {
