@@ -44,7 +44,7 @@ export default function MemberPendingIdeaRow({ idea }: { idea: any }) {
     };
 
     return (
-        <tr className="hover:bg-gray-50 dark:hover:bg-[#1c1c1d] transition-colors border-b border-gray-100 dark:border-gray-800">
+        <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/20 transition-colors border-b border-gray-100 dark:border-gray-800">
             {/* Author Info */}
             <td className="px-6 py-4">
                 <div className="flex items-center gap-3">

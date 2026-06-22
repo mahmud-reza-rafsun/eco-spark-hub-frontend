@@ -9,7 +9,7 @@ export default function PurchaseIdeaRow({ purchase }: { purchase: any }) {
         : "N/A";
 
     return (
-        <tr className="hover:bg-gray-50 dark:hover:bg-[#1c1c1d] transition-colors border-b border-gray-100 dark:border-gray-800">
+        <tr className="hover:bg-gray-50 dark:hover:bg-gray-800/20 transition-colors border-b border-gray-100 dark:border-gray-800">
             {/* Idea Title */}
             <td className="px-6 py-4">
                 <div className="max-w-300px">

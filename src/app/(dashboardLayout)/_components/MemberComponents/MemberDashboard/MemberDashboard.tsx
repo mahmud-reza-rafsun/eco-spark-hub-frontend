@@ -145,8 +145,8 @@ export default function MemberDashboard({ stats }: { stats: any }) {
                                     itemStyle={{ color: '#10b981', fontWeight: 700 }}
                                     labelStyle={{ color: 'currentColor', fontWeight: 800 }}
                                 />
-                                <Line type="monotone" dataKey="total" stroke="#4f46e5" strokeWidth={4} dot={{ fill: '#4f46e5', r: 6, strokeWidth: 3 }} activeDot={{ r: 8, strokeWidth: 0 }}>
-                                    <LabelList dataKey="total" position="top" style={{ fill: '#4f46e5', fontSize: 12, fontWeight: '800' }} offset={14} />
+                                <Line type="monotone" dataKey="total" stroke="#10b981" strokeWidth={4} dot={{ fill: '#10b981', r: 6, strokeWidth: 3 }} activeDot={{ r: 8, strokeWidth: 0 }}>
+                                    <LabelList dataKey="total" position="top" style={{ fill: '#10b981', fontSize: 12, fontWeight: '800' }} offset={14} />
                                 </Line>
                             </LineChart>
                         </ResponsiveContainer>

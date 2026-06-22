@@ -10,7 +10,7 @@ export default async function page() {
     const totalSpent = response?.data?.totalSpent || 0;
 
     return (
-        <div className="bg-white dark:bg-[#161617] rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
             {/* Header Section */}
             <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
@@ -33,7 +33,7 @@ export default async function page() {
             {/* Table Section */}
             <div className="overflow-x-auto">
                 <table className="w-full text-left">
-                    <thead className="bg-gray-50 dark:bg-[#1c1c1d] text-[11px] uppercase text-gray-500 dark:text-gray-400 font-bold tracking-wider">
+                    <thead className="bg-gray-50 dark:bg-gray-900 text-[11px] uppercase text-gray-500 dark:text-gray-400 font-bold tracking-wider">
                         <tr>
                             <th className="px-6 py-4">Project Title</th>
                             <th className="px-6 py-4">Transaction ID</th>

@@ -1,124 +1,175 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import Image from "next/image";
-import { Mail, Calendar, ShieldCheck, User as UserIcon, CheckCircle2, BadgeCheck, Star } from "lucide-react";
-import { format } from "date-fns";
 
-export default function UserProfile({ user }: { user: any }) {
+import Image from "next/image";
+import {
+    Mail, Calendar, ShieldCheck, User as UserIcon,
+    CheckCircle2, BadgeCheck, Star, Edit3, Fingerprint
+} from "lucide-react";
+import { format } from "date-fns";
+import { useState } from "react";
+import UpdateUserProfile from "./UpdateUserProfile";
+
+export default function UserProfile({ user, onEdit }: { user: any; onEdit?: () => void }) {
+    const [isEditOpen, setIsEditOpen] = useState(false);
     const joinDate = user?.createdAt
         ? format(new Date(user.createdAt), "MMMM dd, yyyy")
         : "N/A";
 
+    const defaultCover = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop";
+    const coverImage = user?.coverImage || defaultCover;
+    const userHandle = user?.username ? `@${user.username}` : `@${user?.name?.toLowerCase().replace(/\s+/g, "") || "user"}`;
+
     return (
-        <div className="max-w-5xl mx-auto space-y-6">
-            {/* Top Profile Card */}
-            <div className="relative bg-white dark:bg-[#161617] rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-                {/* Indigo Banner */}
-                <div className="h-44 bg-indigo-600 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-indigo-700"></div>
-                    <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-                        <svg width="100%" height="100%"><pattern id="pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white" /></pattern><rect width="100%" height="100%" fill="url(#pattern)" /></svg>
-                    </div>
+        <div className="max-w-5xl mx-auto space-y-8 p-1 animate-in fade-in slide-in-from-bottom-4 duration-700">
+
+            {/* Main Profile Header Card (Facebook Style Layout) */}
+            <div className="bg-white dark:bg-gray-900 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-[0_8px_30px_rgb(0,0,0,0.02)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.3)] overflow-hidden">
+
+                {/* 1. Cover Photo Container */}
+                <div className="h-56 md:h-72 relative w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+                    <Image
+                        src={coverImage}
+                        alt="Profile Cover"
+                        fill
+                        priority
+                        className="object-cover object-center"
+                    />
+                    <div className="absolute inset-0 bg-black/5" />
                 </div>
 
-                <div className="px-6 md:px-10 pb-10">
-                    <div className="relative flex flex-col md:flex-row justify-between items-center md:items-end -mt-16 gap-6">
-                        {/* Avatar & Info */}
+                {/* 2. Info & Action Area (No overlap issue) */}
+                <div className="px-6 md:px-10 pb-8 pt-6 relative">
+
+                    <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-6">
+
+                        {/* Left Column: Avatar + Profile Identity */}
                         <div className="flex flex-col md:flex-row items-center md:items-end gap-6 text-center md:text-left">
-                            <div className="relative">
-                                <div className="w-36 h-36 rounded-[2.5rem] border-[6px] border-white dark:border-[#161617] bg-gray-50 dark:bg-gray-800 overflow-hidden shadow-xl flex items-center justify-center">
+
+                            {/* Profile Photo (Positioned halfway using negative top margin properly handled) */}
+                            <div className="relative -mt-24 md:-mt-32 z-20">
+                                <div className="w-36 h-36 md:w-44 md:h-44 rounded-full border-[6px] border-white dark:border-gray-900 bg-gray-50 dark:bg-gray-800 overflow-hidden shadow-2xl flex items-center justify-center ring-1 ring-black/5">
                                     {user?.image ? (
                                         <Image src={user.image} alt={user.name} fill className="object-cover" />
                                     ) : (
-                                        <div className="text-indigo-200"><UserIcon size={60} /></div>
+                                        <div className="text-indigo-400/70 dark:text-indigo-500/70"><UserIcon size={72} /></div>
                                     )}
                                 </div>
-                                {/* Active Dot on Avatar */}
-                                <div className="absolute bottom-3 right-3 w-6 h-6 bg-emerald-500 border-4 border-white dark:border-[#161617] rounded-full"></div>
+                                {/* Active Indicator Status Dot */}
+                                <span className="absolute bottom-2 right-2 w-5 h-5 bg-emerald-500 border-4 border-white dark:border-gray-900 rounded-full shadow-lg" />
                             </div>
 
-                            <div className="pb-2">
-                                <div className="flex items-center justify-center md:justify-start gap-2">
-                                    <h1 className="text-3xl font-black text-gray-900 dark:text-white leading-none">
+                            {/* Text Information Block */}
+                            <div className="space-y-1 md:pb-2">
+                                <div className="flex items-center justify-center md:justify-start gap-2 flex-wrap">
+                                    <h1 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white tracking-tight leading-none">
                                         {user?.name}
                                     </h1>
-                                    {user?.role === "ADMIN" && <BadgeCheck className="text-indigo-500" size={24} />}
+                                    {user?.role === "ADMIN" && (
+                                        <BadgeCheck className="text-indigo-500 dark:text-indigo-400 fill-indigo-500/10" size={24} />
+                                    )}
                                 </div>
-                                <p className="text-gray-500 dark:text-gray-400 font-medium mt-1">{user?.email}</p>
+
+                                <p className="text-sm font-bold text-indigo-600 dark:text-indigo-400 tracking-wide">
+                                    {userHandle}
+                                </p>
+
+                                <p className="text-gray-400 dark:text-gray-500 font-medium text-sm">{user?.email}</p>
+
+                                {/* Status Badges */}
+                                <div className="flex gap-2 pt-2 justify-center md:justify-start">
+                                    <div className={`inline-flex items-center px-2.5 py-0.5 rounded-lg gap-x-1.5 border text-[10px] font-black uppercase tracking-wider ${user?.role === "ADMIN"
+                                        ? 'text-blue-600 bg-blue-50/50 border-blue-100 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-900/40'
+                                        : 'text-amber-600 bg-amber-50/50 border-amber-100 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-900/40'
+                                        }`}>
+                                        <span className={`h-1 w-1 rounded-full ${user?.role === "ADMIN" ? 'bg-blue-500' : 'bg-amber-500'}`} />
+                                        {user?.role}
+                                    </div>
+
+                                    <div className={`inline-flex items-center px-2.5 py-0.5 rounded-lg gap-x-1.5 border text-[10px] font-black uppercase tracking-wider ${user?.status === "ACTIVE"
+                                        ? 'text-emerald-600 bg-emerald-50/50 border-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800/40'
+                                        : 'text-red-600 bg-red-50/50 border-red-100 dark:bg-red-950/40 dark:text-red-400 dark:border-red-900/40'
+                                        }`}>
+                                        <span className={`h-1 w-1 rounded-full ${user?.status === "ACTIVE" ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                                        {user?.status}
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
 
-                        {/* Modern Status & Role Badges Section */}
-                        <div className="flex gap-3 mb-2">
-                            <div className={`inline-flex items-center px-4 py-1.5 rounded-xl gap-x-2 border shadow-sm
-                                ${user?.role === "ADMIN"
-                                    ? 'text-blue-600 bg-blue-100 border-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800/50'
-                                    : 'text-amber-600 bg-amber-100 border-amber-100 dark:bg-yellow-500/30 dark:text-amber-400 dark:border-amber-800/50'
-                                }`}>
-                                <span className={`h-1.5 w-1.5 rounded-full ${user?.role === "ADMIN" ? 'bg-blue-500' : 'bg-amber-500'}`}></span>
-                                <h2 className='text-[11px] font-black uppercase tracking-wider'>{user?.role}</h2>
-                            </div>
-
-                            <div className={`inline-flex items-center px-4 py-1.5 rounded-xl gap-x-2 border shadow-sm
-                                ${user?.status === "ACTIVE"
-                                    ? 'text-emerald-600 bg-emerald-100 border-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-800/50'
-                                    : 'text-red-600 bg-red-100 border-red-100 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800/50'
-                                }`}>
-                                <span className={`h-1.5 w-1.5 rounded-full ${user?.status === "ACTIVE" ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
-                                <h2 className='text-[11px] font-black uppercase tracking-wider'>{user?.status}</h2>
-                            </div>
+                        {/* Right Column: Edit Button (Perfect Facebook Alignment) */}
+                        <div className="w-full md:w-auto flex justify-center md:pb-2">
+                            <button
+                                onClick={() => {
+                                    setIsEditOpen(true);
+                                    if (onEdit) onEdit();
+                                }}
+                                className="flex cursor-pointer items-center justify-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-bold text-sm rounded-xl active:scale-95 transition-all duration-200 border border-gray-200/50 dark:border-gray-700/50 w-full md:w-auto"
+                            >
+                                <Edit3 size={15} />
+                                <span>Edit Profile</span>
+                            </button>
                         </div>
+
                     </div>
+
                 </div>
             </div>
 
-            {/* Details Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Stats Card */}
-                <div className="lg:col-span-1 bg-white dark:bg-[#161617] p-8 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm">
-                    <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-6">Overview</h3>
-                    <div className="space-y-6">
-                        <div className="flex items-center justify-between group cursor-default">
+            {/* Grid Layout for Detailed Information */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                {/* Left Card: Trust Matrix */}
+                <div className="lg:col-span-1 bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.01)] dark:shadow-[0_4px_25px_-5px_rgba(0,0,0,0.2)]">
+                    <h3 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-6">Trust Matrix</h3>
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200">
                             <div className="flex items-center gap-3">
-                                <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 group-hover:scale-110 transition-transform"><Star size={18} /></div>
-                                <span className="text-sm font-bold text-gray-600 dark:text-gray-400">Reliability</span>
+                                <div className="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border border-indigo-100/30"><Star size={18} /></div>
+                                <span className="text-sm font-bold text-gray-500 dark:text-gray-400">Reliability</span>
                             </div>
-                            <span className="text-sm font-black text-gray-900 dark:text-white">99%</span>
+                            <span className="text-sm font-black text-gray-900 dark:text-white tracking-tight">99%</span>
                         </div>
-                        <div className="flex items-center justify-between group cursor-default">
+
+                        <div className="flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200">
                             <div className="flex items-center gap-3">
-                                <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 group-hover:scale-110 transition-transform"><CheckCircle2 size={18} /></div>
-                                <span className="text-sm font-bold text-gray-600 dark:text-gray-400">Verified</span>
+                                <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-500 dark:text-emerald-400 border border-emerald-100/30"><CheckCircle2 size={18} /></div>
+                                <span className="text-sm font-bold text-gray-500 dark:text-gray-400">Verification</span>
                             </div>
-                            <span className="text-sm font-black text-indigo-600">{user?.emailVerified ? "Yes" : "No"}</span>
+                            <span className={`text-xs font-black px-2.5 py-1 rounded-lg ${user?.emailVerified ? "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30" : "text-rose-600 bg-rose-50 dark:bg-rose-950/30"}`}>
+                                {user?.emailVerified ? "VERIFIED" : "UNVERIFIED"}
+                            </span>
                         </div>
                     </div>
                 </div>
 
-                {/* Account Details */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#161617] p-8 rounded-[2rem] border border-gray-100 dark:border-gray-800 shadow-sm">
-                    <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-8">Detailed Information</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-10 gap-x-6">
-                        <DetailItem icon={<Mail size={16} />} label="Primary Email" value={user?.email} />
+                {/* Right Card: Personal Records */}
+                <div className="lg:col-span-2 bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.01)] dark:shadow-[0_4px_25px_-5px_rgba(0,0,0,0.2)]">
+                    <h3 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-8">Personal Records</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-8">
+                        <DetailItem icon={<Mail size={16} />} label="Registered Email" value={user?.email} />
                         <DetailItem icon={<Calendar size={16} />} label="Join Date" value={joinDate} />
-                        <DetailItem icon={<ShieldCheck size={16} />} label="Security" value={user?.needPasswordChange ? "Action Needed" : "Secure"} />
-                        <DetailItem icon={<UserIcon size={16} />} label="Unique ID" value={`#${user?.id?.slice(-10)}`} />
+                        <DetailItem icon={<ShieldCheck size={16} />} label="Security Vault State" value={user?.needPasswordChange ? "Action Mandatory" : "Encrypted & Secure"} />
+                        <DetailItem icon={<Fingerprint size={16} />} label="Internal Registry Token" value={`ID-${user?.id?.slice(-10).toUpperCase() || 'NULL'}`} />
                     </div>
                 </div>
+
             </div>
+            <UpdateUserProfile isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} />
         </div>
     );
 }
 
 function DetailItem({ icon, label, value }: { icon: any, label: string, value: string }) {
     return (
-        <div className="flex items-start gap-4 group">
-            <div className="p-2.5 bg-gray-50 dark:bg-gray-800/50 text-indigo-500 rounded-xl border border-gray-100 dark:border-gray-700 group-hover:border-indigo-200 dark:group-hover:border-indigo-800 transition-colors">
+        <div className="flex items-start gap-4 group p-1">
+            <div className="p-3.5 bg-gray-50 dark:bg-gray-800/80 text-indigo-500 dark:text-indigo-400 rounded-2xl border border-gray-100/80 dark:border-gray-700/80 group-hover:border-indigo-200 dark:group-hover:border-indigo-800 group-hover:bg-indigo-50/30 dark:group-hover:bg-indigo-950/30 transition-all duration-300 shadow-sm">
                 {icon}
             </div>
-            <div>
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">{label}</p>
-                <p className="text-sm font-bold text-gray-800 dark:text-gray-200 break-all">{value}</p>
+            <div className="min-w-0">
+                <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1.5">{label}</p>
+                <p className="text-sm font-black text-gray-800 dark:text-gray-200 break-all tracking-tight">{value}</p>
             </div>
         </div>
     );
