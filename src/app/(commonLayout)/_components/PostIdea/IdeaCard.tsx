@@ -3,13 +3,14 @@
 "use client";
 
 import { useTransition, useState, useEffect } from "react";
-import { ArrowBigDownDash, ArrowBigUpDash, Banknote, MessageCircleDashed } from "lucide-react";
+import { ArrowBigDownDash, ArrowBigUpDash, Banknote, Eye, MessageCircleDashed } from "lucide-react";
 import { toast } from "sonner";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toggleVoteAction } from "./toggleVoteAction";
 import Link from "next/link";
 import { handlePaymentAction } from "./Payment/payment.action";
+import IdeaPostDetails from "./IdeaPostDetails/IdeaPostDetails";
 
 export type VoteStatus = 'UPVOTE' | 'DOWNVOTE' | null;
 
@@ -19,6 +20,9 @@ export default function IdeaCard({ idea }: { idea: any }) {
     const [isPaymentPending, setIsPaymentPending] = useState(false)
     const [localVote, setLocalVote] = useState<VoteStatus>(idea.userVote || null);
     const [localScore, setLocalScore] = useState<number>((idea.upvotes || 0) - (idea.downvotes || 0));
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+    const params = idea.id;
 
     useEffect(() => {
         if (!isPending) {
@@ -90,7 +94,7 @@ export default function IdeaCard({ idea }: { idea: any }) {
     };
 
     return (
-        <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-5 shadow-sm flex flex-col h-full">
+        <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-5 flex flex-col h-full">
             <div className="h-48 w-full mb-4 overflow-hidden rounded-2xl bg-blue-100 dark:bg-blue-950 relative group border dark:border-blue-900">
                 <Image
                     src={idea.images}
@@ -143,10 +147,19 @@ export default function IdeaCard({ idea }: { idea: any }) {
                     <div className="bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700 flex items-center justify-center">
                         <Link
                             href={`/ideas/${idea.id}`}
-                            className="p-1.5 flex items-center justify-center rounded-lg transition-all text-indigo-500 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+                            className="px-2.5 py-1.5 flex items-center justify-center gap-1.5 rounded-lg transition-all text-indigo-500 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
                         >
+                            <span className="text-indigo-500 font-semibold text-sm leading-none">
+                                {idea?._count?.comments}
+                            </span>
                             <MessageCircleDashed size={20} />
                         </Link>
+                    </div>
+                </div>
+
+                <div className="bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700 flex items-center justify-center">
+                    <div onClick={() => setIsDetailsOpen(true)} className="px-2.5 py-1.5 flex items-center justify-center gap-1.5 rounded-lg transition-all text-indigo-500 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
+                        <Eye size={20} />
                     </div>
                 </div>
 
@@ -155,10 +168,11 @@ export default function IdeaCard({ idea }: { idea: any }) {
                         onClick={onBuyClick}
                         disabled={isPending}
                         className="p-1.5 rounded-lg transition-all flex text-sm gap-x-2 justify-center items-center text-white bg-indigo-500 hover:bg-indigo-600 dark:hover:bg-gray-700 cursor-pointer">
-                        <Banknote size={20} /> Buy Now
+                        <Banknote size={20} /> Donate
                     </button>
                 </div>
             </div>
+            <IdeaPostDetails isOpen={isDetailsOpen} onClose={() => setIsDetailsOpen(false)} params={params} ideas={idea} />
         </div>
     );
 }

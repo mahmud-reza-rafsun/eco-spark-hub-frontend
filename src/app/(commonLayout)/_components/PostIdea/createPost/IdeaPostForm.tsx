@@ -10,15 +10,6 @@ import { Upload, X, Lightbulb, DollarSign, Filter } from "lucide-react";
 import Image from 'next/image';
 import { getAllCategoriesAction, IdeaFormAction } from './IdeaFormAction';
 
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown, File, Edit, Trash } from "lucide-react";
-
 export default function IdeaPostForm({ isOpen, onClose }: { isOpen: boolean; onClose: () => void; }) {
     const [uploading, setUploading] = useState(false);
     const [preview, setPreview] = useState<string | null>(null);
