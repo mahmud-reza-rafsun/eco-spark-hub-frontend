@@ -19,8 +19,22 @@ const XIcon = ({ className }: { className?: string }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
 );
 
-const MountainIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m8 3 4 8 5-5 5 15H2L8 3z" /></svg>
+const BHACLogo = ({ className }: { className?: string }) => (
+    <svg
+        className={className}
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z"
+            fill="#6366F1"
+        />
+        <path
+            d="M11 20.5c0 .828.672 1.5 1.5 1.5h7c.828 0 1.5-.672 1.5-1.5v-1c0-.828-.672-1.5-1.5-1.5h-7c-.828 0-1.5.672-1.5 1.5v1zM9 14.5c0 .828.672 1.5 1.5 1.5h11c.828 0 1.5-.672 1.5-1.5v-1c0-.828-.672-1.5-1.5-1.5h-11c-.828 0-1.5.672-1.5 1.5v1zM13 8.5c0 .828.672 1.5 1.5 1.5h5c.828 0 1.5-.672 1.5-1.5v-1c0-.828-.672-1.5-1.5-1.5h-5c-.828 0-1.5.672-1.5 1.5v1z"
+            fill="#fff"
+        />
+    </svg>
 );
 
 const customCss = `
@@ -82,7 +96,7 @@ const Navbar = ({
         { href: "/ideas", label: "Ideas" },
         { href: "/dashboard", label: "Dashboard" },
         { href: "/about-us", label: "About Us" },
-        { href: "/blog", label: "Blog" },
+        { href: "/blog", label: "Blog" }
     ];
 
 
@@ -98,8 +112,8 @@ const Navbar = ({
                         {/* Logo */}
                         <div className="flex-shrink: 0">
                             <Link href="/" className="flex items-center gap-2">
-                                <MountainIcon className="h-6 w-6 text-indigo-500" />
-                                <span className="text-lg font-bold text-gray-900 dark:text-white hidden sm:block">EcoSpark Hub</span>
+                                <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12" />
+                                <span className="font-bold text-xl tracking-tight text-white">BHAC</span>
                             </Link>
                         </div>
 

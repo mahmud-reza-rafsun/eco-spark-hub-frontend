@@ -10,7 +10,25 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 // --- Icons ---
-const LogInIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><polyline points="10 17 15 12 10 7" /><line x1="15" x2="3" y1="12" y2="12" /></svg>;
+const BHACLogo = ({ className }: { className?: string }) => (
+    <svg
+        className={className}
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0z"
+            fill="#6366F1"
+        />
+        <path
+            d="M11 20.5c0 .828.672 1.5 1.5 1.5h7c.828 0 1.5-.672 1.5-1.5v-1c0-.828-.672-1.5-1.5-1.5h-7c-.828 0-1.5.672-1.5 1.5v1zM9 14.5c0 .828.672 1.5 1.5 1.5h11c.828 0 1.5-.672 1.5-1.5v-1c0-.828-.672-1.5-1.5-1.5h-11c-.828 0-1.5.672-1.5 1.5v1zM13 8.5c0 .828.672 1.5 1.5 1.5h5c.828 0 1.5-.672 1.5-1.5v-1c0-.828-.672-1.5-1.5-1.5h-5c-.828 0-1.5.672-1.5 1.5v1z"
+            fill="#fff"
+        />
+    </svg>
+);
+
+
 const MailIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>;
 const LockIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><circle cx="12" cy="16" r="1"></circle><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>;
 const EyeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>;
@@ -80,13 +98,13 @@ export default function LoginForm() {
     }
 
     return (
-        <div className="w-full flex items-center justify-center border border-gray-200 dark:border-gray-800 rounded-2xl">
-            <Image src="/login-page-image.jpg" width={500} height={400} alt="Login Image" className="rounded-tl-2xl rounded-bl-2xl " />
-            <div className="w-full  bg-white dark:bg-black p-8 space-y-8 ">
+        <div className="w-full flex items-center justify-center border flex-col border-gray-200 dark:border-gray-800 rounded-2xl">
+            <Image src="/login-page-image.jpg" width={500} height={400} alt="Login Image" className="md: hidden rounded-tl-2xl rounded-bl-2xl " />
+            <div className="w-full bg-white dark:bg-black p-8 space-y-8">
                 {/* Header */}
                 <div className="text-center space-y-2">
                     <div className="inline-flex p-3 bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl">
-                        <LogInIcon />
+                        <BHACLogo className="h-6 w-6" />
                     </div>
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">Welcome Back</h2>
                     <p className="text-sm text-gray-500">Sign in to your account</p>

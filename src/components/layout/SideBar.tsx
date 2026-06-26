@@ -1,7 +1,7 @@
 "use client"
 
 import { SideBarProps } from '@/interface/sidebar.interface';
-import { Home, Lightbulb, LayoutDashboard, Info, Newspaper, ChevronRight, ChevronLeft, Brain } from 'lucide-react';
+import { Lightbulb, LayoutDashboard, Info, Newspaper, ChevronRight, ChevronLeft, Brain } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -10,7 +10,6 @@ const SideBar = ({ isSidebarCollapsed, setIsSidebarCollapsed }: SideBarProps) =>
     const pathname = usePathname();
 
     const navLinks = [
-        { href: "/", label: "Home", icon: <Home size={22} /> },
         { href: "/ideas", label: "Ideas", icon: <Lightbulb size={22} /> },
         { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard size={22} /> },
         { href: "/insights", label: "Insights", icon: <Newspaper size={22} /> },
@@ -19,7 +18,7 @@ const SideBar = ({ isSidebarCollapsed, setIsSidebarCollapsed }: SideBarProps) =>
 
     return (
         <aside
-            className={`fixed left-0 top-16 h-[calc(100vh-64px)] transition-all duration-300 ease-in-out border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-[#09090b] z-40 
+            className={`fixed left-0 top-16 h-[calc(100vh-64px)] transition-all duration-300 ease-in-out border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-[#09090b] z-40
                 ${isSidebarCollapsed ? 'w-20' : 'w-64'}`}>
 
             <button

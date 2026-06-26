@@ -19,9 +19,9 @@ const sections = [
         icon: Lightbulb,
         title: "Idea Sharing & Intellectual Property",
         items: [
-            "Ownership: You retain full ownership of the innovation ideas and content you post on EcoSpark Hub. By posting, you grant us a worldwide, non-exclusive, royalty-free license to host and display your content on the platform.",
+            "Ownership: You retain full ownership of the innovation ideas and content you post on BHAC. By posting, you grant us a worldwide, non-exclusive, royalty-free license to host and display your content on the platform.",
             "Originality: You warrant that any idea or content you share is your own original work or that you have the legal right to share it. Copyright infringement or intellectual property theft is strictly prohibited.",
-            "Idea Buying & Selling: When an innovation idea is purchased, the rights to that idea are transferred from the seller to the buyer according to the transaction agreement. EcoSpark Hub acts solely as a venue and does not guarantee the quality, feasibility, or authenticity of any posted ideas.",
+            "Idea Buying & Selling: When an innovation idea is purchased, the rights to that idea are transferred from the seller to the buyer according to the transaction agreement. BHAC acts solely as a venue and does not guarantee the quality, feasibility, or authenticity of any posted ideas.",
         ],
     },
     {
@@ -39,8 +39,8 @@ const sections = [
         icon: Newspaper,
         title: "Admin Insights & Tech News",
         items: [
-            "The EcoSpark Hub admin panel regularly publishes technology-related news, articles, and insights.",
-            "This content is provided for informational purposes only. EcoSpark Hub does not guarantee the accuracy of third-party tech news and is not liable for any decisions made based on this information.",
+            "The BHAC admin panel regularly publishes technology-related news, articles, and insights.",
+            "This content is provided for informational purposes only. BHAC does not guarantee the accuracy of third-party tech news and is not liable for any decisions made based on this information.",
         ],
     },
     {
@@ -48,7 +48,7 @@ const sections = [
         icon: XCircle,
         title: "Termination of Service",
         items: [
-            "EcoSpark Hub reserves the right to suspend or terminate your account and access to the platform at any time, without prior notice, for conduct that we believe violates this agreement or is harmful to other users or our business interests.",
+            "BHAC reserves the right to suspend or terminate your account and access to the platform at any time, without prior notice, for conduct that we believe violates this agreement or is harmful to other users or our business interests.",
         ],
     },
 ];
@@ -77,7 +77,7 @@ export default function UserAgreement({ isOpen, onClose }: UserAgreementProps) {
                     <div>
                         <p className="text-white font-semibold text-sm">Last Updated: June 2026</p>
                         <p className="text-indigo-100 text-sm mt-1 leading-relaxed">
-                            Welcome to EcoSpark Hub! By accessing or using our website, you agree to be bound by
+                            Welcome to BHAC! By accessing or using our website, you agree to be bound by
                             these Terms of Service. If you do not agree with any part of these terms, please do
                             not use our platform.
                         </p>
@@ -122,7 +122,7 @@ export default function UserAgreement({ isOpen, onClose }: UserAgreementProps) {
 
                 {/* Footer note */}
                 <p className="text-center text-xs text-gray-400 dark:text-zinc-600 pb-2">
-                    By continuing to use EcoSpark Hub, you acknowledge that you have read and agreed to these terms.
+                    By continuing to use BHAC, you acknowledge that you have read and agreed to these terms.
                 </p>
             </div>
         </Modal>

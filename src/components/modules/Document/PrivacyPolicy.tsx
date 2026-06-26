@@ -19,7 +19,7 @@ const sections = [
         icon: BarChart2,
         title: "How We Use Your Information",
         items: [
-            "Provide, maintain, and improve the features of EcoSpark Hub.",
+            "Provide, maintain, and improve the features ofBHAC.",
             "Facilitate secure transactions between buyers and sellers of innovation ideas.",
             "Monitor and detect fraudulent activities, ensuring platform security.",
             "Send you important administrative updates, notifications, and curated tech news.",
@@ -77,7 +77,7 @@ export default function PrivacyPolicy({ isOpen, onClose }: PrivacyPolicyProps) {
                     <div>
                         <p className="text-white font-semibold text-sm">Last Updated: June 2026</p>
                         <p className="text-indigo-100 text-sm mt-1 leading-relaxed">
-                            At EcoSpark Hub, we are committed to protecting your privacy. This Privacy Policy
+                            AtBHAC, we are committed to protecting your privacy. This Privacy Policy
                             explains how we collect, use, and safeguard your personal information.
                         </p>
                     </div>
@@ -121,7 +121,7 @@ export default function PrivacyPolicy({ isOpen, onClose }: PrivacyPolicyProps) {
 
                 {/* Footer note */}
                 <p className="text-center text-xs text-gray-400 dark:text-zinc-600 pb-2">
-                    By continuing to use EcoSpark Hub, you acknowledge that you have read and agreed to this Privacy Policy.
+                    By continuing to useBHAC, you acknowledge that you have read and agreed to this Privacy Policy.
                 </p>
             </div>
         </Modal>
