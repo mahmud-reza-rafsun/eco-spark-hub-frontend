@@ -9,6 +9,7 @@ import { NavbarProps } from '@/interface/auth.interface';
 import UserSession from '@/utils/UserSession/UserSession';
 import IdeaPostForm from '@/app/(commonLayout)/_components/PostIdea/createPost/IdeaPostForm';
 import EcoSparkAI from '@/app/LLM_Model_AI/EcoSparkAI';
+import { Button } from '../ui/button';
 
 
 const MenuIcon = ({ className }: { className?: string }) => (
@@ -19,7 +20,7 @@ const XIcon = ({ className }: { className?: string }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
 );
 
-const BHACLogo = ({ className }: { className?: string }) => (
+export const BHACLogo = ({ className }: { className?: string }) => (
     <svg
         className={className}
         viewBox="0 0 32 32"
@@ -103,97 +104,123 @@ const Navbar = ({
     return (
         <header className="bg-white/80 dark:bg-black/80 backdrop-blur-sm sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                {isMobileSearchVisible ? (
-                    <div className="flex h-16 items-center px-0">
-
+                <div className="flex items-center justify-between h-16">
+                    {/* Logo */}
+                    <div className="flex-shrink: 0">
+                        <Link href="/" className="flex items-center gap-2.5 group">
+                            <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12" />
+                            <span className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">BHAC</span>
+                        </Link>
                     </div>
-                ) : (
-                    <div className="flex items-center justify-between h-16">
-                        {/* Logo */}
-                        <div className="flex-shrink: 0">
-                            <Link href="/" className="flex items-center gap-2">
-                                <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12" />
-                                <span className="font-bold text-xl tracking-tight text-white">BHAC</span>
-                            </Link>
-                        </div>
+
+                    <div className="flex items-center gap-2 sm:gap-4">
+                        {
+                            user ? (
+                                <div>
+                                    <style>{customCss}</style>
+                                    <button onClick={() => setIsIdeaModalOpen(true)} className="relative cursor-pointer inline-flex items-center justify-center p-[1px] bg-gray-300 dark:bg-black rounded-full overflow-hidden group">
+                                        <div
+                                            className="absolute inset-0"
+                                            style={{
+                                                background: 'conic-gradient(from var(--angle), transparent 25%, #6366f1, transparent 50%)',
+                                                animation: 'shimmer-spin 2.5s linear infinite',
+                                            }}
+                                        />
+                                        <span className="relative z-10 inline-flex items-center justify-center w-full h-full px-2 py-2 text-gray-900 dark:text-white bg-white dark:bg-gray-900 rounded-full group-hover:bg-gray-100 dark:group-hover:bg-gray-800 transition-colors duration-300">
+                                            <Lightbulb className='text-indigo-500 dark:text-white' />
+                                        </span>
+                                    </button>
+                                </div>
+                            ) : ""
+                        }
+
+                        {/* <div>
+                            <style>{customCss}</style>
+                            <button onClick={() => setIsAiOpen(true)} className="relative cursor-pointer inline-flex items-center justify-center p-[1px] bg-gray-300 dark:bg-black rounded-full overflow-hidden group">
+                                <div
+                                    className="absolute inset-0"
+                                    style={{
+                                        background: 'conic-gradient(from var(--angle), transparent 25%, #6366f1, transparent 50%)',
+                                        animation: 'shimmer-spin 2.5s linear infinite',
+                                    }}
+                                />
+                                <span className="relative z-10 inline-flex items-center justify-center w-full h-full px-2 py-2 text-gray-900 dark:text-white bg-white dark:bg-gray-900 rounded-full group-hover:bg-gray-100 dark:group-hover:bg-gray-800 transition-colors duration-300">
+                                    <Brain className='text-indigo-500 dark:text-white' />
+                                </span>
+                            </button>
+                        </div> */}
+
+                        <UserSession auth={auth} />
 
 
-                        <div className="flex items-center gap-2 sm:gap-4">
-                            {
-                                user ? (
-                                    <div>
-                                        <style>{customCss}</style>
-                                        <button onClick={() => setIsIdeaModalOpen(true)} className="relative cursor-pointer inline-flex items-center justify-center p-[1px] bg-gray-300 dark:bg-black rounded-full overflow-hidden group">
-                                            <div
-                                                className="absolute inset-0"
-                                                style={{
-                                                    background: 'conic-gradient(from var(--angle), transparent 25%, #6366f1, transparent 50%)',
-                                                    animation: 'shimmer-spin 2.5s linear infinite',
-                                                }}
-                                            />
-                                            <span className="relative z-10 inline-flex items-center justify-center w-full h-full px-2 py-2 text-gray-900 dark:text-white bg-white dark:bg-gray-900 rounded-full group-hover:bg-gray-100 dark:group-hover:bg-gray-800 transition-colors duration-300">
-                                                <Lightbulb className='text-indigo-500 dark:text-white' />
-                                            </span>
-                                        </button>
-                                    </div>
-                                ) : ""
-                            }
+                        <DarkMode />
 
-                            <div>
-                                <style>{customCss}</style>
-                                <button onClick={() => setIsAiOpen(true)} className="relative cursor-pointer inline-flex items-center justify-center p-[1px] bg-gray-300 dark:bg-black rounded-full overflow-hidden group">
-                                    <div
-                                        className="absolute inset-0"
-                                        style={{
-                                            background: 'conic-gradient(from var(--angle), transparent 25%, #6366f1, transparent 50%)',
-                                            animation: 'shimmer-spin 2.5s linear infinite',
-                                        }}
-                                    />
-                                    <span className="relative z-10 inline-flex items-center justify-center w-full h-full px-2 py-2 text-gray-900 dark:text-white bg-white dark:bg-gray-900 rounded-full group-hover:bg-gray-100 dark:group-hover:bg-gray-800 transition-colors duration-300">
-                                        <Brain className='text-indigo-500 dark:text-white' />
-                                    </span>
-                                </button>
-                            </div>
-
-                            <div className="hidden md:block">
-                                <UserSession auth={auth} />
-                            </div>
-
-                            <DarkMode />
-
-                            {/* Mobile Menu Trigger */}
-                            <div className="md:hidden">
-                                <button
-                                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                                    className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                                >
-                                    {isMenuOpen ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
-                                </button>
-                            </div>
+                        {/* Mobile Menu Trigger */}
+                        <div className="md:hidden">
+                            <button
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                            >
+                                {isMenuOpen ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+                            </button>
                         </div>
                     </div>
-                )}
+                </div>
             </div>
 
             {/* Mobile Menu */}
-            {isMenuOpen && !isMobileSearchVisible && (
-                <div className="md:hidden border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-black">
-                    <div className="px-4 py-4 space-y-2">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.label}
-                                href={link.href}
-                                onClick={() => setIsMenuOpen(false)}
-                                className="block px-4 py-3 rounded-xl text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-colors"
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
 
-                        <UserSession />
-                    </div>
+            <div className={`
+                md:hidden
+                absolute top-full left-0
+                w-2/3 h-[calc(100vh-64px)]
+                bg-white dark:bg-black
+                border-t border-gray-200 dark:border-gray-700
+                shadow-xl z-50
+                overflow-y-auto
+
+                transform transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                ${isMenuOpen
+                    ? "translate-x-0 opacity-100 visible"
+                    : "-translate-x-full opacity-0 invisible"
+                }
+                `}
+            >
+
+                <div className="px-4 py-4 space-y-2">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.label}
+                            href={link.href}
+                            onClick={() => setIsMenuOpen(false)}
+                            className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-colors"
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+
+                    {!user && (
+                        <div className="flex items-center gap-3 pt-2">
+                            <Button
+                                asChild
+                                className="px-5 py-5 rounded-lg dark:bg-indigo-500/30 border-none hover:bg-indigo-500/30 bg-indigo-500/30 text-indigo-600 dark:text-gray-100 shadow-sm"
+                            >
+                                <Link href={auth.login.url}>{auth.login.title}</Link>
+                            </Button>
+
+                            <Button
+                                asChild
+                                className="px-5 py-5 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm"
+                            >
+                                <Link href={auth.signup.url}>{auth.signup.title}</Link>
+                            </Button>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
+
+
             <IdeaPostForm
                 isOpen={isIdeaModalOpen}
                 onClose={() => setIsIdeaModalOpen(false)}

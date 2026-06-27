@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import DarkMode from "@/components/modules/DarkMode/DarkMode";
+import UserSession from "@/utils/UserSession/UserSession";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -55,6 +57,27 @@ const CloseIcon = () => (
 
 export default function HeroNavbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [user, setUser] = useState(null);
+    const [isFetching, setIsFetching] = useState(true);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        const getUser = async () => {
+            try {
+                const res = await fetch("/api/me");
+                const result = await res.json();
+                if (result.success && result.user) {
+                    setUser(result.user);
+                }
+            } catch (err) {
+                console.error("Auth Error:", err);
+            } finally {
+                setIsFetching(false);
+            }
+        };
+        getUser();
+    }, []);
 
     useEffect(() => {
         document.body.style.overflow = isMenuOpen ? "hidden" : "";
@@ -62,83 +85,117 @@ export default function HeroNavbar() {
     }, [isMenuOpen]);
 
     return (
-        <div className="fixed w-full z-999">
+        <div className="fixed top-0 left-0 w-full z-[999]">
             {/* ── Navbar ── */}
-            <header className="top-0 z-50 border-b border-black/[0.06] dark:border-gray-800 bg-white/85 dark:bg-[#09090B]/85 backdrop-blur-xl transition-colors duration-300">
+            <header className="border-b border-black/[0.06] dark:border-white/[0.08] bg-white/80 dark:bg-[#09090B]/80 backdrop-blur-xl transition-colors duration-300">
                 <div className="container mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
-                    {/* Logo */}
-                    <Link href="/" className="flex items-center gap-2.5 group">
-                        <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12 text-gray-900 dark:text-white" />
-                        <span className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">BHAC</span>
+
+                    {/* Left: Logo */}
+                    <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
+                        <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12" />
+                        <span className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">BHAC</span>
                     </Link>
 
-                    {/* Desktop nav */}
+                    {/* Center: Desktop Links */}
                     <nav className="hidden md:flex items-center gap-8">
-                        <Link href="/ideas" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        <Link href="/" className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                            Home
+                        </Link>
+                        <Link href="/ideas" className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                             Ideas
                         </Link>
-                        <Link href="#how-it-works" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        <Link href="#how-it-works" className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                             How it works
                         </Link>
-                        <Link href="/about-us" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        <Link href="/about-us" className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                             About
                         </Link>
                     </nav>
 
-                    {/* Desktop CTA */}
-                    <div className="hidden md:flex items-center gap-3">
-                        <button className="bg-indigo-500 cursor-pointer hover:bg-indigo-600 active:scale-95 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 shadow-lg shadow-indigo-500/20">
-                            Sign In
-                        </button>
-                        <DarkMode />
+                    {/* Right: Desktop Actions & Mobile Menu Triggers */}
+                    <div className="flex items-center gap-3">
+                        {/* Desktop Only Actions */}
+                        <div className="hidden md:flex items-center gap-3">
+                            {user ? (
+                                <UserSession user={user} />
+                            ) : (
+                                <button className="bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600 active:scale-95 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 cursor-pointer shadow-md shadow-indigo-500/10">
+                                    Sign In
+                                </button>
+                            )}
+                            <DarkMode />
+                        </div>
+
+                        {/* Mobile Only Session/Sign-In + Burger */}
+                        <div className="flex md:hidden items-center gap-3">
+                            {user ? (
+                                <UserSession user={user} />
+                            ) : (
+                                <button className="bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600 active:scale-95 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer">
+                                    Sign In
+                                </button>
+                            )}
+                            <DarkMode />
+                            <button
+                                onClick={() => setIsMenuOpen(true)}
+                                className="text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white p-1.5 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-white/[0.06]"
+                                aria-label="Open menu"
+                            >
+                                <MenuIcon />
+                            </button>
+                        </div>
                     </div>
 
-                    {/* Mobile burger */}
-                    <button
-                        onClick={() => setIsMenuOpen(true)}
-                        className="md:hidden text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white p-1 transition-colors"
-                        aria-label="Open menu"
-                    >
-                        <MenuIcon />
-                    </button>
                 </div>
             </header>
 
             {/* ── Mobile drawer ── */}
-            <div className={`fixed inset-0 z-50 transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+            <div className={`fixed inset-0 z-[1000] transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+                {/* Backdrop overlay */}
                 <div
-                    className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm"
+                    className="absolute inset-0 bg-black/30 dark:bg-black/60 backdrop-blur-sm"
                     onClick={() => setIsMenuOpen(false)}
                 />
-                <div className={`absolute right-0 top-0 h-full w-4/5 max-w-xs bg-white dark:bg-[#0E0E11] border-l border-black/[0.05] dark:border-white/[0.07] p-6 flex flex-col transition-transform duration-300 ease-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
-                    <div className="flex items-center justify-between mb-10">
-                        <span className="font-semibold text-gray-900 dark:text-white text-lg">Menu</span>
-                        <button onClick={() => setIsMenuOpen(false)} className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors" aria-label="Close menu">
+
+                {/* Drawer Menu content */}
+                <div className={`absolute right-0 top-0 h-full w-4/5 max-w-xs bg-white dark:bg-[#0E0E11] border-l border-slate-100 dark:border-white/[0.07] p-6 flex flex-col transition-transform duration-300 ease-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
+
+                    <div className="flex items-center justify-between mb-8">
+                        <span className="font-bold text-slate-900 dark:text-white text-lg">Menu</span>
+                        <button
+                            onClick={() => setIsMenuOpen(false)}
+                            className="text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white p-1 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-white/[0.06]"
+                            aria-label="Close menu"
+                        >
                             <CloseIcon />
                         </button>
                     </div>
+
                     <nav className="flex flex-col gap-1">
-                        {["Explore", "How it works", "About"].map((item) => (
-                            <a
-                                key={item}
-                                href={`#${item.toLowerCase().replace(" ", "-")}`}
+                        {[
+                            { name: "Home", href: "/" },
+                            { name: "Explore Ideas", href: "/ideas" },
+                            { name: "How it works", href: "#how-it-works" },
+                            { name: "About", href: "/about-us" }
+                        ].map((item) => (
+                            <Link
+                                key={item.name}
+                                href={item.href}
                                 onClick={() => setIsMenuOpen(false)}
-                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-black/[0.02] dark:hover:bg-white/[0.04] rounded-lg px-3 py-3 text-base transition-colors"
+                                className="text-slate-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:hover:bg-white/[0.03] rounded-xl px-4 py-3 text-base font-medium transition-colors"
                             >
-                                {item}
-                            </a>
+                                {item.name}
+                            </Link>
                         ))}
                     </nav>
-                    <div className="mt-auto flex flex-col gap-3 pt-8 border-t border-black/[0.06] dark:border-white/[0.06]">
-                        <button className="w-full text-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white py-2.5 text-sm font-medium transition-colors">
-                            Sign in
-                        </button>
-                        <button className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 rounded-xl transition-all shadow-md">
+
+                    <div className="mt-auto pt-6 border-t border-slate-100 dark:border-white/[0.06]">
+                        <button className="w-full bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-semibold py-3 rounded-xl transition-all shadow-md shadow-indigo-500/10 text-sm">
                             Get started
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
