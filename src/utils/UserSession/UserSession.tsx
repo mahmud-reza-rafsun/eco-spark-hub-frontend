@@ -123,7 +123,7 @@ export default function UserSession({
                     </DropdownMenuContent>
                 </DropdownMenu>
             ) : (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 hidden">
                     <Button asChild className="px-5 py-5 rounded-lg dark:bg-indigo-500/30 border-none hover:bg-indigo-500/30 bg-indigo-500/30 text-indigo-600 dark:text-gray-100 shadow-sm">
                         <Link href={auth.login.url}>{auth.login.title}</Link>
                     </Button>
