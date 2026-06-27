@@ -30,7 +30,7 @@ const IdeaSearchFilters = () => {
     };
 
     return (
-        <div className="flex flex-col md:flex-row gap-4 w-full items-center justify-between p-4 bg-white dark:bg-black shadow-sm border border-gray-100 dark:border-gray-800 rounded-xl">
+        <div className="flex flex-col md:flex-row gap-4 w-full items-center justify-between p-4 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl">
 
             {/* Search Input */}
             <div className="relative w-full md:max-w-md group">

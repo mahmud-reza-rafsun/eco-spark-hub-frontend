@@ -129,13 +129,13 @@ const Footer = () => {
 
 
     return (
-        <footer className="w-full bg-white dark:bg-black">
+        <footer className="w-full bg-white dark:bg-black border-t">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-8 py-10 max-sm:max-w-sm max-sm:mx-auto gap-y-8">
                     <div className="col-span-full mb-10 lg:col-span-2 lg:mb-0">
                         <Link href="/" className="flex items-center gap-2.5 group">
                             <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12" />
-                            <span className="font-bold text-xl tracking-tight text-white">BHAC</span>
+                            <span className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">BHAC</span>
                         </Link>
                         <p className="py-8 text-sm text-gray-500 dark:text-gray-400 lg:max-w-xs text-center lg:text-left">
                             Trusted in more than 100 countries & 5 million customers. Have any

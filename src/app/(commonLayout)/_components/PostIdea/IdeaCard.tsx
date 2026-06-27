@@ -94,8 +94,8 @@ export default function IdeaCard({ idea }: { idea: any }) {
     };
 
     return (
-        <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-5 flex flex-col h-full">
-            <div className="h-48 w-full mb-4 overflow-hidden rounded-2xl bg-blue-100 dark:bg-blue-950 relative group border dark:border-blue-900">
+        <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-4 flex flex-col h-full">
+            <div className="h-44 w-full mb-4 overflow-hidden rounded-2xl bg-blue-100 dark:bg-blue-950 relative border dark:border-blue-900 flex-shrink-0">
                 <Image
                     src={idea.images}
                     alt={idea.title}
@@ -103,75 +103,83 @@ export default function IdeaCard({ idea }: { idea: any }) {
                     width={400}
                     height={400}
                 />
-                <span className="absolute top-3 right-3 text-[10px] font-bold tracking-wider uppercase backdrop-blur-md bg-white/60 dark:bg-black/40 text-gray-900 dark:text-white px-3 py-1.5 rounded-lg z-10">
+                <span className="absolute top-3 right-3 text-[10px] font-bold tracking-wider uppercase backdrop-blur-md bg-white/60 dark:bg-black/40 text-gray-900 dark:text-white px-2.5 py-1 rounded-lg z-10">
                     {idea.category?.name || "Uncategorized"}
                 </span>
             </div>
 
-            <h3 className="text-lg font-bold mb-2 line-clamp-1">{idea.title}</h3>
-            <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{idea.description}</p>
+            <h3 className="text-base font-bold mb-1.5 line-clamp-1">{idea.title}</h3>
+            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{idea.description}</p>
 
-            <div className="mt-auto flex items-center justify-between border-t pt-4 gap-2">
-                <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1 bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700">
-                        {/* UPVOTE BUTTON */}
-                        <button
-                            disabled={isPending}
-                            onClick={() => handleVote('UPVOTE')}
-                            className={`p-1.5 rounded-lg transition-all cursor-pointer ${localVote === 'UPVOTE'
-                                ? 'bg-green-500 text-white shadow-md'
-                                : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-400'
-                                }`}
-                        >
-                            <ArrowBigUpDash size={22} fill={localVote === 'UPVOTE' ? "currentColor" : "none"} />
-                        </button>
+            <div className="mt-auto flex items-center justify-between border-t pt-3 gap-1.5">
 
-                        <span className={`font-bold text-sm px-2 min-w-[30px] text-center ${localScore > 0 ? 'text-green-600' : localScore < 0 ? 'text-red-600' : ''
-                            }`}>
-                            {localScore}
+                {/* Vote */}
+                <div className="flex items-center gap-0.5 bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700">
+                    <button
+                        disabled={isPending}
+                        onClick={() => handleVote('UPVOTE')}
+                        className={`p-1.5 rounded-lg transition-all cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center ${localVote === 'UPVOTE'
+                            ? 'bg-green-500 text-white shadow-md'
+                            : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-400'
+                            }`}
+                    >
+                        <ArrowBigUpDash size={18} fill={localVote === 'UPVOTE' ? "currentColor" : "none"} />
+                    </button>
+
+                    <span className={`font-bold text-xs px-1 min-w-[22px] text-center ${localScore > 0 ? 'text-green-600' : localScore < 0 ? 'text-red-600' : ''
+                        }`}>
+                        {localScore}
+                    </span>
+
+                    <button
+                        disabled={isPending}
+                        onClick={() => handleVote('DOWNVOTE')}
+                        className={`p-1.5 rounded-lg transition-all cursor-pointer min-w-[34px] min-h-[34px] flex items-center justify-center ${localVote === 'DOWNVOTE'
+                            ? 'bg-red-500 text-white shadow-md'
+                            : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-400'
+                            }`}
+                    >
+                        <ArrowBigDownDash size={18} fill={localVote === 'DOWNVOTE' ? "currentColor" : "none"} />
+                    </button>
+                </div>
+
+                {/* Comments */}
+                <div className="bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700">
+                    <Link
+                        href={`/ideas/${idea.id}`}
+                        className="px-2 py-1.5 flex items-center justify-center gap-1 rounded-lg transition-all text-indigo-500 hover:bg-gray-200 dark:hover:bg-gray-700 min-h-[34px]"
+                    >
+                        <span className="text-indigo-500 font-semibold text-xs leading-none">
+                            {idea?._count?.comments}
                         </span>
+                        <MessageCircleDashed size={18} />
+                    </Link>
+                </div>
 
-                        {/* DOWNVOTE BUTTON */}
-                        <button
-                            disabled={isPending}
-                            onClick={() => handleVote('DOWNVOTE')}
-                            className={`p-1.5 rounded-lg transition-all cursor-pointer ${localVote === 'DOWNVOTE'
-                                ? 'bg-red-500 text-white shadow-md'
-                                : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-400'
-                                }`}
-                        >
-                            <ArrowBigDownDash size={22} fill={localVote === 'DOWNVOTE' ? "currentColor" : "none"} />
-                        </button>
-                    </div>
-                    {/* Message Icon */}
-                    <div className="bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700 flex items-center justify-center">
-                        <Link
-                            href={`/ideas/${idea.id}`}
-                            className="px-2.5 py-1.5 flex items-center justify-center gap-1.5 rounded-lg transition-all text-indigo-500 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
-                        >
-                            <span className="text-indigo-500 font-semibold text-sm leading-none">
-                                {idea?._count?.comments}
-                            </span>
-                            <MessageCircleDashed size={20} />
-                        </Link>
+                {/* Eye */}
+                <div className="bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700">
+                    <div
+                        onClick={() => setIsDetailsOpen(true)}
+                        className="p-1.5 flex items-center justify-center rounded-lg transition-all text-indigo-500 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer min-h-[34px] min-w-[34px]"
+                    >
+                        <Eye size={18} />
                     </div>
                 </div>
 
-                <div className="bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700 flex items-center justify-center">
-                    <div onClick={() => setIsDetailsOpen(true)} className="px-2.5 py-1.5 flex items-center justify-center gap-1.5 rounded-lg transition-all text-indigo-500 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
-                        <Eye size={20} />
-                    </div>
-                </div>
-
+                {/* Donate */}
                 <div className="bg-gray-50 dark:bg-gray-800 p-1 rounded-xl border dark:border-gray-700">
                     <button
                         onClick={onBuyClick}
                         disabled={isPending}
-                        className="p-1.5 rounded-lg transition-all flex text-sm gap-x-2 justify-center items-center text-white bg-indigo-500 hover:bg-indigo-600 dark:hover:bg-gray-700 cursor-pointer">
-                        <Banknote size={20} /> Donate
+                        className="px-2 py-1.5 rounded-lg transition-all flex items-center gap-1.5 text-xs text-white bg-indigo-500 hover:bg-indigo-600 cursor-pointer min-h-[34px]"
+                    >
+                        <Banknote size={18} />
+                        <span className="hidden lg:inline">Donate</span>
                     </button>
                 </div>
+
             </div>
+
             <IdeaPostDetails isOpen={isDetailsOpen} onClose={() => setIsDetailsOpen(false)} params={params} ideas={idea} />
         </div>
     );

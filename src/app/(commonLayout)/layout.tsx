@@ -3,6 +3,7 @@ import Navbar from "@/components/layout/Navbar";
 import RightSideBar from "@/components/layout/RightSideBar";
 import SideBar from "@/components/layout/SideBar";
 import { useState } from "react";
+import Footer from "../_components/Footer";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);

@@ -107,9 +107,9 @@ const Navbar = ({
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <div className="flex-shrink: 0">
-                        <Link href="/" className="flex items-center gap-2">
+                        <Link href="/" className="flex items-center gap-2.5 group">
                             <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12" />
-                            <span className="font-bold text-xl tracking-tight text-white">BHAC</span>
+                            <span className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">BHAC</span>
                         </Link>
                     </div>
 
@@ -150,11 +150,9 @@ const Navbar = ({
                             </button>
                         </div> */}
 
-                        <div className="hidden md:block">
-                            <UserSession auth={auth} />
-                        </div>
+                        <UserSession auth={auth} />
 
-                        <UserSession />
+
                         <DarkMode />
 
                         {/* Mobile Menu Trigger */}
@@ -171,38 +169,56 @@ const Navbar = ({
             </div>
 
             {/* Mobile Menu */}
-            {isMenuOpen && (
-                <div className="md:hidden border-t absolute to-0 left-0 min-h-screen w-2/3 transition-opacity duration-300 border-gray-200 dark:border-gray-700 bg-white dark:bg-black">
 
-                    <div className="px-4 py-4 space-y-2">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.label}
-                                href={link.href}
-                                onClick={() => setIsMenuOpen(false)}
-                                className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-colors"
+            <div className={`
+                md:hidden
+                absolute top-full left-0
+                w-2/3 h-[calc(100vh-64px)]
+                bg-white dark:bg-black
+                border-t border-gray-200 dark:border-gray-700
+                shadow-xl z-50
+                overflow-y-auto
+
+                transform transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                ${isMenuOpen
+                    ? "translate-x-0 opacity-100 visible"
+                    : "-translate-x-full opacity-0 invisible"
+                }
+                `}
+            >
+
+                <div className="px-4 py-4 space-y-2">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.label}
+                            href={link.href}
+                            onClick={() => setIsMenuOpen(false)}
+                            className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-colors"
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+
+                    {!user && (
+                        <div className="flex items-center gap-3 pt-2">
+                            <Button
+                                asChild
+                                className="px-5 py-5 rounded-lg dark:bg-indigo-500/30 border-none hover:bg-indigo-500/30 bg-indigo-500/30 text-indigo-600 dark:text-gray-100 shadow-sm"
                             >
-                                {link.label}
-                            </Link>
-                        ))}
+                                <Link href={auth.login.url}>{auth.login.title}</Link>
+                            </Button>
 
-                        {
-                            user ? <div></div> :
-                                <div className="flex items-center gap-3">
-                                    <Button asChild className="px-5 py-5 rounded-lg dark:bg-indigo-500/30 border-none hover:bg-indigo-500/30 bg-indigo-500/30 text-indigo-600 dark:text-gray-100 shadow-sm">
-                                        <Link href={auth.login.url}>{auth.login.title}</Link>
-                                    </Button>
-                                    <Button asChild className="px-5 py-5 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm">
-                                        <Link href={auth.signup.url}>{auth.signup.title}</Link>
-                                    </Button>
-                                </div>
-
-                        }
-                    </div>
+                            <Button
+                                asChild
+                                className="px-5 py-5 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm"
+                            >
+                                <Link href={auth.signup.url}>{auth.signup.title}</Link>
+                            </Button>
+                        </div>
+                    )}
                 </div>
-            )}
-
-
+            </div>
 
 
             <IdeaPostForm
