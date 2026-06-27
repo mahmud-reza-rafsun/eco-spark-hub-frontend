@@ -1,3 +1,4 @@
+import DarkMode from "@/components/modules/DarkMode/DarkMode";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -63,25 +64,25 @@ export default function HeroNavbar() {
     return (
         <div className="fixed w-full z-999">
             {/* ── Navbar ── */}
-            <header className=" top-0 z-50 border-b border-white/[0.06] bg-[#09090B]/85 backdrop-blur-xl">
+            <header className="top-0 z-50 border-b border-black/[0.06] dark:border-gray-800 bg-white/85 dark:bg-[#09090B]/85 backdrop-blur-xl transition-colors duration-300">
                 <div className="container mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2.5 group">
-                        <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12" />
-                        <span className="font-bold text-xl tracking-tight text-white">BHAC</span>
+                        <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12 text-gray-900 dark:text-white" />
+                        <span className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">BHAC</span>
                     </Link>
 
                     {/* Desktop nav */}
                     <nav className="hidden md:flex items-center gap-8">
-                        <a href="ideas" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                        <Link href="/ideas" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                             Ideas
-                        </a>
-                        <a href="#how-it-works" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                        </Link>
+                        <Link href="#how-it-works" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                             How it works
-                        </a>
-                        <a href="/about-us" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                        </Link>
+                        <Link href="/about-us" className="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                             About
-                        </a>
+                        </Link>
                     </nav>
 
                     {/* Desktop CTA */}
@@ -89,12 +90,13 @@ export default function HeroNavbar() {
                         <button className="bg-indigo-500 cursor-pointer hover:bg-indigo-600 active:scale-95 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 shadow-lg shadow-indigo-500/20">
                             Sign In
                         </button>
+                        <DarkMode />
                     </div>
 
                     {/* Mobile burger */}
                     <button
                         onClick={() => setIsMenuOpen(true)}
-                        className="md:hidden text-gray-400 hover:text-white p-1 transition-colors"
+                        className="md:hidden text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white p-1 transition-colors"
                         aria-label="Open menu"
                     >
                         <MenuIcon />
@@ -105,13 +107,13 @@ export default function HeroNavbar() {
             {/* ── Mobile drawer ── */}
             <div className={`fixed inset-0 z-50 transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
                 <div
-                    className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                    className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm"
                     onClick={() => setIsMenuOpen(false)}
                 />
-                <div className={`absolute right-0 top-0 h-full w-4/5 max-w-xs bg-[#0E0E11] border-l border-white/[0.07] p-6 flex flex-col transition-transform duration-300 ease-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
+                <div className={`absolute right-0 top-0 h-full w-4/5 max-w-xs bg-white dark:bg-[#0E0E11] border-l border-black/[0.05] dark:border-white/[0.07] p-6 flex flex-col transition-transform duration-300 ease-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
                     <div className="flex items-center justify-between mb-10">
-                        <span className="font-semibold text-white text-lg">Menu</span>
-                        <button onClick={() => setIsMenuOpen(false)} className="text-gray-400 hover:text-white transition-colors" aria-label="Close menu">
+                        <span className="font-semibold text-gray-900 dark:text-white text-lg">Menu</span>
+                        <button onClick={() => setIsMenuOpen(false)} className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors" aria-label="Close menu">
                             <CloseIcon />
                         </button>
                     </div>
@@ -121,14 +123,14 @@ export default function HeroNavbar() {
                                 key={item}
                                 href={`#${item.toLowerCase().replace(" ", "-")}`}
                                 onClick={() => setIsMenuOpen(false)}
-                                className="text-gray-300 hover:text-white hover:bg-white/[0.04] rounded-lg px-3 py-3 text-base transition-colors"
+                                className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-black/[0.02] dark:hover:bg-white/[0.04] rounded-lg px-3 py-3 text-base transition-colors"
                             >
                                 {item}
                             </a>
                         ))}
                     </nav>
-                    <div className="mt-auto flex flex-col gap-3 pt-8 border-t border-white/[0.06]">
-                        <button className="w-full text-center text-gray-300 hover:text-white py-2.5 text-sm font-medium transition-colors">
+                    <div className="mt-auto flex flex-col gap-3 pt-8 border-t border-black/[0.06] dark:border-white/[0.06]">
+                        <button className="w-full text-center text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white py-2.5 text-sm font-medium transition-colors">
                             Sign in
                         </button>
                         <button className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 rounded-xl transition-all shadow-md">
