@@ -79,7 +79,7 @@ export default function HeroNavbar() {
                         <a href="#how-it-works" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
                             How it works
                         </a>
-                        <a href="/about" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                        <a href="/about-us" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
                             About
                         </a>
                     </nav>

@@ -90,7 +90,7 @@ export default function LoginForm() {
                 return;
             }
             toast.success("Logged in successfully", { id: toastId });
-            window.location.href = "/";
+            window.location.href = "/ideas";
         } catch (err) {
             toast.error("An unexpected error occurred", { id: toastId });
             setIsLoading(false);
@@ -98,8 +98,8 @@ export default function LoginForm() {
     }
 
     return (
-        <div className="w-full flex items-center justify-center border flex-col border-gray-200 dark:border-gray-800 rounded-2xl">
-            <Image src="/login-page-image.jpg" width={500} height={400} alt="Login Image" className="md: hidden rounded-tl-2xl rounded-bl-2xl " />
+        <div className="w-full flex items-center justify-center border sm: flex-wrap lg:flex-nowrap border-gray-200 dark:border-gray-800 rounded-2xl">
+            <Image src="/login-page-image.jpg" width={500} height={400} alt="Login Image" className="sm: hidden lg:flex rounded-tl-2xl rounded-bl-2xl " />
             <div className="w-full bg-white dark:bg-black p-8 space-y-8">
                 {/* Header */}
                 <div className="text-center space-y-2">
