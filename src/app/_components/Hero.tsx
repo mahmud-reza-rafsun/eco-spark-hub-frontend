@@ -1,3 +1,7 @@
+import Link from "next/link";
+import { useState } from "react";
+import PaymentSelectModal from "../donate/_components/PaymentModal";
+
 const stats = [
     { value: "4,200+", label: "Ideas shared" },
     { value: "1,800+", label: "Problems posted" },
@@ -6,6 +10,9 @@ const stats = [
 ];
 
 export default function Hero() {
+
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
     return (
         <div>
             {/* ── Hero ── */}
@@ -33,10 +40,12 @@ export default function Hero() {
 
                     {/* CTAs */}
                     <div className="mt-10 flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-                        <button className="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-600 active:scale-[0.98] text-white font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 cursor-pointer shadow-xl shadow-indigo-500/20">
-                            Explore Ideas
-                        </button>
-                        <button className="w-full cursor-pointer sm:w-auto border border-white/[0.1] hover:border-white/20 hover:bg-white/[0.04] text-white font-medium px-8 py-3.5 rounded-xl transition-all duration-200">
+                        <Link href="/ideas">
+                            <button className="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-600 active:scale-[0.98] text-white font-semibold px-8 py-3.5 rounded-xl transition-all duration-200 cursor-pointer shadow-xl shadow-indigo-500/20">
+                                Explore Ideas
+                            </button>
+                        </Link>
+                        <button onClick={() => setIsPaymentModalOpen(true)} className="w-full cursor-pointer sm:w-auto border border-white/[0.1] hover:border-white/20 hover:bg-white/[0.04] text-white font-medium px-8 py-3.5 rounded-xl transition-all duration-200">
                             Donate
                         </button>
                     </div>
@@ -59,6 +68,7 @@ export default function Hero() {
                     ))}
                 </div>
             </section>
+            <PaymentSelectModal isOpen={isPaymentModalOpen} onClose={() => setIsPaymentModalOpen(false)} />
         </div>
     )
 }
