@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import DarkMode from "@/components/modules/DarkMode/DarkMode";
 import UserSession from "@/utils/UserSession/UserSession";
@@ -81,33 +83,51 @@ export default function HeroNavbar() {
 
     useEffect(() => {
         document.body.style.overflow = isMenuOpen ? "hidden" : "";
-        return () => { document.body.style.overflow = ""; };
+        return () => {
+            document.body.style.overflow = "";
+        };
     }, [isMenuOpen]);
 
     return (
         <div className="fixed top-0 left-0 w-full z-[999]">
             {/* ── Navbar ── */}
-            <header className="border-b border-black/[0.06] dark:border-white/[0.08] bg-white/80 dark:bg-[#09090B]/80 backdrop-blur-xl transition-colors duration-300">
+            <header className="border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-[#09090B]/80 backdrop-blur-xl transition-colors duration-300">
                 <div className="container mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
-
                     {/* Left: Logo */}
-                    <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
+                    <Link
+                        href="/"
+                        className="flex items-center gap-2.5 group flex-shrink-0"
+                    >
                         <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12" />
-                        <span className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">BHAC</span>
+                        <span className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">
+                            BHAC
+                        </span>
                     </Link>
 
                     {/* Center: Desktop Links */}
                     <nav className="hidden md:flex items-center gap-8">
-                        <Link href="/" className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                        <Link
+                            href="/"
+                            className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                        >
                             Home
                         </Link>
-                        <Link href="/ideas" className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                        <Link
+                            href="/ideas"
+                            className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                        >
                             Ideas
                         </Link>
-                        <Link href="#how-it-works" className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                        <Link
+                            href="#how-it-works"
+                            className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                        >
                             How it works
                         </Link>
-                        <Link href="/about-us" className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                        <Link
+                            href="/about-us"
+                            className="text-sm font-medium text-slate-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                        >
                             About
                         </Link>
                     </nav>
@@ -119,9 +139,11 @@ export default function HeroNavbar() {
                             {user ? (
                                 <UserSession user={user} />
                             ) : (
-                                <button className="bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600 active:scale-95 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 cursor-pointer shadow-md shadow-indigo-500/10">
-                                    Sign In
-                                </button>
+                                <Link href="/register">
+                                    <button className="bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600 active:scale-95 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 cursor-pointer shadow-md shadow-indigo-500/10">
+                                        Sign In
+                                    </button>
+                                </Link>
                             )}
                             <DarkMode />
                         </div>
@@ -131,9 +153,11 @@ export default function HeroNavbar() {
                             {user ? (
                                 <UserSession user={user} />
                             ) : (
-                                <button className="bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-600 active:scale-95 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer">
-                                    Sign In
-                                </button>
+                                <Link href="/register">
+                                    <button className="bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-600 active:scale-95 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer">
+                                        Sign In
+                                    </button>
+                                </Link>
                             )}
                             <DarkMode />
                             <button
@@ -145,12 +169,13 @@ export default function HeroNavbar() {
                             </button>
                         </div>
                     </div>
-
                 </div>
             </header>
 
             {/* ── Mobile drawer ── */}
-            <div className={`fixed inset-0 z-[1000] transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+            <div
+                className={`fixed inset-0 z-[1000] transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            >
                 {/* Backdrop overlay */}
                 <div
                     className="absolute inset-0 bg-black/30 dark:bg-black/60 backdrop-blur-sm"
@@ -158,10 +183,13 @@ export default function HeroNavbar() {
                 />
 
                 {/* Drawer Menu content */}
-                <div className={`absolute right-0 top-0 h-full w-4/5 max-w-xs bg-white dark:bg-[#0E0E11] border-l border-slate-100 dark:border-white/[0.07] p-6 flex flex-col transition-transform duration-300 ease-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
-
+                <div
+                    className={`absolute right-0 top-0 h-full w-4/5 max-w-xs bg-white dark:bg-[#0E0E11] border-l border-slate-100 dark:border-white/[0.07] p-6 flex flex-col transition-transform duration-300 ease-out ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+                >
                     <div className="flex items-center justify-between mb-8">
-                        <span className="font-bold text-slate-900 dark:text-white text-lg">Menu</span>
+                        <span className="font-bold text-slate-900 dark:text-white text-lg">
+                            Menu
+                        </span>
                         <button
                             onClick={() => setIsMenuOpen(false)}
                             className="text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white p-1 transition-colors rounded-lg hover:bg-slate-100 dark:hover:bg-white/[0.06]"
@@ -176,7 +204,7 @@ export default function HeroNavbar() {
                             { name: "Home", href: "/" },
                             { name: "Explore Ideas", href: "/ideas" },
                             { name: "How it works", href: "#how-it-works" },
-                            { name: "About", href: "/about-us" }
+                            { name: "About", href: "/about-us" },
                         ].map((item) => (
                             <Link
                                 key={item.name}

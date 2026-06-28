@@ -26,7 +26,7 @@ interface PaymentSelectModalProps {
 }
 
 // --- Official SVG Icons Components ---
-const bKashIcon = () => (
+export const bKashIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" width="88" height="40" viewBox="0 0 122 54">
         <title>bKash Logo</title>
         <g fill="currentColor">
@@ -43,7 +43,7 @@ const bKashIcon = () => (
     </svg>
 );
 
-const StripeIcon = () => (
+export const stripeIcon = () => (
     <svg viewBox="0 0 100 36" width="100" height="36" xmlns="http://www.w3.org/2000/svg" aria-label="Stripe">
         <rect x="0" y="4" width="28" height="28" rx="6" fill="#635BFF" />
         <text x="5" y="24" fontFamily="Arial, sans-serif" fontSize="20" fontWeight="900" fill="white">S</text>
@@ -65,7 +65,7 @@ const paymentGroups: PaymentGroup[] = [
         category: "International",
         icon: <Globe className="w-4 h-4 text-slate-400 dark:text-slate-500" />,
         options: [
-            { id: "stripe", name: "Stripe", description: "All major credit and debit cards accepted", icon: StripeIcon() },
+            { id: "stripe", name: "Stripe", description: "All major credit and debit cards accepted", icon: stripeIcon() },
         ],
     },
 ];

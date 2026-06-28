@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ShieldCheck, ArrowRight, RefreshCw, Mail, User, MessageSquare } from "lucide-react";
-import PaymentSelectModal from "./PaymentModal";
+import PaymentSelectModal, { bKashIcon, stripeIcon } from "./PaymentModal";
 import HeroNavbar from "@/app/_components/HeroNavbar";
+import CheckoutModal from "./CheckoutModal";
 
 type PaymentMethodId = "bkash" | "stripe";
 
@@ -15,11 +16,11 @@ interface PaymentMethodConfig {
 }
 
 const BKashIcon = () => (
-    <span className="font-bold text-[#E2136E] tracking-tight text-lg">bKash</span>
+    bKashIcon()
 );
 
 const StripeIcon = () => (
-    <span className="font-bold text-[#635BFF] tracking-tight text-lg">stripe</span>
+    stripeIcon()
 );
 
 const PAYMENT_METHODS: Record<PaymentMethodId, PaymentMethodConfig> = {
@@ -32,6 +33,8 @@ const PRESET_AMOUNTS = [100, 250, 500, 1000, 2000];
 export default function PaymentContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
+
+    const [isCheckOutOpen, setIsCheckoutOpen] = useState(false);
 
     const queryMethod = searchParams.get("method") as PaymentMethodId;
     const currentMethod = PAYMENT_METHODS[queryMethod] ? queryMethod : "bkash";
@@ -57,11 +60,14 @@ export default function PaymentContent() {
     const displayAmount = selectedAmount !== null ? selectedAmount : (Number(customAmount) || 0);
     const activeMethodConfig = PAYMENT_METHODS[currentMethod];
 
+    // Check if the form is valid (Amount > 0 AND Email exists AND Name exists)
+    const isFormValid = displayAmount > 0 && email.trim() !== "" && name.trim() !== "";
+
     return (
         <>
             <HeroNavbar />
             <div className=" bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50 transition-colors duration-200">
-                <div className="max-w-6xl mx-auto px-4 py-20 md:py-24">
+                <div className="max-w-6xl mx-auto px-4 py-10 sm:px-6 lg:px-8 lg:py-10">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                         <div className="lg:col-span-2 space-y-4">
                             <div className="p-6 md:p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl transition-all">
@@ -142,7 +148,7 @@ export default function PaymentContent() {
                             <div className="p-6 md:p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-6">
                                 <div>
                                     <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
-                                        Donor Information
+                                        Donor Information <span className="text-red-500">*</span>
                                     </h2>
                                     <p className="text-xs text-slate-400 dark:text-slate-500">Provide your basic info for the payment transaction record.</p>
                                 </div>
@@ -164,10 +170,11 @@ export default function PaymentContent() {
 
                                     <div className="space-y-2">
                                         <label className="text-xs font-medium text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
-                                            <User className="w-3.5 h-3.5" /> Full Name <span className="text-slate-400 dark:text-slate-500">(Optional)</span>
+                                            <User className="w-3.5 h-3.5" /> Full Name <span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             type="text"
+                                            required
                                             placeholder="John Doe"
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
@@ -178,7 +185,7 @@ export default function PaymentContent() {
 
                                 <div className="space-y-2">
                                     <label className="text-xs font-medium text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
-                                        <MessageSquare className="w-3.5 h-3.5" /> Short Message <span className="text-slate-400 dark:text-slate-500">(Optional)</span>
+                                        <MessageSquare className="w-3.5 h-3.5" /> Short Message
                                     </label>
                                     <textarea
                                         rows={3}
@@ -214,9 +221,10 @@ export default function PaymentContent() {
 
                                 <button
                                     type="button"
-                                    disabled={displayAmount <= 0 || !email}
+                                    disabled={!isFormValid}
+                                    onClick={() => setIsCheckoutOpen(true)}
                                     className={`w-full py-3.5 px-4 rounded-xl text-sm font-semibold inline-flex items-center justify-center gap-2 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/40
-                                    ${displayAmount > 0 && email
+                                    ${isFormValid
                                             ? "bg-indigo-600 text-white hover:bg-indigo-500 active:bg-indigo-700 cursor-pointer"
                                             : "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 cursor-not-allowed"
                                         }
@@ -245,6 +253,14 @@ export default function PaymentContent() {
                     onClose={() => setIsModalOpen(false)}
                 />
             </div>
+            <CheckoutModal
+                isOpen={isCheckOutOpen}
+                onClose={() => setIsCheckoutOpen(false)}
+                onConfirm={() => {
+                    setIsCheckoutOpen(false);
+                    router.push(`/donate/checkout?method=${currentMethod}&amount=${displayAmount}&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&message=${encodeURIComponent(message)}`);
+                }}
+            />
         </>
     );
 }
