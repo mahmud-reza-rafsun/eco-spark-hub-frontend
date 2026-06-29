@@ -63,6 +63,20 @@ export default function PaymentContent() {
     // Check if the form is valid (Amount > 0 AND Email exists AND Name exists)
     const isFormValid = displayAmount > 0 && email.trim() !== "" && name.trim() !== "";
 
+    // Handle routing/modal logic based on selected method
+    const handleContinue = () => {
+        if (!isFormValid) return;
+
+        if (currentMethod === "stripe") {
+            // Open stripe link in a new tab
+            const stripeUrl = `/donate/checkout?method=stripe&amount=${displayAmount}&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&message=${encodeURIComponent(message)}`;
+            window.open(stripeUrl, "_blank");
+        } else {
+            // Open manual bKash modal
+            setIsCheckoutOpen(true);
+        }
+    };
+
     return (
         <>
             <HeroNavbar />
@@ -222,7 +236,7 @@ export default function PaymentContent() {
                                 <button
                                     type="button"
                                     disabled={!isFormValid}
-                                    onClick={() => setIsCheckoutOpen(true)}
+                                    onClick={handleContinue}
                                     className={`w-full py-3.5 px-4 rounded-xl text-sm font-semibold inline-flex items-center justify-center gap-2 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/40
                                     ${isFormValid
                                             ? "bg-indigo-600 text-white hover:bg-indigo-500 active:bg-indigo-700 cursor-pointer"
