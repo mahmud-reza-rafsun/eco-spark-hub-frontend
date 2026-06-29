@@ -1,22 +1,29 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Modal from '@/components/ui/modal';
 import { useState } from "react";
-import { ArrowLeft, Loader2, Sparkles } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Loader2, Sparkles, Download, CheckCircle2, User, Mail, DollarSign } from "lucide-react";
+import { handleBkashDonationAction } from '../actions/BkashPaymentAction';
+import { toast } from 'sonner';
+import dynamic from 'next/dynamic';
+import { DonationPDF } from './DonationPDF';
 
-// Interface আপডেট করা হয়েছে প্যারেন্ট কম্পোনেন্ট থেকে ডেটা রিসিভ করার জন্য
+const PDFDownloadLink = dynamic(
+    () => import('@react-pdf/renderer').then((mod) => mod.PDFDownloadLink),
+    { ssr: false }
+);
+
 interface PaymentSelectModalProps {
     isOpen: boolean;
     onClose: () => void;
     onConfirm?: (selectedMethod: string) => void;
-    amount: number;       // প্যারেন্ট থেকে সংগৃহীত ডেটা
-    email: string;        // প্যারেন্ট থেকে সংগৃহীত ডেটা
-    name: string;         // প্যারেন্ট থেকে সংগৃহীত ডেটা
-    message: string;      // প্যারেন্ট থেকে সংগৃহীত ডেটা
+    amount: number;
+    email: string;
+    name: string;
+    message: string;
 }
 
-// --- Official bKash SVG Icon ---
 export const bKashIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" xmlSpace="preserve" width="48" height="22" viewBox="0 0 122 54" className="text-[#E2136E] fill-current">
         <g>
@@ -36,18 +43,15 @@ export const bKashIcon = () => (
 export default function CheckoutModal({
     isOpen,
     onClose,
-    onConfirm,
     amount,
     email,
     name,
     message
 }: PaymentSelectModalProps) {
-    const [step, setStep] = useState<1 | 2>(1); // Step 1: bKash Form, Step 2: Success State
+    const [step, setStep] = useState<1 | 2 | 3>(1);
     const [senderNumber, setSenderNumber] = useState("");
     const [transactionId, setTransactionId] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-
-    const router = useRouter();
 
     if (!isOpen) return null;
 
@@ -58,34 +62,43 @@ export default function CheckoutModal({
         setIsSubmitting(true);
 
         const submissionData = {
-            donorName: name,
-            donorEmail: email,
-            donationAmount: amount,
-            donorMessage: message,
+            fullName: name,
+            email: email,
             paymentMethod: "bkash",
-            bkashSenderNumber: senderNumber,
-            bkashTransactionId: transactionId.toUpperCase(),
+            amount: amount,
+            payPhoneNumber: senderNumber,
+            transactionId: transactionId.toUpperCase(),
+            description: message
         };
 
-        console.log("=== Form Submission Data ===", submissionData);
+        try {
+            const res = await handleBkashDonationAction(submissionData);
 
-        // Verification delay simulation
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        setIsSubmitting(false);
-        setStep(2); // Switch to success UI
-
-        // Redirect after 3 seconds
-        setTimeout(() => {
-            if (onConfirm) {
-                onConfirm("bkash");
+            if (res?.error) {
+                toast.error(res.error);
+                setIsSubmitting(false);
+                return;
             }
-            onClose();
-            setStep(1);
-            setSenderNumber("");
-            setTransactionId("");
-            router.push(`/donate/success?method=bkash&trx=${transactionId}&phone=${senderNumber}`);
-        }, 3000);
+            toast.success("Donation recorded successfully!");
+
+            setIsSubmitting(false);
+            setStep(2);
+
+            setTimeout(() => {
+                setStep(3);
+            }, 1500);
+
+        } catch (error) {
+            setIsSubmitting(false);
+            toast.error("Failed to donate. Please try again.");
+        }
+    };
+
+    const handleResetAndClose = () => {
+        setStep(1);
+        setSenderNumber("");
+        setTransactionId("");
+        onClose();
     };
 
     return (
@@ -93,20 +106,17 @@ export default function CheckoutModal({
             isOpen={isOpen}
             onClose={() => {
                 if (step !== 2) {
-                    onClose();
+                    handleResetAndClose();
                 }
             }}
-            title={step === 1 ? "bKash Manual Payment" : "Payment Status"}
+            title={step === 1 ? "bKash Manual Payment" : step === 2 ? "Payment Status" : "Donation Invoice"}
             size="md"
         >
             <div className="relative w-full max-w-lg mx-auto bg-white dark:bg-slate-900 z-10 transition-all duration-300 ease-out">
 
-                {/* --- STEP 1: BKASH MANUAL FORM --- */}
                 {step === 1 && (
                     <form onSubmit={handlebKashSubmit}>
                         <div className="p-6 pt-2 space-y-5">
-
-                            {/* Top centered logo container */}
                             <div className="flex flex-col items-center justify-center p-5 bg-pink-50/40 dark:bg-pink-950/10 rounded-2xl border border-pink-100/70 dark:border-pink-900/20">
                                 <div className="p-2 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
                                     {bKashIcon()}
@@ -114,8 +124,7 @@ export default function CheckoutModal({
                                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-2.5 font-medium">Manual Transfer Verification</p>
                             </div>
 
-                            {/* Payment details block */}
-                            <div className="p-4 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-850 text-sm space-y-2.5">
+                            <div className="p-4 bg-slate-50 dark:bg-gray-900 rounded-xl border border-slate-100 dark:border-gray-800 text-sm space-y-2.5">
                                 <div className="flex justify-between items-center">
                                     <span className="text-slate-500 dark:text-slate-400">Method Type:</span>
                                     <span className="font-semibold text-slate-800 dark:text-slate-200">Send Money</span>
@@ -135,7 +144,6 @@ export default function CheckoutModal({
                                 </p>
                             </div>
 
-                            {/* Inputs form section */}
                             <div className="space-y-4">
                                 <div className="space-y-1.5">
                                     <label className="text-xs font-semibold text-slate-600 dark:text-slate-400">
@@ -167,11 +175,10 @@ export default function CheckoutModal({
                             </div>
                         </div>
 
-                        {/* Footer */}
                         <div className="p-6 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end gap-3">
                             <button
                                 type="button"
-                                onClick={onClose}
+                                onClick={handleResetAndClose}
                                 className="px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 cursor-pointer dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors focus:outline-none"
                             >
                                 Cancel
@@ -200,7 +207,6 @@ export default function CheckoutModal({
                     </form>
                 )}
 
-                {/* --- STEP 2: SUCCESS ANIMATION STATE --- */}
                 {step === 2 && (
                     <div className="p-10 flex flex-col items-center justify-center text-center space-y-4 animate-in zoom-in-95 duration-300">
                         <div className="relative flex items-center justify-center">
@@ -215,12 +221,96 @@ export default function CheckoutModal({
                                 Payment Complete
                             </h3>
                             <p className="text-sm text-slate-500 dark:text-slate-400 max-w-xs mx-auto">
-                                Your statement is recorded successfully. Redirecting you to the confirmation invoice page...
+                                Your statement is recorded successfully. Generating invoice...
                             </p>
                         </div>
 
                         <div className="w-24 h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                            <div className="h-full bg-emerald-500 rounded-full w-full origin-left transition-all duration-[3000ms] ease-out" />
+                            <div className="h-full bg-emerald-500 rounded-full w-full origin-left transition-all duration-[1500ms] ease-out" />
+                        </div>
+                    </div>
+                )}
+
+                {step === 3 && (
+                    <div className="p-6 space-y-6 animate-in fade-in-50 duration-300">
+                        <div className="text-center space-y-1">
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 mb-2">
+                                <CheckCircle2 className="w-7 h-7" />
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-50">Thank You for Your Donation!</h3>
+                            <p className="text-xs text-slate-400 dark:text-slate-500">Transaction has been verified and processed.</p>
+                        </div>
+
+                        <div className="p-5 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-100 dark:border-gray-800 space-y-4 text-sm">
+                            <div className="flex justify-between items-center pb-3 border-b border-slate-200/60 dark:border-slate-800">
+                                <span className="text-slate-400 font-medium flex items-center gap-2"><User className="w-4 h-4" /> Donor Name:</span>
+                                <span className="font-semibold text-slate-800 dark:text-slate-200">{name}</span>
+                            </div>
+
+                            <div className="flex justify-between items-center pb-3 border-b border-slate-200/60 dark:border-slate-800">
+                                <span className="text-slate-400 font-medium flex items-center gap-2"><Mail className="w-4 h-4" /> Email:</span>
+                                <span className="font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[200px]">{email}</span>
+                            </div>
+
+                            <div className="flex justify-between items-center pb-3 border-b border-slate-200/60 dark:border-slate-800">
+                                <span className="text-slate-400 font-medium flex items-center gap-2"><DollarSign className="w-4 h-4" /> Amount Paid:</span>
+                                <span className="font-bold text-indigo-600 dark:text-indigo-400">৳{amount}</span>
+                            </div>
+
+                            <div className="flex justify-between items-center pb-3 border-b border-slate-200/60 dark:border-slate-800">
+                                <span className="text-slate-400 font-medium">bKash Number:</span>
+                                <span className="font-mono text-slate-800 dark:text-slate-200">{senderNumber}</span>
+                            </div>
+
+                            <div className="flex justify-between items-center pb-3 border-b border-slate-200/60 dark:border-slate-800">
+                                <span className="text-slate-400 font-medium">Transaction ID:</span>
+                                <span className="font-mono font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">{transactionId}</span>
+                            </div>
+
+                            {message && (
+                                <div className="pt-1">
+                                    <span className="text-slate-400 block mb-1 font-medium">Message:</span>
+                                    <p className="text-xs bg-white dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200/60 dark:border-slate-800 italic text-slate-600 dark:text-slate-400">
+                                        {message}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                            <PDFDownloadLink
+                                document={
+                                    <DonationPDF
+                                        name={name}
+                                        email={email}
+                                        amount={amount}
+                                        trxId={transactionId}
+                                        senderNumber={senderNumber}
+                                        message={message}
+                                    />
+                                }
+                                fileName={`bhac-donation-invoice-for-humanity-${transactionId || 'receipt'}.pdf`}
+                                className="flex-1"
+                            >
+                                {({ loading }) => (
+                                    <button
+                                        type="button"
+                                        disabled={loading}
+                                        className="w-full py-2.5 px-4 rounded-xl text-sm font-semibold bg-indigo-600 text-white hover:bg-indigo-500 transition-all inline-flex items-center justify-center gap-2 cursor-pointer focus:outline-none disabled:opacity-50"
+                                    >
+                                        <Download className="w-4 h-4" />
+                                        {loading ? "Generating PDF..." : "Download PDF"}
+                                    </button>
+                                )}
+                            </PDFDownloadLink>
+
+                            <button
+                                type="button"
+                                onClick={handleResetAndClose}
+                                className="py-2.5 px-5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all cursor-pointer focus:outline-none"
+                            >
+                                Close
+                            </button>
                         </div>
                     </div>
                 )}
