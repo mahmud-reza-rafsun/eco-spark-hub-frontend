@@ -68,7 +68,7 @@ export default function PaymentContent() {
         if (!isFormValid) return;
 
         if (currentMethod === "stripe") {
-            // Open stripe link in a new tab
+            // Open stripe link in a new tab with form data
             const stripeUrl = `/donate/checkout?method=stripe&amount=${displayAmount}&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&message=${encodeURIComponent(message)}`;
             window.open(stripeUrl, "_blank");
         } else {
@@ -267,9 +267,14 @@ export default function PaymentContent() {
                     onClose={() => setIsModalOpen(false)}
                 />
             </div>
+
             <CheckoutModal
                 isOpen={isCheckOutOpen}
                 onClose={() => setIsCheckoutOpen(false)}
+                amount={displayAmount}
+                email={email}
+                name={name}
+                message={message}
                 onConfirm={() => {
                     setIsCheckoutOpen(false);
                     router.push(`/donate/checkout?method=${currentMethod}&amount=${displayAmount}&email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&message=${encodeURIComponent(message)}`);
