@@ -1,36 +1,193 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌍 BHAC - Frontend
 
-## Getting Started
+BHAC is a modern **role-based community platform** where users can share innovative ideas, discuss real-world problems, and support meaningful projects through both **local and international donations**. The platform is designed to encourage collaboration, social impact, and community-driven innovation.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 🔐 Authentication
+
+* Secure Sign Up & Login
+* JWT Authentication
+* Protected Routes
+* Role-Based Access Control
+
+### 💡 Idea Sharing
+
+* Publish innovative ideas
+* Browse community ideas
+* Search and filter ideas
+* View detailed idea pages
+* Like and engage with ideas
+
+### 🚨 Problem Sharing
+
+* Share local and global problems
+* Community discussions
+* Organized categories
+* Responsive user experience
+
+### 💰 Donation System
+
+* Donate to community ideas
+* Local payment support
+* International payment support
+* Donation tracking
+* Secure payment workflow
+
+### 👥 Role-Based Dashboard
+
+#### User
+
+* Manage Profile
+* Create Ideas
+* Share Problems
+* Make Donations
+* View Personal Activities
+
+#### Moderator
+
+* Review community content
+* Manage submitted ideas
+* Moderate reported problems
+
+#### Admin
+
+* Manage Users
+* Manage Roles
+* Platform Analytics
+* Content Moderation
+* Donation Management
+
+---
+
+# 🚀 Tech Stack
+
+* Bun
+* React
+* TypeScript
+* React Router
+* Tailwind CSS
+* Shadcn UI
+* React Hook Form
+* Framer Motion
+* React Icons
+
+---
+
+# ⚙️ Environment Variables
+
+Create a `.env` file in the project root.
+
+```env
+VITE_API_URL=
+VITE_IMAGE_HOSTING_KEY=
+VITE_STRIPE_PUBLISHABLE_KEY=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# 📦 Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Clone the Repository
 
-## Learn More
+```bash
+git clone https://github.com/your-username/bhac-frontend.git
+```
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+cd bhac-frontend
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Install Dependencies
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+bun install
+```
 
-## Deploy on Vercel
+### Run Development Server
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+bun run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+# 🏗️ Build for Production
+
+```bash
+bun run build
+```
+
+---
+
+# ▶️ Preview Production Build
+
+```bash
+bun run preview
+```
+
+---
+
+# 📱 Responsive Design
+
+* Desktop
+* Laptop
+* Tablet
+* Mobile
+
+---
+
+# 🔒 Security Features
+
+* Protected Routes
+* JWT Authentication
+* Role-Based Authorization
+* Secure API Communication
+
+---
+
+# 🌟 Future Improvements
+
+* Community voting system
+* Multi-language support
+* Dark Mode
+* Mobile Application
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+2. Create your feature branch
+
+```bash
+git checkout -b feature/amazing-feature
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Add amazing feature"
+```
+
+4. Push to your branch
+
+```bash
+git push origin feature/amazing-feature
+```
+
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+# ⭐ Support
+
+If you found this project helpful, consider giving it a **star** on GitHub.
