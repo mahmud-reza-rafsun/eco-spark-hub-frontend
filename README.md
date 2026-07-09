@@ -1,4 +1,4 @@
-# 🌍 BHAC - Frontend
+# 🌍 BHAC - Bangladesh Human Advancement Collective
 
 BHAC is a modern **role-based community platform** where users can share innovative ideas, discuss real-world problems, and support meaningful projects through both **local and international donations**. The platform is designed to encourage collaboration, social impact, and community-driven innovation.
 
