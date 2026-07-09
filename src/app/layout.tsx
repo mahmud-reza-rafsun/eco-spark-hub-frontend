@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "next-themes";
 import NextTopLoader from 'nextjs-toploader';
 import AppToaster from "@/components/provider/app-toaster";
+import CookieBannerSimple from "./_components/CookieBannerSimple";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -54,6 +55,7 @@ export default function RootLayout({
             showAtBottom={false} />
           {children}
           <AppToaster />
+          <CookieBannerSimple />
         </ThemeProvider>
       </body>
     </html>
