@@ -3,6 +3,7 @@ import Footer from "./_components/Footer";
 import HeroNavbar from "./_components/HeroNavbar";
 import Hero from "./_components/Hero";
 import Link from "next/link";
+import GlobalImpact from "./_components/GlobalImpact";
 
 
 
@@ -87,6 +88,8 @@ const LandingPage: React.FC = () => {
                     </div>
                 </div>
             </section>
+
+            <GlobalImpact />
 
             {/* ── How it works — steps ── */}
             <section id="how-it-works" className="relative z-10 py-20 px-5 sm:px-8 border-t border-slate-200 dark:border-white/[0.05]">
