@@ -29,5 +29,4 @@ export const DonationsService = {
             return { success: false, error: error.message || "Network Error" };
         }
     },
-
 };
