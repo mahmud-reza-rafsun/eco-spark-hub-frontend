@@ -5,8 +5,9 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "next-themes";
-import { Toaster } from "sonner";
 import NextTopLoader from 'nextjs-toploader';
+import AppToaster from "@/components/provider/app-toaster";
+import CookieBannerSimple from "./_components/CookieBannerSimple";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -51,11 +52,14 @@ export default function RootLayout({
             template='<div class="bar" role="bar"><div class="peg"></div></div>
   <div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
             zIndex={1600}
-            showAtBottom={false}
-          />
-
+            showAtBottom={false} />
           {children}
+<<<<<<< HEAD
           <Toaster theme="system" position="top-right" />
+=======
+          <AppToaster />
+          <CookieBannerSimple />
+>>>>>>> development
         </ThemeProvider>
       </body>
     </html>

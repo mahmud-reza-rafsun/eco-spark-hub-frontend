@@ -1,5 +1,6 @@
 import { insightsService } from '@/service/insight.service';
 import InsightsList from './InsightsList';
+export const dynamic = 'force-dynamic';
 
 export default async function InsightsPage() {
     const response = await insightsService.getAllInsights();

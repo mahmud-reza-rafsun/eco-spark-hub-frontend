@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { useState, useEffect } from "react";
@@ -337,14 +338,21 @@ export default function DonatePage() {
                         </div>
 
                     </div>
-                </div>
+=======
+import { Suspense } from "react";
+import PaymentContent from "./_components/PaymentContent";
 
-                {/* Payment Selector Modal */}
-                <PaymentSelectModal
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                />
-            </div >
-        </>
+export default function DonatePage() {
+    return (
+        <div className="min-h-screen bg-slate-50 dark:bg-[#09090B] py-20">
+            <Suspense fallback={
+                <div className="flex items-center justify-center min-h-[300px] text-gray-500">
+                    Loading payment details...
+>>>>>>> development
+                </div>
+            }>
+                <PaymentContent />
+            </Suspense>
+        </div>
     );
 }
