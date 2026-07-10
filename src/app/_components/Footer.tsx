@@ -134,80 +134,80 @@ const Footer = () => {
 =======
         <footer className="w-full bg-white dark:bg-black border-t">
 >>>>>>> development
-            <div className="mx-auto container px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-8 py-10 max-sm:max-w-sm max-sm:mx-auto gap-y-8">
-                    <div className="col-span-full mb-10 lg:col-span-2 lg:mb-0">
-                        <Link href="/" className="flex items-center gap-2.5 group">
-                            <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12" />
-                            <span className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">BHAC</span>
-                        </Link>
-                        <p className="py-8 text-sm text-gray-500 dark:text-gray-400 lg:max-w-xs text-center lg:text-left">
-                            Trusted in more than 100 countries & 5 million customers. Have any
-                            query ?
-                        </p>
-                        <a
-                            href="#"
-                            className="py-2.5 px-5 h-9 block w-fit bg-indigo-600 dark:bg-indigo-500 rounded-full shadow-sm text-xs text-white mx-auto transition-all duration-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 lg:mx-0"
-                        >
-                            Contact us
-                        </a>
-                    </div>
-
-                    {/* Link Columns */}
-                    {Object.entries(footerLinks).map(([title, links]) => (
-                        <div key={title} className="lg:mx-auto text-left">
-                            <h4 className="text-lg text-gray-900 dark:text-white font-medium mb-7 capitalize">
-                                {title}
-                            </h4>
-                            <ul className="text-sm transition-all duration-500">
-                                {links.map((link, index) => (
-                                    <li
-                                        key={index}
-                                        className={index === links.length - 1 ? "" : "mb-6"}
-                                    >
-                                        <a
-                                            href={link.href}
-                                            className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                                        >
-                                            {link.name}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Bottom Bar */}
-                <div className="py-7 border-t border-gray-200 dark:border-gray-700">
-                    <div className="flex items-center justify-center flex-col lg:justify-between lg:flex-row">
-                        <span className="text-sm text-gray-500 dark:text-gray-400">
-                            ©{" "}
+                <div className="mx-auto container px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-8 py-10 max-sm:max-w-sm max-sm:mx-auto gap-y-8">
+                        <div className="col-span-full mb-10 lg:col-span-2 lg:mb-0">
+                            <Link href="/" className="flex items-center gap-2.5 group">
+                                <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12" />
+                                <span className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">BHAC</span>
+                            </Link>
+                            <p className="py-8 text-sm text-gray-500 dark:text-gray-400 lg:max-w-xs text-center lg:text-left">
+                                Trusted in more than 100 countries & 5 million customers. Have any
+                                query ?
+                            </p>
                             <a
                                 href="#"
-                                className="hover:text-indigo-600 dark:hover:text-indigo-400"
+                                className="py-2.5 px-5 h-9 block w-fit bg-indigo-600 dark:bg-indigo-500 rounded-full shadow-sm text-xs text-white mx-auto transition-all duration-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 lg:mx-0"
                             >
-                                BHAC
-                            </a>{" "}
-                            2026, All rights reserved.
-                        </span>
-                        <div className="flex mt-4 space-x-4 sm:justify-center lg:mt-0">
-                            {socialLinks.map((link) => (
+                                Contact us
+                            </a>
+                        </div>
+
+                        {/* Link Columns */}
+                        {Object.entries(footerLinks).map(([title, links]) => (
+                            <div key={title} className="lg:mx-auto text-left">
+                                <h4 className="text-lg text-gray-900 dark:text-white font-medium mb-7 capitalize">
+                                    {title}
+                                </h4>
+                                <ul className="text-sm transition-all duration-500">
+                                    {links.map((link, index) => (
+                                        <li
+                                            key={index}
+                                            className={index === links.length - 1 ? "" : "mb-6"}
+                                        >
+                                            <a
+                                                href={link.href}
+                                                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                                            >
+                                                {link.name}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Bottom Bar */}
+                    <div className="py-7 border-t border-gray-200 dark:border-gray-700">
+                        <div className="flex items-center justify-center flex-col lg:justify-between lg:flex-row">
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                                ©{" "}
                                 <a
-                                    key={link.label}
-                                    href={link.href}
-                                    aria-label={link.label}
-                                    className="w-9 h-9 rounded-full bg-gray-700 dark:bg-gray-600 flex justify-center items-center hover:bg-indigo-600 dark:hover:bg-indigo-500 transition-colors duration-300"
+                                    href="#"
+                                    className="hover:text-indigo-600 dark:hover:text-indigo-400"
                                 >
-                                    {link.icon}
-                                </a>
-                            ))}
+                                    BHAC
+                                </a>{" "}
+                                2026, All rights reserved.
+                            </span>
+                            <div className="flex mt-4 space-x-4 sm:justify-center lg:mt-0">
+                                {socialLinks.map((link) => (
+                                    <a
+                                        key={link.label}
+                                        href={link.href}
+                                        aria-label={link.label}
+                                        className="w-9 h-9 rounded-full bg-gray-700 dark:bg-gray-600 flex justify-center items-center hover:bg-indigo-600 dark:hover:bg-indigo-500 transition-colors duration-300"
+                                    >
+                                        {link.icon}
+                                    </a>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </footer>
-    );
+            </footer>
+            );
 };
 
-export default Footer;
+            export default Footer;
