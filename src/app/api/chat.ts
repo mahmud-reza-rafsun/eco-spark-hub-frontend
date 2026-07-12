@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 
 const SYSTEM_PROMPT = `You are EcoSpark, the official AI Assistant for EcoSpark Hub—a full-stack platform dedicated to sharing, voting, and funding sustainability-driven innovation ideas. Your job is to assist users efficiently based on the following rules:
@@ -39,7 +40,6 @@ export async function POST(req: NextRequest) {
     });
 
     const data = await res.json();
-    console.log("Groq response:", JSON.stringify(data));
 
     const reply = data.choices?.[0]?.message?.content ?? 'Something went wrong.';
     return NextResponse.json({ reply });

@@ -174,7 +174,7 @@ export default function IdeaCard({ idea }: { idea: any }) {
                         className="px-2 py-1.5 rounded-lg transition-all flex items-center gap-1.5 text-xs text-white bg-indigo-500 hover:bg-indigo-600 cursor-pointer min-h-[34px]"
                     >
                         <Banknote size={18} />
-                        <span className="hidden lg:inline">Donate</span>
+                        <span className="hidden 2xl:inline">Donate</span>
                     </button>
                 </div>
 

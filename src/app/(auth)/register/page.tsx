@@ -16,7 +16,6 @@ export default function Page() {
                 email: formData.email,
                 image: formData.image
             };
-            console.log(payload)
 
             const response = await fetch(`${BACKEND_URL}/api/v1/auth/register`, {
                 method: 'POST',

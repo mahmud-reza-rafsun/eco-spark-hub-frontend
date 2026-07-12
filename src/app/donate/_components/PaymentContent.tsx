@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-import React from 'react'
-
-export default function PaymentContent() {
-    return (
-        <div>PaymentContent</div>
-    )
-}
-
-=======
 "use client";
 
 import { useState } from "react";
@@ -293,4 +283,3 @@ export default function PaymentContent() {
         </>
     );
 }
->>>>>>> development

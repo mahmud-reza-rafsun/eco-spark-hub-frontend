@@ -110,8 +110,6 @@ export default function InsightCard() {
                 image: imageUrl,
             };
 
-            console.log("payload in client page", payload);
-
             // 3. Call server action
             const response = await insightPostAction(payload);
 

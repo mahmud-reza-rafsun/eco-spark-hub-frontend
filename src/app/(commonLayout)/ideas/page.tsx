@@ -1,7 +1,7 @@
 import { ideaService } from "@/service/idea.service";
 import IdeaSearchFilters from "../_components/PostIdea/IdeaSearchFilters";
 import IdeasList from "../_components/PostIdea/IdeasList";
-import { CommentService } from "@/service/comment.service";
+import { authClient } from "@/lib/auth-client";
 
 export default async function IdeasPage({
     searchParams,
@@ -13,6 +13,8 @@ export default async function IdeasPage({
     }>;
 }) {
     const params = await searchParams;
+    const session = await authClient.getSession();
+    console.log(session)
 
     const res = await ideaService.getAllIdeas({
         searchTerm: params.searchTerm,
@@ -21,7 +23,6 @@ export default async function IdeasPage({
     });
 
     const ideas = res?.data?.data.data || [];
-    console.log(ideas)
 
     return (
         <div className="container mx-auto -my-[72px] py-8 px-4">

@@ -27,7 +27,6 @@ export default function UserProfile({ user, onEdit }: { user: any; onEdit?: () =
             setUserData(data.user);
         });
     }, [user]);
-    // console.log(userData)
 
     const joinDate = user?.createdAt
         ? format(new Date(user.createdAt), "MMMM dd, yyyy")
@@ -39,10 +38,10 @@ export default function UserProfile({ user, onEdit }: { user: any; onEdit?: () =
 
 
     return (
-        <div className="max-w-5xl mx-auto space-y-8 p-1 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="max-w-6xl mx-auto space-y-8 p-1 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
             {/* Main Profile Header Card (Facebook Style Layout) */}
-            <div className="bg-white dark:bg-gray-900 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-[0_8px_30px_rgb(0,0,0,0.02)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.3)] overflow-hidden">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-[0_8px_30px_rgb(0,0,0,0.02)] overflow-hidden">
 
                 {/* 1. Cover Photo Container */}
                 <div className="h-56 md:h-72 relative w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
@@ -105,10 +104,10 @@ export default function UserProfile({ user, onEdit }: { user: any; onEdit?: () =
                                     </div>
 
                                     <div className={`inline-flex items-center px-2.5 py-0.5 rounded-lg gap-x-1.5 border text-[10px] font-black uppercase tracking-wider ${user?.status === UserStatus.ACTIVE
-                                        ? 'text-emerald-600 bg-emerald-50/50 border-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800/40'
+                                        ? 'text-green-600 bg-green-50/50 border-green-100 dark:bg-green-950/40 dark:text-green-400 dark:border-green-800/40'
                                         : 'text-red-600 bg-red-50/50 border-red-100 dark:bg-red-950/40 dark:text-red-400 dark:border-red-900/40'
                                         }`}>
-                                        <span className={`h-1 w-1 rounded-full ${user?.status === UserStatus.ACTIVE ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                                        <span className={`h-1 w-1 rounded-full ${user?.status === UserStatus.ACTIVE ? 'bg-green-500' : 'bg-red-500'}`} />
                                         {userData?.status}
                                     </div>
                                 </div>
@@ -131,7 +130,6 @@ export default function UserProfile({ user, onEdit }: { user: any; onEdit?: () =
                         </div>
 
                     </div>
-
                 </div>
             </div>
 
@@ -139,7 +137,7 @@ export default function UserProfile({ user, onEdit }: { user: any; onEdit?: () =
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
                 {/* Left Card: Trust Matrix */}
-                <div className="lg:col-span-1 bg-white dark:bg-gray-900 p-8 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.01)] dark:shadow-[0_4px_25px_-5px_rgba(0,0,0,0.2)]">
+                <div className="lg:col-span-1 bg-white dark:bg-gray-900 p-8 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-[0_4px_25px_-5px_rgba(0,0,0,0.01)] dark:shadow-[0_4px_25px_-5px_rgba(0,0,0,0.2)]">
                     <h3 className="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-6">Trust Matrix</h3>
                     <div className="space-y-4">
                         <div className="flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200">

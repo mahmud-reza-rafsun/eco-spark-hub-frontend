@@ -87,7 +87,6 @@ const RegisterFrom: React.FC<RegisterProps> = ({ onRegister, onVerify }) => {
         e.preventDefault();
         setIsLoading(true);
         const response = await onVerify({ email, otp });
-        console.log("on verify", onVerify)
         setIsLoading(false);
 
         if (response.success) {

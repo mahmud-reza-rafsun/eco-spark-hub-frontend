@@ -123,15 +123,6 @@ export default function UserSession({
                     </DropdownMenuContent>
                 </DropdownMenu>
             ) : (
-<<<<<<< HEAD
-                <div className="hidden lg:flex items-center gap-3">
-                    <Button asChild className="px-5 py-5 rounded-lg dark:bg-indigo-500/30 border-none hover:bg-indigo-500/30 bg-indigo-500/30 text-indigo-600 dark:text-gray-100 shadow-sm">
-                        <Link href={auth.login.url}>{auth.login.title}</Link>
-                    </Button>
-                    <Button asChild className="px-5 py-5 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm">
-                        <Link href={auth.signup.url}>{auth.signup.title}</Link>
-                    </Button>
-=======
                 <div className="hidden lg:inline">
                     <div className='flex items-center gap-3'>
                         <Button asChild className="px-5 py-5 rounded-lg dark:bg-indigo-500/30 border-none hover:bg-indigo-500/30 bg-indigo-500/30 text-indigo-600 dark:text-gray-100 shadow-sm">
@@ -141,7 +132,6 @@ export default function UserSession({
                             <Link href={auth.signup.url}>{auth.signup.title}</Link>
                         </Button>
                     </div>
->>>>>>> development
                 </div>
             )}
         </div>

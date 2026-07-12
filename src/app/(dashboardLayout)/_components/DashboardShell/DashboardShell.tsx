@@ -29,7 +29,7 @@ export default function DashboardShell({
                 }}
                 className="flex-1 min-h-[calc(100vh-64px)]"
             >
-                <div className="p-6 lg:p-10">
+                <div className="p-0 lg:p-10">
                     {children}
                 </div>
             </main>

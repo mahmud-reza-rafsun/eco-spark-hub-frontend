@@ -5,7 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default function DetailsCard({ blog }: { blog: getAllInshight }) {
-    console.log(blog)
     const formattedDate = blog.createdAt ? format(new Date(blog.createdAt), 'MMMM dd, yyyy') : '';
     return (
         <div>

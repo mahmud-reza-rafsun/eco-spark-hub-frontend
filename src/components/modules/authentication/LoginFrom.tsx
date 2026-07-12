@@ -8,6 +8,7 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { env } from "@/env";
 
 // --- Icons ---
 const BHACLogo = ({ className }: { className?: string }) => (
@@ -44,20 +45,18 @@ export default function LoginForm() {
 
     const handleDemoLogin = (type: "admin" | "member") => {
         if (type === "admin") {
-            setEmail("admin@ecospark.com");
+            setEmail("admin@bhac.com");
             setPassword("12345678");
         } else {
-            setEmail("member@ecospark.com");
+            setEmail("member@bhac.com");
             setPassword("12345678");
         }
     };
 
     const handleGoogleLogin = async () => {
         try {
-            await authClient.signIn.social({
-                provider: "google",
-                callbackURL: window.location.origin,
-            });
+            const redirect = encodeURIComponent("/ideas");
+            window.location.href = `${env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login/google?redirect=${redirect}`;
         } catch (err) {
             console.error(err);
             toast.error("Google login failed. Please try again.");

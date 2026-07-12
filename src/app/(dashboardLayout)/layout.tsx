@@ -6,13 +6,26 @@ import { userService } from "@/service/user.service";
 import UserSession from "@/utils/UserSession/UserSession";
 import NotificationDropdown from "@/components/modules/Notification/Notification";
 import DashboardShell from "./_components/DashboardShell/DashboardShell";
-<<<<<<< HEAD
-import { BHACLogo } from "@/components/layout/Navbar";
-=======
 import { BHACLogo } from "../_components/HeroNavbar";
->>>>>>> development
 
 export const dynamic = "force-dynamic";
+
+const MountainIcon = ({ className }: { className?: string }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+    >
+        <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
+    </svg>
+);
 
 export default async function DashboardLayout({
     admin,
@@ -37,17 +50,9 @@ export default async function DashboardLayout({
                 <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
                     <div className="container mx-auto flex h-16 items-center justify-between px-6">
                         <nav>
-<<<<<<< HEAD
-                            <Link href="/" className="flex items-center gap-2">
-                                <BHACLogo className="h-6 w-6 text-gray-900 dark:text-white" />
-                                <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    BHAC
-                                </span>
-=======
                             <Link href="/ideas" className="flex items-center gap-2.5 group flex-shrink-0">
                                 <BHACLogo className="h-8 w-8 transition-transform duration-300 group-hover:rotate-12" />
                                 <span className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">BHAC</span>
->>>>>>> development
                             </Link>
                         </nav>
 

@@ -3,7 +3,6 @@ import Navbar from "@/components/layout/Navbar";
 import RightSideBar from "@/components/layout/RightSideBar";
 import SideBar from "@/components/layout/SideBar";
 import { useState } from "react";
-import Footer from "../_components/Footer";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -13,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Navbar />
             <div className="flex pt-16">
                 {/* Left Sidebar Container */}
-                <div className={`hidden xl:block transition-all duration-300 ease-in-out ${isSidebarCollapsed ? 'w-20' : 'w-64'} `}>
+                <div className={`hidden lg:block transition-all duration-300 ease-in-out ${isSidebarCollapsed ? 'w-20' : 'w-64'} `}>
                     <SideBar
                         isSidebarCollapsed={isSidebarCollapsed}
                         setIsSidebarCollapsed={setIsSidebarCollapsed}
@@ -30,7 +29,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </main>
 
                 {/* Right Sidebar Container */}
-                <div className="hidden lg:block w-[320px]">
+                <div className="hidden 2xl:block w-[320px]">
                     <RightSideBar />
                 </div>
             </div>

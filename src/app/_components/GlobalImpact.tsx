@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
     ComposableMap,
     Geographies,
@@ -62,8 +61,8 @@ export default function GlobalImpact() {
                         Where BHAC Works
                     </h2>
                     <p className="mt-4 text-base md:text-lg text-slate-600 dark:text-gray-400 leading-relaxed">
-                        Rooted in Bangladesh, connecting builders and problem-solvers across South Asia,
-                        Africa, Europe, and North America.
+                        Rooted in Bangladesh, connecting builders and problem-solvers across South Asia and
+                        Africa
                     </p>
                 </div>
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -44,7 +45,7 @@ export default function IdeasList({ ideas }: { ideas: any[] }) {
         <>
             {ideas.length > 0 ? (
                 <>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                         {ideas
                             .slice(0, visibleItems)
                             .map((idea) => (

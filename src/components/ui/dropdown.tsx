@@ -182,12 +182,11 @@ const DropdownMenuItem = ({
       if (onClick) onClick();
     }}
     className={`
-      text-zinc-800 dark:text-zinc-200 font-medium group flex items-center 
+      text-zinc-800 dark:text-zinc-200 font-medium group flex items-center
       px-3 py-2.5 text-sm rounded-lg transition-colors duration-150
-      ${
-        active
-          ? "bg-zinc-100 dark:bg-zinc-800"
-          : "hover:bg-zinc-100 dark:hover:bg-zinc-800"
+      ${active
+        ? "bg-zinc-100 dark:bg-zinc-800"
+        : "hover:bg-zinc-100 dark:hover:bg-zinc-800"
       }
     `}
     role="menuitem"
