@@ -14,7 +14,6 @@ export default async function IdeasPage({
 }) {
     const params = await searchParams;
     const session = await authClient.getSession();
-    console.log(session)
 
     const res = await ideaService.getAllIdeas({
         searchTerm: params.searchTerm,
